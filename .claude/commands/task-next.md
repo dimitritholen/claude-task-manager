@@ -1,22 +1,29 @@
 ---
-allowed-tools: Read
+allowed-tools: Read, Task
 description: Check manifest and identify next actionable task (minimal tokens)
 ---
 
 Find the next task to work on with minimal token usage (~150 tokens).
 
-**What This Command Does:**
+**MANDATORY**: This command MUST use the `task-discoverer` agent (Haiku-optimized) via the Task tool for fast, token-efficient discovery.
 
-1. Read `.tasks/manifest.json` only (no task files loaded)
+**Invoke the task-discoverer agent with:**
+
+```
+Find the next actionable task from the task management system.
+
+**Task:**
+1. Read `.tasks/manifest.json` ONLY (do not load task files)
 2. Filter tasks by:
    - Status: `pending` (not started)
    - Dependencies: All must be `completed`
    - Blocked: `blocked_by` must be empty
 3. Sort by priority (1 = highest)
-4. Display next actionable task
+4. Return the highest priority actionable task
 
-**Output Format:**
+**Token Budget:** ~150 tokens maximum
 
+**Expected Output Format:**
 ```
 📋 Next Task: T00X
 
@@ -36,20 +43,24 @@ To start this task: /task-start T00X
 ```
 
 **If No Task Available:**
-
-Display reason:
+Report reason:
 - "All pending tasks have incomplete dependencies"
 - "All tasks are blocked or in progress"
 - "No pending tasks found"
 
 Show blocked tasks with their blockers so user can resolve them.
 
-**Token Efficiency:**
+Begin discovery now.
+```
 
-This command uses ~150 tokens by only reading the manifest.
-No task files or context loaded until you actually start the task.
+**Why Use task-discoverer Agent:**
 
-**Next Steps:**
-- Use `/task-start T00X` to load full task details and begin work
-- Use `/task-status` for complete overview
+- **Ultra-fast**: Haiku model optimized for speed
+- **Token efficient**: ~150 tokens vs ~1,650 with full context
+- **Specialized**: Designed specifically for manifest queries and filtering
+- **Reliable**: Consistent output format following discovery patterns
+
+**Next Steps After Getting Result:**
+- Use `/task-start T00X` to begin work on the identified task
+- Use `/task-status` for complete project overview
 - Resolve blockers if no tasks are actionable

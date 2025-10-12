@@ -6,92 +6,111 @@ description: Claim task and load full context to begin work
 
 Start working on task: $ARGUMENTS
 
-**What This Command Does:**
+**MANDATORY**: This command MUST use the `task-executor` agent via the Task tool for full task execution with validation-driven development.
 
-1. **Validate Task** (~150 tokens)
-   - Read `.tasks/manifest.json`
-   - Verify task ID exists
-   - Check status is `pending` (not already in progress)
-   - Verify all dependencies are completed
-   - Check task is not blocked
+**Invoke the task-executor agent with:**
 
-2. **Claim Task Atomically**
-   - Create `.tasks/updates/agent_<id>_<timestamp>.json` with:
-     ```json
-     {
-       "agent_id": "<agent-id>",
-       "timestamp": "<ISO-8601>",
-       "action": "claim",
-       "task_id": "$ARGUMENTS",
-       "new_status": "in_progress"
-     }
-     ```
-   - Update manifest status to `in_progress`
+```
+Execute task: $ARGUMENTS
 
-3. **Load Full Context** (~1,650 tokens total)
-   - Load specific task file (~600 tokens)
-   - Load referenced context files (~900 tokens):
-     - `context/project.md`
-     - `context/architecture.md`
-     - `context/test-scenarios/<feature>.feature`
+**Your Mission:**
+You are responsible for implementing this task following validation-driven development with zero shortcuts.
 
-4. **Display Task Details**
+**Phase 1: Context Loading and Validation** (~1,650 tokens)
+1. Read `.tasks/manifest.json` - Verify task exists, is pending, dependencies met, not blocked
+2. Create atomic claim update in `.tasks/updates/agent_<id>_<timestamp>.json`:
+   ```json
+   {
+     "agent_id": "task-executor",
+     "timestamp": "<ISO-8601>",
+     "action": "claim",
+     "task_id": "$ARGUMENTS",
+     "new_status": "in_progress"
+   }
    ```
-   🚀 Starting Task: $ARGUMENTS
+3. Update manifest status to `in_progress`
+4. Load full task file from `.tasks/tasks/$ARGUMENTS-<name>.md`
+5. Load project context:
+   - `context/project.md` (business value, goals, constraints)
+   - `context/architecture.md` (tech stack, patterns, design decisions)
+   - `context/test-scenarios/<feature>` (if referenced)
 
-   Title: <task-title>
-   Status: in_progress
-   Priority: <1-5>
+**Phase 2: Implementation Plan**
+1. Understand business context and user impact
+2. Break down work into incremental steps
+3. Identify files to create/modify
+4. Plan test-first approach where applicable
+5. Document plan in progress log
 
-   Description:
-   <full-description>
+**Phase 3: Incremental Implementation**
+1. Implement in small increments
+2. Validate after EACH logical unit (tests, linter, build)
+3. Check off acceptance criteria as you go (update task file)
+4. Log progress and decisions continuously
+5. Never mark criteria complete prematurely
 
-   Acceptance Criteria:
-   - [ ] <criterion-1>
-   - [ ] <criterion-2>
+**Phase 4: Continuous Validation**
+Run validation commands frequently (from task file):
+- After every file save: linter, formatter
+- After logical unit: unit tests, type check
+- After major milestone: full test suite, build
+- Never proceed with failing validations
 
-   Test Scenarios:
-   <scenarios>
+**Phase 5: Completion Preparation**
+When ALL acceptance criteria are met and ALL validations pass:
+1. Update task file with final status
+2. Document learnings (what worked, challenges, token usage, recommendations)
+3. Report ready for completion verification
+4. DO NOT call /task-complete yourself - let orchestrator handle it
 
-   Dependencies:
-   <dependencies-status>
+**Expected Output During Execution:**
+```
+🚀 Starting Task: $ARGUMENTS
 
-   Validation Commands:
-   <validation-commands>
+[Progress updates as you work]
+[Validation results after each step]
+[Decisions and rationale logged]
+[Acceptance criteria checked off progressively]
 
-   Project Context Loaded:
-   ✓ context/project.md
-   ✓ context/architecture.md
-   ✓ context/test-scenarios/<feature>
+✅ Ready for Completion:
+- All acceptance criteria: ✓
+- All validations passed: ✓
+- Progress log complete: ✓
+- Learnings documented: ✓
 
-   Ready to work on this task!
-   ```
+Request /task-complete $ARGUMENTS to finalize.
+```
 
-**If Task Cannot Be Started:**
+**Critical Rules:**
+- Quality over speed - do it right once
+- Validate continuously - catch issues early
+- Document as you go - don't leave for later
+- No shortcuts - all criteria must be met
+- Never mark task complete - that's task-completer's job
 
-Display clear error:
-- "Task T00X not found in manifest"
-- "Task T00X is already in_progress"
-- "Task T00X has incomplete dependencies: [list]"
-- "Task T00X is blocked by: [blocker-description]"
+Begin task execution now.
+```
 
-**Working on the Task:**
+**Why Use task-executor Agent:**
 
-With full context loaded, you can now:
-- Implement according to acceptance criteria
-- Reference test scenarios for expected behavior
-- Run validation commands to verify
-- Log progress in task file
+- **Specialized Expertise**: Designed for validation-driven development
+- **Full Context Awareness**: Loads and maintains all relevant context
+- **Quality Focused**: Enforces continuous validation and testing
+- **Progress Tracking**: Systematic logging and documentation
+- **Prevents Shortcuts**: Ensures all acceptance criteria met before completion
+- **Token Efficient**: Loads only what's needed (~1,650 tokens vs 12,000+ for all tasks)
 
-**During Work:**
-- Update progress: Edit `.tasks/tasks/T00X-<name>.md` progress log
-- Add notes about decisions, blockers discovered
-- Check off acceptance criteria as you complete them
+**Agent Will Handle:**
+✓ Task validation and claiming
+✓ Context loading (project, architecture, tests)
+✓ Implementation planning and execution
+✓ Continuous validation (tests, linting, build)
+✓ Progress logging and decision documentation
+✓ Acceptance criteria tracking
+✓ Completion preparation and learnings
 
-**When Done:**
-Use `/task-complete $ARGUMENTS` to validate and finalize.
-
-**Token Usage:**
-- Validation: ~150 tokens (manifest only)
-- Full load: ~1,650 tokens (manifest + task + context)
-- Much more efficient than loading all tasks (12,000+ tokens)
+**You Will NOT Need To:**
+✗ Manually load context files
+✗ Track validation separately
+✗ Manage progress logs
+✗ Call /task-complete (agent signals when ready)

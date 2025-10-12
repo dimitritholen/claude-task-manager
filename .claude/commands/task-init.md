@@ -53,12 +53,53 @@ Initialize the fractal task management system for this project.
 
 **Instructions:**
 
-Use the `task-initializer` agent to:
-- Discover project type and structure
-- Find and parse documentation
-- Extract context and requirements
-- Generate initial task structure
-- Validate setup is complete
+**MANDATORY**: This command MUST use the `task-initializer` agent via the Task tool.
+
+Invoke the agent with the following structured prompt:
+
+```
+Initialize the token-efficient task management system for this project.
+
+**Your Mission:**
+1. Discover project type and structure
+2. Find and parse all documentation (requirements, architecture, test scenarios)
+3. Extract context into structured files (project.md, architecture.md, acceptance-templates.md)
+4. Generate initial task structure from requirements
+5. Validate complete setup
+
+**Expected Directory Structure:**
+.tasks/
+├── manifest.json              # Lightweight index
+├── tasks/                     # Individual task files
+├── context/                   # Session-loaded context
+│   ├── project.md
+│   ├── architecture.md
+│   ├── acceptance-templates.md
+│   └── test-scenarios/
+├── completed/                 # Archive
+├── updates/                   # Atomic updates
+└── metrics.json               # Performance tracking
+
+**Expected Output:**
+Provide a comprehensive initialization report showing:
+- Project discovery results (type, language, framework)
+- Documentation found and extracted
+- Validation strategy detected (test framework, build commands)
+- Context files created with token counts
+- Tasks generated with dependency graph
+- Token efficiency metrics vs monolithic approach
+- Next steps for using the system
+
+**Success Criteria:**
+✓ All directories created
+✓ manifest.json valid and populated
+✓ At least one task file created
+✓ Context files present with project-specific content
+✓ Validation commands discovered or inferred
+✓ metrics.json initialized
+
+Begin initialization now.
+```
 
 **Success Criteria:**
 - .tasks/ directory created with all subdirectories
