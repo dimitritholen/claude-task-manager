@@ -1,0 +1,63 @@
+{
+  "version": "1.0.0",
+  "project": "<project-name>",
+  "last_updated": "2025-10-11T14:30:00Z",
+  "tasks": [
+    {
+      "id": "T001",
+      "title": "<Brief description of first task>",
+      "status": "completed",
+      "priority": 1,
+      "agent": "<agent-type>",
+      "dependencies": [],
+      "blocked_by": [],
+      "est_tokens": 5000,
+      "actual_tokens": 4823,
+      "file": "tasks/T001-<feature-name>.md"
+    },
+    {
+      "id": "T002",
+      "title": "<Brief description of second task>",
+      "status": "in_progress",
+      "priority": 1,
+      "agent": "<agent-type>",
+      "dependencies": ["T001"],
+      "blocked_by": [],
+      "est_tokens": 8000,
+      "actual_tokens": null,
+      "file": "tasks/T002-<feature-name>.md"
+    },
+    {
+      "id": "T003",
+      "title": "<Brief description of third task>",
+      "status": "pending",
+      "priority": 2,
+      "agent": "<agent-type>",
+      "dependencies": ["T002"],
+      "blocked_by": [],
+      "est_tokens": 6000,
+      "actual_tokens": null,
+      "file": "tasks/T003-<feature-name>.md"
+    },
+    {
+      "id": "T004",
+      "title": "<Brief description of blocked task>",
+      "status": "blocked",
+      "priority": 1,
+      "agent": "<agent-type>",
+      "dependencies": [],
+      "blocked_by": ["<description-of-blocker>"],
+      "est_tokens": 2000,
+      "actual_tokens": null,
+      "file": "tasks/T004-<feature-name>.md"
+    }
+  ],
+  "stats": {
+    "total": 4,
+    "pending": 1,
+    "in_progress": 1,
+    "blocked": 1,
+    "completed": 1
+  },
+  "context_loaded": false
+}
