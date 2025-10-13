@@ -10,70 +10,59 @@ Start working on task: $ARGUMENTS
 
 **ONLY these agents from this workflow are authorized:**
 
-- ✅ `task-executor` - Validation-driven development specialist with mandatory TDD, continuous validation, and zero-tolerance quality standards
+- ✅ `task-executor` - TDD-driven implementation specialist with mandatory validation
 
 **FORBIDDEN:**
 - ❌ ANY agent with same name from global ~/.claude/agents/
 - ❌ ANY agent from other workflows
 - ❌ ANY general-purpose agents (developer, coder, etc.)
-- ❌ ANY agent not explicitly listed above
-
-**Enforcement:**
-Before invoking Task tool with `subagent_type: "task-executor"`, verify this specific agent exists in THIS workflow's agents.
-This workflow's task-executor is specifically designed with:
-- Mandatory TDD (no exceptions)
-- Anti-hallucination rules
-- Iteration mandate until proven
-- Meaningful tests only (realistic inputs, green+red+edge paths)
-- Rigid 60+ item completion gate
 
 **Why This Matters:**
-Global agents (even named "developer" or "task-executor") do NOT follow this workflow's extreme skepticism and validation standards. Using them would bypass the quality gates this system enforces.
+This workflow's task-executor enforces:
+- Mandatory TDD (tests before code, always)
+- Anti-hallucination rules (verify everything)
+- Iteration mandate until proven correct
+- Meaningful tests (realistic inputs, green+red+edge paths)
+- Rigid 60+ item completion gate
 
-**MANDATORY**: This command MUST use the `task-executor` agent via the Task tool for full task execution with validation-driven development.
+Global agents do NOT follow these extreme validation standards.
 
-**Token Budget Breakdown:**
-- Context loading: ~1,650 tokens total
-  - Manifest read: ~150 tokens
-  - Task file: ~600 tokens
-  - Project context: ~300 tokens
-  - Architecture context: ~300 tokens
-  - Test scenarios: ~300 tokens
-- Task claiming overhead: ~50 tokens
-- **Total startup cost: ~1,700 tokens** (vs 12,000+ for loading all tasks)
+## Purpose
 
-**Invoke the task-executor agent with:**
+This command delegates task execution to the specialized task-executor agent that:
+1. Validates task is available
+2. Claims task atomically
+3. Loads full context (~1,650 tokens)
+4. Implements with TDD and continuous validation
+5. Prepares for completion verification
+
+Token budget: ~1,700 tokens startup, variable implementation
+
+## Agent Invocation
+
+**MANDATORY**: Use `task-executor` agent via Task tool.
 
 ```
 Execute task: $ARGUMENTS
 
 **Your Mission:**
-You are responsible for implementing this task following validation-driven development with zero shortcuts.
+Implement this task following validation-driven development with zero shortcuts.
 
 **Phase 1: Context Loading and Validation** (~1,650 tokens)
-1. Read `.tasks/manifest.json` - Verify task exists, is pending, dependencies met, not blocked
-2. Create atomic claim update in `.tasks/updates/agent_<id>_<timestamp>.json`:
-   ```json
-   {
-     "agent_id": "task-executor",
-     "timestamp": "<ISO-8601>",
-     "action": "claim",
-     "task_id": "$ARGUMENTS",
-     "new_status": "in_progress"
-   }
-   ```
+1. Read .tasks/manifest.json - Verify task exists, is pending, dependencies met, not blocked
+2. Create atomic claim update in .tasks/updates/agent_<id>_<timestamp>.json
 3. Update manifest status to `in_progress`
-4. Load full task file from `.tasks/tasks/$ARGUMENTS-<name>.md`
+4. Load full task file from .tasks/tasks/$ARGUMENTS-<name>.md
 5. Load project context:
-   - `context/project.md` (business value, goals, constraints)
-   - `context/architecture.md` (tech stack, patterns, design decisions)
-   - `context/test-scenarios/<feature>` (if referenced)
+   - context/project.md (business value, goals, constraints)
+   - context/architecture.md (tech stack, patterns, design decisions)
+   - context/test-scenarios/<feature> (if referenced)
 
 **Phase 2: Implementation Plan**
 1. Understand business context and user impact
 2. Break down work into incremental steps
 3. Identify files to create/modify
-4. Plan test-first approach where applicable
+4. Plan test-first approach
 5. Document plan in progress log
 
 **Phase 3: Incremental Implementation**
@@ -91,14 +80,13 @@ Run validation commands frequently (from task file):
 - Never proceed with failing validations
 
 **Phase 5: Completion Preparation**
-When ALL acceptance criteria are met and ALL validations pass:
+When ALL acceptance criteria met and ALL validations pass:
 1. Update task file with final status
 2. Document learnings (what worked, challenges, token usage, recommendations)
 3. Report ready for completion verification
 4. DO NOT call /task-complete yourself - let orchestrator handle it
 
-**Expected Output During Execution:**
-```
+**Expected Output:**
 🚀 Starting Task: $ARGUMENTS
 
 [Progress updates as you work]
@@ -113,7 +101,6 @@ When ALL acceptance criteria are met and ALL validations pass:
 - Learnings documented: ✓
 
 Request /task-complete $ARGUMENTS to finalize.
-```
 
 **Critical Rules:**
 - Quality over speed - do it right once
@@ -133,16 +120,12 @@ If another agent is already working on this task:
    - Escalate to /task-next for health check and remediation
    - Do NOT claim directly
 
-**Concurrent Execution Safety:**
-- Always read manifest before updating
-- Use atomic update file in .tasks/updates/
-- Include timestamp and agent ID in claim
-- Verify claim succeeded by re-reading manifest
-
 Begin task execution now.
 ```
 
-**Why Use task-executor Agent:**
+Use: `subagent_type: "task-executor"`
+
+## Why Use task-executor Agent
 
 - **Specialized Expertise**: Designed for validation-driven development
 - **Full Context Awareness**: Loads and maintains all relevant context
@@ -151,53 +134,46 @@ Begin task execution now.
 - **Prevents Shortcuts**: Ensures all acceptance criteria met before completion
 - **Token Efficient**: Loads only what's needed (~1,650 tokens vs 12,000+ for all tasks)
 
-**Agent Will Handle:**
-✓ Task validation and claiming
-✓ Context loading (project, architecture, tests)
-✓ Implementation planning and execution
-✓ Continuous validation (tests, linting, build)
-✓ Progress logging and decision documentation
-✓ Acceptance criteria tracking
-✓ Completion preparation and learnings
+## Error Handling
 
-**You Will NOT Need To:**
-✗ Manually load context files
-✗ Track validation separately
-✗ Manage progress logs
-✗ Call /task-complete (agent signals when ready)
-
-**Fallback Behavior:**
-
-If task-executor agent invocation fails:
-
+**If task not found:**
 ```
-⚠️  Agent Invocation Failed
+❌ Task $ARGUMENTS not found in manifest
 
-Error: task-executor agent could not be started
-Reason: <specific-error>
-
-Fallback Options:
-1. Retry with explicit agent configuration
-2. Use direct execution mode (less structured, not recommended)
-3. Report issue and use /task-next to select different task
-
-Recommended: Fix agent configuration before proceeding.
+Check /task-status for valid task IDs
 ```
 
-**When to Use Direct Execution vs Agent:**
-- **Always prefer agent** for standard tasks (comprehensive, validated)
-- **Direct mode only if**:
-  - Agent system is unavailable
-  - Task is trivial (< 1,000 tokens)
-  - Emergency hotfix required
-- **Never use direct mode** for tasks with dependencies or complex validation
+**If task already in progress:**
+```
+⚠️  Task $ARGUMENTS is already in progress
 
-**Troubleshooting:**
+Started by: <agent>
+Started at: <timestamp>
 
-| Issue | Cause | Solution |
-|-------|-------|----------|
-| "Task not found" | Invalid task ID | Check /task-status for valid IDs |
-| "Already in progress" | Concurrent claim | Use /task-next instead |
-| "Dependencies not met" | Prereqs incomplete | Complete dependencies first |
-| "Task is blocked" | Documented blocker | Resolve blocker, update manifest |
-| "Agent failed to start" | Config issue | Check agent configuration |
+Use /task-next to find alternative task
+```
+
+**If dependencies not met:**
+```
+❌ Task $ARGUMENTS has incomplete dependencies
+
+Required: <list-of-tasks>
+Status: <completion-status-of-each>
+
+Complete dependencies first
+```
+
+**If task is blocked:**
+```
+🚫 Task $ARGUMENTS is blocked
+
+Blocker: <description>
+
+Resolve blocker and update manifest before starting
+```
+
+## Next Steps
+
+After agent completes work:
+- Use `/task-complete $ARGUMENTS` to validate and archive task
+- Or continue working if not yet ready for completion

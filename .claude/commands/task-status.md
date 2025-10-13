@@ -5,16 +5,23 @@ description: Show comprehensive task management system status
 
 Display complete task management system status with error recovery and adaptive output.
 
-**What This Command Does:**
+## Purpose
 
-1. Read `.tasks/manifest.json` (~150 tokens) with error recovery
-2. Read `.tasks/metrics.json` (if exists) with fallback
-3. Display comprehensive status overview adapted to project state
-4. Provide troubleshooting guidance if issues detected
+This command provides a comprehensive overview of the task system by:
+1. Reading `.tasks/manifest.json` (~150 tokens) with error recovery
+2. Reading `.tasks/metrics.json` (if exists) with fallback
+3. Displaying status overview adapted to project state
+4. Providing troubleshooting guidance if issues detected
 
-**Token Budget:** ~150-300 tokens (manifest + metrics + minimal overhead)
+Token budget: ~150-300 tokens (manifest + metrics + minimal overhead)
 
-**Output Format:**
+## Implementation
+
+**FIRST**, attempt to read `.tasks/manifest.json`:
+
+### If manifest exists and is valid:
+
+Display comprehensive status:
 
 ```
 📊 Task Management System Status
@@ -93,7 +100,7 @@ Context Files:
 System Health: ✅ All checks passed
 ```
 
-**If No Tasks Exist:**
+### If manifest doesn't exist:
 
 ```
 ⚠️  Task Management System Not Initialized
@@ -109,9 +116,7 @@ This will:
 - Generate initial tasks
 ```
 
-**Error Recovery:**
-
-If manifest.json is corrupted or unreadable:
+### If manifest is corrupted:
 
 ```
 ❌ Manifest File Error
@@ -132,14 +137,14 @@ Common Issues:
 To diagnose: cat .tasks/manifest.json | jq .
 ```
 
-If metrics.json is missing:
+### If metrics.json is missing:
 
 ```
 ℹ️  Metrics file not found, continuing without performance data.
    Metrics will be created on next task completion.
 ```
 
-**Conditional Output:**
+## Conditional Output
 
 The output adapts based on system state:
 - **Empty project**: Shows initialization prompt only
@@ -148,7 +153,7 @@ The output adapts based on system state:
 - **Critical issues**: Prioritizes blocker/stalled task information
 - **Healthy state**: Shows progress and recent completions
 
-**Token Usage:**
+## Token Efficiency
 
 This status command uses ~150-300 tokens:
 - Manifest: ~150 tokens
@@ -157,7 +162,7 @@ This status command uses ~150-300 tokens:
 
 Compare to loading all task details: 12,000+ tokens!
 
-**Use Cases:**
+## Use Cases
 
 - Quick health check of task system
 - Identify bottlenecks (blocked tasks)
@@ -165,7 +170,7 @@ Compare to loading all task details: 12,000+ tokens!
 - Monitor token efficiency
 - Find next work to do
 
-**Troubleshooting:**
+## Troubleshooting
 
 | Symptom | Diagnosis | Solution |
 |---------|-----------|----------|
@@ -175,7 +180,7 @@ Compare to loading all task details: 12,000+ tokens!
 | No actionable tasks shown | All pending have deps | Check dependency graph |
 | Metrics missing | First run or error | Will regenerate on completion |
 
-**Performance Notes:**
+## Performance Notes
 
 - First load: ~150 tokens (manifest only)
 - With metrics: ~250 tokens (manifest + metrics)

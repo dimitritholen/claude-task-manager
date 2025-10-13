@@ -5,11 +5,17 @@ description: Standalone health check for task management system (no task selecti
 
 Perform comprehensive health check on the task management system without finding next task.
 
-## Mission
+## Purpose
 
-Analyze `.tasks/manifest.json` for planning issues and provide diagnostic report.
+This command analyzes `.tasks/manifest.json` for planning issues and provides diagnostic report without selecting next task.
 
-## Health Check Analysis
+Use this when you want to understand system health before making decisions.
+
+For finding next task with health checks, use `/task-next` instead.
+
+Token budget: ~150-300 tokens (manifest analysis only)
+
+## Implementation
 
 **Read `.tasks/manifest.json` and analyze:**
 
@@ -104,11 +110,42 @@ Provide comprehensive diagnostic report:
 - [Systemic improvements needed]
 ```
 
-## Do NOT
+## Optional: Deep Analysis with task-manager
+
+For complex issues requiring remediation (not just diagnostics), you MAY optionally escalate to `task-manager` agent:
+
+```
+Perform comprehensive health analysis of task management system.
+
+**Your Mission:**
+1. Read manifest.json
+2. Analyze ALL detected issues in depth
+3. Identify root causes
+4. Provide detailed diagnostic report (NOT remediation actions)
+5. Recommend specific next steps
+
+**Focus Areas:**
+- Stalled tasks (>24h in progress)
+- Critical path blockages
+- Priority misalignments
+- Dependency issues
+- Token estimate accuracy
+
+**Expected Output:**
+Comprehensive health report with specific recommendations (but do NOT execute remediation).
+
+Begin analysis now.
+```
+
+Use: `subagent_type: "task-manager"`
+
+**Note:** Only use agent escalation if manifest analysis reveals complex issues requiring deep investigation. For simple diagnostics, direct manifest reading is sufficient.
+
+## DO NOT
 
 - Do NOT select or recommend the next task (that's /task-next's job)
 - Do NOT modify manifest.json (report only)
-- Do NOT escalate to task-manager (this is diagnostic only)
+- Do NOT execute remediation (this is diagnostic only)
 - Do NOT load individual task files (manifest analysis only for speed)
 
 ## Use Case
@@ -120,3 +157,13 @@ Run this command when:
 - Auditing task management system
 
 Run `/task-next` when actually ready to select and start next task.
+
+## Token Efficiency
+
+- Manifest-only analysis: ~150 tokens
+- With agent escalation: ~2,000-3,000 tokens
+- Compare to loading all tasks: ~12,000+ tokens
+
+Choose analysis depth based on needs:
+- Quick check: Direct manifest analysis
+- Deep investigation: Agent escalation

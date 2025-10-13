@@ -3,22 +3,20 @@ allowed-tools: Read, Task
 description: Add new tasks to the existing task management system with full comprehensiveness
 ---
 
-Add new feature tasks to the project incrementally while maintaining the same quality and structure as the initial task system setup.
+Add new feature tasks to the project incrementally while maintaining quality standards.
 
 ## MANDATORY AGENT WHITELIST — STRICT ENFORCEMENT
 
 **ONLY these agents from this workflow are authorized:**
 
-- ✅ `task-creator` - Comprehensive task generation specialist matching task-initializer quality standards
+- ✅ `task-creator` - Comprehensive task generation specialist matching task-initializer quality
 
 **FORBIDDEN:**
 - ❌ ANY agent with same name from global ~/.claude/agents/
 - ❌ ANY agent from other workflows
 - ❌ ANY general-purpose agents
-- ❌ ANY agent not explicitly listed above
 
-**Enforcement:**
-Before invoking Task tool with `subagent_type: "task-creator"`, verify this specific agent exists in THIS workflow's agents.
+**Why This Matters:**
 This workflow's task-creator is specifically designed to:
 - Generate tasks with ALL required sections (8+ acceptance criteria, 6+ test scenarios)
 - Analyze dependencies against existing manifest
@@ -26,27 +24,22 @@ This workflow's task-creator is specifically designed to:
 - Create atomic update records
 - Update manifest with bidirectional dependency graph
 
-**Why This Matters:**
-Global agents do NOT know this workflow's comprehensive task structure, acceptance criteria standards, or atomic update patterns. Using them would create incomplete or incompatible tasks.
+Global agents do NOT know this workflow's comprehensive task structure or standards.
 
-**When to Use:**
-- Adding new features during development
-- Breaking down user requests into tracked tasks
-- Creating tasks from requirements or user stories
-- Maintaining agile workflow after initialization
+## Purpose
 
-**Task Quality Guarantee:**
-Every task created will include:
-- Complete acceptance criteria (8+ specific, testable criteria)
-- Test scenarios (6+ cases covering success, edge cases, errors)
-- Technical implementation details
-- Validation commands
-- Design decisions with rationale
-- Risk analysis with mitigations
-- Dependency analysis
-- Token estimates
+This command delegates task creation to the specialized task-creator agent that:
+1. Loads existing context (project, architecture, acceptance templates)
+2. Reads manifest to understand current tasks and dependencies
+3. Analyzes dependencies
+4. Determines if feature should be split into multiple tasks
+5. Generates comprehensive task file(s)
+6. Updates manifest atomically
+7. Creates update record
 
-**Usage:**
+Token budget: ~800 tokens per task created
+
+## Usage
 
 ```bash
 # Add task from description
@@ -62,11 +55,9 @@ Every task created will include:
 /task-add "Add complete user authentication system with OAuth, 2FA, and password reset"
 ```
 
-**Instructions:**
+## Agent Invocation
 
-**MANDATORY**: This command MUST use the `task-creator` agent via the Task tool.
-
-Invoke the agent with the following structured prompt:
+**MANDATORY**: Use `task-creator` agent via Task tool.
 
 ```
 Create comprehensive task(s) for the following feature request:
@@ -95,7 +86,7 @@ Create comprehensive task(s) for the following feature request:
 - Risk analysis must have real mitigations
 
 **Expected Output:**
-Provide a comprehensive report showing:
+Provide comprehensive report showing:
 - Tasks created (IDs, titles, priorities)
 - Dependency analysis (prerequisites, what this enables)
 - Task breakdown rationale (if multiple tasks)
@@ -123,21 +114,44 @@ Provide a comprehensive report showing:
 Begin task creation now.
 ```
 
+Use: `subagent_type: "task-creator"`
+
 **Parameter Handling:**
 
 Replace `{user_input}` with:
 - If argument is a file path (ends with .md or .txt): Read the file and use its content
 - Otherwise: Use the argument as the feature description directly
 
-**Success Criteria:**
-- New task file(s) created in .tasks/tasks/ with comprehensive content
-- manifest.json updated with new tasks, dependencies, and stats
-- Update record created in .tasks/updates/
-- All task files have required sections and pass quality checks
-- Dependencies are accurate and reference existing tasks
-- Report shows clear next steps
+## What Gets Created
 
-**Example Workflow:**
+### 1. Task File (`.tasks/tasks/T00X-feature-slug.md`)
+- YAML frontmatter (id, title, status, priority, dependencies, tags, est_tokens)
+- Description
+- Business Context
+- Acceptance Criteria (8+ items)
+- Test Scenarios (6+ cases)
+- Technical Implementation
+- Dependencies
+- Design Decisions
+- Risks & Mitigations
+- Progress Log
+- Completion Checklist
+
+### 2. Updated Manifest (`.tasks/manifest.json`)
+- New task(s) in tasks array
+- Updated stats (total_tasks, pending)
+- Updated dependency_graph
+- Updated critical_path (if Priority 1)
+- Updated total_estimated_tokens
+
+### 3. Update Record (`.tasks/updates/task-creator_YYYYMMDD_HHMMSS.json`)
+- Timestamp
+- Agent name
+- Action taken
+- Tasks added
+- Summary
+
+## Example Workflow
 
 ```bash
 # User wants to add email notifications
@@ -168,43 +182,19 @@ Replace `{user_input}` with:
 /task-start T006
 ```
 
-**What Gets Created:**
+## Why Use task-creator Agent
 
-1. **Task File** (`.tasks/tasks/T00X-feature-slug.md`)
-   - YAML frontmatter (id, title, status, priority, dependencies, tags, context_refs, docs_refs, est_tokens)
-   - Description
-   - Business Context
-   - Acceptance Criteria (8+ items)
-   - Test Scenarios (6+ cases)
-   - Technical Implementation
-   - Dependencies
-   - Design Decisions
-   - Risks & Mitigations
-   - Progress Log
-   - Completion Checklist
+- **Specialized Expertise**: Designed for comprehensive task generation
+- **Quality Standards**: Maintains task-initializer quality levels
+- **Intelligent Splitting**: Breaks large features into manageable tasks
+- **Dependency Analysis**: Analyzes and links to existing tasks
+- **Duplicate Detection**: Prevents creating tasks that already exist
+- **Consistent Structure**: All tasks follow same comprehensive format
+- **Atomic Updates**: Creates update records for audit trail
 
-2. **Updated Manifest** (`.tasks/manifest.json`)
-   - New task(s) in tasks array
-   - Updated stats (total_tasks, pending)
-   - Updated dependency_graph
-   - Updated critical_path (if Priority 1)
-   - Updated total_estimated_tokens
+## Next Steps
 
-3. **Update Record** (`.tasks/updates/task-creator_YYYYMMDD_HHMMSS.json`)
-   - Timestamp
-   - Agent name
-   - Action taken
-   - Tasks added
-   - Summary
-
-**Notes:**
-- The task-creator agent maintains the same quality standards as task-initializer
-- Large features will automatically be broken into multiple manageable tasks
-- Dependencies are analyzed intelligently based on existing project structure
-- Duplicate detection prevents creating tasks that already exist
-- All validation commands are inherited from the project's existing context
-
-After adding tasks, use:
+After adding tasks:
 - `/task-status` - Check updated task overview
 - `/task-next` - Find next actionable task
 - `/task-start T00X` - Start working on the new task

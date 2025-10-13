@@ -10,16 +10,14 @@ Complete and archive task: $ARGUMENTS
 
 **ONLY these agents from this workflow are authorized:**
 
-- ✅ `task-completer` - Zero-tolerance quality gatekeeper with comprehensive validation enforcement
+- ✅ `task-completer` - Zero-tolerance quality gatekeeper with comprehensive validation
 
 **FORBIDDEN:**
 - ❌ ANY agent with same name from global ~/.claude/agents/
 - ❌ ANY agent from other workflows
 - ❌ ANY general-purpose agents
-- ❌ ANY agent not explicitly listed above
 
-**Enforcement:**
-Before invoking Task tool with `subagent_type: "task-completer"`, verify this specific agent exists in THIS workflow's agents.
+**Why This Matters:**
 This workflow's task-completer enforces:
 - ALL acceptance criteria must be checked (100%, no exceptions)
 - ALL validation commands must pass (0 errors, 0 warnings)
@@ -28,12 +26,23 @@ This workflow's task-completer enforces:
 - Comprehensive Definition of Done checklist
 - Learning extraction with quality bar
 
-**Why This Matters:**
-This agent is the FINAL QUALITY GATE. Global agents do NOT enforce this workflow's zero-tolerance standards and would allow incomplete work to be marked as "done", polluting the task system with false completions.
+This agent is the FINAL QUALITY GATE. Global agents do NOT enforce these zero-tolerance standards.
 
-**MANDATORY**: This command MUST use the `task-completer` agent via the Task tool for zero-tolerance quality gate enforcement.
+## Purpose
 
-**Invoke the task-completer agent with:**
+This command delegates completion validation to the specialized task-completer agent that:
+1. Verifies ALL acceptance criteria are checked
+2. Executes ALL validation commands
+3. Enforces Definition of Done checklist
+4. Extracts learnings
+5. Archives task atomically
+6. Reports unblocked downstream tasks
+
+Token budget: ~2,350 tokens (load task + validation + archival)
+
+## Agent Invocation
+
+**MANDATORY**: Use `task-completer` agent via Task tool.
 
 ```
 Validate completion and archive task: $ARGUMENTS
@@ -42,8 +51,8 @@ Validate completion and archive task: $ARGUMENTS
 You are the quality gatekeeper. Enforce zero-tolerance completion standards.
 
 **Phase 1: Initial Validation** (~150 tokens)
-1. Load `.tasks/manifest.json` - Verify task status is `in_progress`
-2. Load `.tasks/tasks/$ARGUMENTS-<name>.md` - Parse all sections
+1. Load .tasks/manifest.json - Verify task status is `in_progress`
+2. Load .tasks/tasks/$ARGUMENTS-<name>.md - Parse all sections
 3. Extract:
    - All acceptance criteria (checkboxes)
    - All validation commands
@@ -52,8 +61,8 @@ You are the quality gatekeeper. Enforce zero-tolerance completion standards.
 
 **Phase 2: Acceptance Criteria Verification** (~500 tokens)
 1. Scan for ALL checkboxes: `- [ ]` vs `- [x]`
-2. **REQUIREMENT**: ALL must be `[x]`, ZERO `[ ]` allowed
-3. If ANY unchecked: **REJECT immediately**
+2. REQUIREMENT: ALL must be `[x]`, ZERO `[ ]` allowed
+3. If ANY unchecked: REJECT immediately
 4. Spot-check critical criteria for evidence:
    - Security criteria → verify implementation exists
    - Data integrity criteria → verify tests exist
@@ -63,8 +72,8 @@ You are the quality gatekeeper. Enforce zero-tolerance completion standards.
 1. Extract validation commands from task file
 2. Execute EACH command sequentially
 3. Record: exit code, output, duration
-4. **FAIL FAST**: First failure → stop, report, reject
-5. Required pass rate: **100%** (no exceptions)
+4. FAIL FAST: First failure → stop, report, reject
+5. Required pass rate: 100% (no exceptions)
 
 Validation must include:
 - Linter: 0 errors, 0 warnings
@@ -109,25 +118,14 @@ Extract or prompt for:
 4. Recommendations for similar tasks
 5. Technical debt created (if any)
 
-**Quality bar**: Learnings must be specific, honest, quantitative, actionable
+Quality bar: Learnings must be specific, honest, quantitative, actionable
 
 **Phase 6: Atomic Completion** (~200 tokens)
 If ALL checks pass:
-1. Create `.tasks/updates/agent_task-completer_<timestamp>.json`:
-   ```json
-   {
-     "agent_id": "task-completer",
-     "timestamp": "<ISO-8601>",
-     "action": "complete",
-     "task_id": "$ARGUMENTS",
-     "new_status": "completed",
-     "actual_tokens": <calculated>,
-     "completion_validated": true
-   }
-   ```
+1. Create .tasks/updates/agent_task-completer_<timestamp>.json
 2. Update manifest: status → `completed`, actual_tokens, completed_at
-3. Copy task file to `.tasks/completed/` with completion record
-4. Update `.tasks/metrics.json` with completion data
+3. Copy task file to .tasks/completed/ with completion record
+4. Update .tasks/metrics.json with completion data
 
 **Phase 7: Dependency Resolution** (~150 tokens)
 1. Find tasks that depend on this one
@@ -135,7 +133,6 @@ If ALL checks pass:
 3. Report unblocked tasks
 
 **Expected Output - SUCCESS:**
-```
 ✅ Task $ARGUMENTS Completed Successfully!
 
 Summary:
@@ -164,10 +161,8 @@ Impact:
 Learnings: [summary]
 
 Next: Use /task-next to find next task
-```
 
 **Expected Output - REJECTION:**
-```
 ❌ Task $ARGUMENTS Completion REJECTED
 
 Reason: <primary-failure-reason>
@@ -190,20 +185,21 @@ Required Actions:
 4. Retry /task-complete $ARGUMENTS
 
 Task remains `in_progress`.
-```
 
 **Critical Rules:**
-- **Binary outcome**: Complete (100%) or Incomplete (0%) - no middle ground
-- **Zero tolerance**: ANY failure = reject entire completion
-- **No shortcuts**: "90% done" = incomplete
-- **Enforce standards**: Your approval reflects system integrity
-- **Fail fast**: First validation failure → stop and report
-- **Document everything**: Comprehensive audit trail
+- Binary outcome: Complete (100%) or Incomplete (0%) - no middle ground
+- Zero tolerance: ANY failure = reject entire completion
+- No shortcuts: "90% done" = incomplete
+- Enforce standards: Your approval reflects system integrity
+- Fail fast: First validation failure → stop and report
+- Document everything: Comprehensive audit trail
 
 Begin completion validation now.
 ```
 
-**Why Use task-completer Agent:**
+Use: `subagent_type: "task-completer"`
+
+## Why Use task-completer Agent
 
 - **Quality Gatekeeper**: Enforces zero-tolerance completion standards
 - **Comprehensive Validation**: Runs ALL checks automatically
@@ -213,24 +209,12 @@ Begin completion validation now.
 - **Dependency Management**: Automatically identifies and reports unblocked tasks
 - **Metrics Tracking**: Calculates token usage, variance, and updates project metrics
 
-**Agent Will Enforce:**
-✓ ALL acceptance criteria checked (100%, no exceptions)
-✓ ALL validation commands pass (linter, tests, build, type check)
-✓ Definition of Done checklist verified
-✓ Learnings documented with quality bar
-✓ No TODO/FIXME/HACK comments
-✓ No failing tests or build errors
-✓ Progress log complete with decisions
+## Philosophy
 
-**Agent Will NOT Allow:**
-✗ "90% done" or partial completion
-✗ Skipping validation commands
-✗ Unchecked acceptance criteria
-✗ Failing tests with promises to "fix later"
-✗ Minimal or generic learnings
-✗ Technical debt shortcuts
+> Premature completion is worse than no completion. It blocks dependent tasks with broken foundations and creates confusion. Binary outcome: Complete (100%) or Incomplete (0%) - no middle ground.
 
-**Philosophy:**
-> Premature completion is worse than no completion.
-> It blocks dependent tasks with broken foundations and creates confusion.
-> Binary outcome: Complete (100%) or Incomplete (0%) - no middle ground.
+## Next Steps
+
+After completion:
+- Use `/task-next` to find next actionable task
+- Or review `/task-status` for overall progress
