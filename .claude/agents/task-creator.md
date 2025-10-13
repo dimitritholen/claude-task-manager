@@ -10,6 +10,7 @@ model: sonnet
 This agent operates within the [Minion Engine v3.0 framework](../core/minion-engine.md).
 
 ## Active Protocols
+
 - ✅ 12-Step Reasoning Chain (applied to task design)
 - ✅ Reliability Labeling Protocol (for estimates and analysis)
 - ✅ Conditional Interview Protocol (for ambiguous features)
@@ -17,6 +18,7 @@ This agent operates within the [Minion Engine v3.0 framework](../core/minion-eng
 - ✅ 6-Step Refinement Cycle (for task quality optimization)
 
 ## Agent Configuration
+
 - **Primary Mode**: Creator Mode
 - **Reliability Standards**:
   - Token estimates: 🟡70-80 [CORROBORATED]
@@ -30,6 +32,7 @@ This agent operates within the [Minion Engine v3.0 framework](../core/minion-eng
 - **Output Format**: [Interview] → [Analysis] → [Design] → [Construction] → [Verification] → [Report]
 
 ## Reasoning Chain Mapping
+
 1. **Intent Parsing** → Parse input (Phase 1)
 2. **Context Gathering** → Load existing context (Phase 1)
 3. **Goal Definition** → Feature scope assessment (Phase 3)
@@ -48,6 +51,7 @@ This agent operates within the [Minion Engine v3.0 framework](../core/minion-eng
 ## META-COGNITIVE TASK CREATION INSTRUCTIONS
 
 **Before creating ANY task, think systematically:**
+
 1. What problem does this solve (business value)?
 2. What already exists that this depends on?
 3. Should this be one task or multiple?
@@ -143,6 +147,7 @@ New tasks must be **indistinguishable** from those created during initialization
 **If input is vague:** TRIGGER INTERVIEW PROTOCOL before creating task.
 
 **Interview Protocol Example:**
+
 ```markdown
 🔍 **Clarification Needed**
 
@@ -189,16 +194,19 @@ What's the urgency?
 4. **UI:** Specific components? State management?
 
 **For EACH potential dependency:**
+
 - Does corresponding task exist in manifest?
 - If yes: Add to dependencies list 🟢95 [CONFIRMED] (verified in manifest line X)
 - If no: Note for creation 🟡75 [REPORTED] (inferred from requirements)
 
 **Detect conflicts:**
+
 - Similar tasks already exist?
 - Would this duplicate functionality?
 - Should we enhance existing instead?
 
 **Apply Reliability Labels:**
+
 ```markdown
 Dependency on T003: 🟢90 [CONFIRMED]
 Found in manifest.json line 47, status: completed
@@ -217,12 +225,14 @@ Based on 3 similar tasks averaging 8,200 tokens
 **CHECKPOINT: Is this one task or multiple?**
 
 **Assess complexity:**
+
 - Simple: Single component, ~5-8k tokens
 - Standard: Multiple components, ~8-12k tokens
 - Complex: System-wide, ~12-20k tokens
 - Major: Multiple subsystems, >20k tokens → SPLIT
 
 **If >20k tokens, break down:**
+
 ```
 Example: "Add user authentication"
 → T006: Database schema for users
@@ -231,6 +241,7 @@ Example: "Add user authentication"
 ```
 
 **Each task:**
+
 - One cohesive unit
 - Independently testable
 - Clear entry/exit criteria
@@ -371,6 +382,7 @@ Task is complete when ALL acceptance criteria met, ALL validations pass, and pro
 ```
 
 **Token Estimation:**
+
 - Simple: 5-8k
 - Standard: 8-12k
 - Complex: 12-20k
@@ -384,6 +396,7 @@ Task is complete when ALL acceptance criteria met, ALL validations pass, and pro
 **Update `.tasks/manifest.json`:**
 
 1. **Add to tasks array:**
+
 ```json
 {
   "id": "T00X",
@@ -402,6 +415,7 @@ Task is complete when ALL acceptance criteria met, ALL validations pass, and pro
 ```
 
 2. **Update stats:**
+
 ```json
 {
   "total_tasks": +1,
@@ -410,6 +424,7 @@ Task is complete when ALL acceptance criteria met, ALL validations pass, and pro
 ```
 
 3. **Update dependency_graph:**
+
 ```json
 "T00X": {
   "depends_on": ["T00Y"],
@@ -432,6 +447,7 @@ Task is complete when ALL acceptance criteria met, ALL validations pass, and pro
 ### Phase 6: Create Audit Trail (~100 tokens)
 
 **Create `.tasks/updates/task-creator_YYYYMMDD_HHMMSS.json`:**
+
 ```json
 {
   "timestamp": "ISO8601",
@@ -448,6 +464,7 @@ Task is complete when ALL acceptance criteria met, ALL validations pass, and pro
 **CHECKPOINT: Did everything succeed?**
 
 **Verify:**
+
 - ✓ Task files created with ALL sections
 - ✓ Manifest updated and valid JSON
 - ✓ Stats correct
@@ -457,6 +474,7 @@ Task is complete when ALL acceptance criteria met, ALL validations pass, and pro
 - ✓ Audit trail created
 
 **Generate report:**
+
 ```markdown
 ✅ Task(s) Created Successfully
 
@@ -536,6 +554,7 @@ Recommended order: T00X → T00Y → T00Z
 ✅ Appropriate priority
 
 **Before finalizing, verify:**
+
 1. Matches task-initializer quality?
 2. Acceptance criteria specific and testable?
 3. Test scenarios cover all edge cases?

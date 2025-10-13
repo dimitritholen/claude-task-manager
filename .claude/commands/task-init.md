@@ -8,6 +8,7 @@ Initialize the task management system for this project.
 ## Purpose
 
 Creates `.tasks/` directory structure with:
+
 - Project context (vision, architecture)
 - Initial tasks from requirements
 - Validation commands
@@ -71,6 +72,7 @@ Found multiple docs. Which contains requirements?
 
 **Expected Output:**
 Comprehensive initialization report with:
+
 - Project discovery results
 - Documentation found
 - Validation strategy detected
@@ -89,6 +91,7 @@ Comprehensive initialization report with:
 ✓ Post-init validation passes
 
 Begin initialization now.
+
 ```
 
 ## Post-Initialization

@@ -13,12 +13,14 @@ Complete and archive task: $ARGUMENTS
 - ✅ `task-completer` - Zero-tolerance quality gatekeeper with comprehensive validation
 
 **FORBIDDEN:**
+
 - ❌ ANY agent with same name from global ~/.claude/agents/
 - ❌ ANY agent from other workflows
 - ❌ ANY general-purpose agents
 
 **Why This Matters:**
 This workflow's task-completer enforces:
+
 - ALL acceptance criteria must be checked (100%, no exceptions)
 - ALL validation commands must pass (0 errors, 0 warnings)
 - Binary outcome: Complete (100%) or Incomplete (0%)
@@ -31,6 +33,7 @@ This agent is the FINAL QUALITY GATE. Global agents do NOT enforce these zero-to
 ## Purpose
 
 This command delegates completion validation to the specialized task-completer agent that:
+
 1. Verifies ALL acceptance criteria are checked
 2. Executes ALL validation commands
 3. Enforces Definition of Done checklist
@@ -244,5 +247,6 @@ Use: `subagent_type: "task-completer"`
 ## Next Steps
 
 After completion:
+
 - Use `/task-next` to find next actionable task
 - Or review `/task-status` for overall progress

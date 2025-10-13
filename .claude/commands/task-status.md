@@ -8,6 +8,7 @@ Display complete task management system status with error recovery and adaptive 
 ## Purpose
 
 This command provides a comprehensive overview of the task system by:
+
 1. Reading `.tasks/manifest.json` (~150 tokens) with error recovery
 2. Reading `.tasks/metrics.json` (if exists) with fallback
 3. Displaying status overview adapted to project state
@@ -19,7 +20,7 @@ Token budget: ~150-300 tokens (manifest + metrics + minimal overhead)
 
 **FIRST**, attempt to read `.tasks/manifest.json`:
 
-### If manifest exists and is valid:
+### If manifest exists and is valid
 
 Display comprehensive status (with Minion Engine reliability labels):
 
@@ -100,7 +101,7 @@ Context Files:
 System Health: ✅ All checks passed
 ```
 
-### If manifest doesn't exist:
+### If manifest doesn't exist
 
 ```
 ⚠️  Task Management System Not Initialized
@@ -116,7 +117,7 @@ This will:
 - Generate initial tasks
 ```
 
-### If manifest is corrupted:
+### If manifest is corrupted
 
 ```
 ❌ Manifest File Error
@@ -137,7 +138,7 @@ Common Issues:
 To diagnose: cat .tasks/manifest.json | jq .
 ```
 
-### If metrics.json is missing:
+### If metrics.json is missing
 
 ```
 ℹ️  Metrics file not found, continuing without performance data.
@@ -147,6 +148,7 @@ To diagnose: cat .tasks/manifest.json | jq .
 ## Conditional Output
 
 The output adapts based on system state:
+
 - **Empty project**: Shows initialization prompt only
 - **Small project** (<10 tasks): Shows full task list
 - **Large project** (>50 tasks): Shows summary + actionable tasks only
@@ -156,6 +158,7 @@ The output adapts based on system state:
 ## Token Efficiency
 
 This status command uses ~150-300 tokens:
+
 - Manifest: ~150 tokens
 - Metrics: ~100 tokens
 - Minimal overhead for comprehensive overview

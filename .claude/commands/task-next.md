@@ -13,11 +13,13 @@ Find the next task to work on with intelligent health checks and escalation.
 - ✅ `task-manager` - Deep analysis and remediation for planning issues
 
 **FORBIDDEN:**
+
 - ❌ ANY agent with same name from global ~/.claude/agents/
 - ❌ ANY agent from other workflows
 - ❌ ANY general-purpose agents
 
 **Why This Matters:**
+
 - task-discoverer: Optimized for 150-token manifest queries
 - task-manager: Knows this workflow's remediation patterns and atomic updates
 - Global agents do NOT understand this task system's structure
@@ -25,6 +27,7 @@ Find the next task to work on with intelligent health checks and escalation.
 ## Purpose
 
 This command performs two-phase discovery:
+
 1. **Health Check**: Detect stalled tasks, critical path blockages, priority misalignments
 2. **Task Discovery**: Find highest-priority actionable task
 
@@ -34,12 +37,14 @@ Token budget: ~150-300 tokens (healthy state), ~2000-3000 tokens (remediation ne
 
 **FIRST**, read `.tasks/manifest.json` to check for planning issues:
 
-### Detect Anomalies:
+### Detect Anomalies
+
 - **Stalled Tasks**: Any `in_progress` tasks with `started_at` > 24h?
 - **Critical Path Blockage**: Are critical path tasks blocked by stalled work?
 - **Priority Misalignment**: Are high-priority (1-2) tasks blocked by stalled work?
 
-### If Issues Detected:
+### If Issues Detected
+
 Check circuit breaker state (`manifest.config.remediation_attempts < 3`):
 
 **Circuit breaker NOT tripped**: Escalate to task-manager agent:
@@ -93,7 +98,8 @@ Recommendations:
 Proceeding with discovery, but system health is compromised.
 ```
 
-### If Healthy:
+### If Healthy
+
 Proceed to Phase 2 (normal discovery)
 
 ## Phase 2: Task Discovery (~150 tokens)
@@ -161,6 +167,7 @@ Recovery Steps:
 ## Next Steps
 
 After getting result:
+
 - `/task-start T00X` - Begin work on identified task
 - `/task-status` - Complete project overview
 - `/task-health` - Standalone health check without discovery

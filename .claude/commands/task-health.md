@@ -20,28 +20,33 @@ Token budget: ~150-300 tokens (manifest analysis only)
 **Read `.tasks/manifest.json` and analyze:**
 
 ### 1. Stalled Task Detection
+
 - Find all tasks with `status: "in_progress"`
 - Calculate time since `started_at` timestamp
 - Flag tasks in_progress > 24 hours as "potentially stalled"
 - Flag tasks in_progress > 72 hours as "definitely stalled"
 
 ### 2. Critical Path Analysis
+
 - Load `critical_path` array from manifest
 - Check which critical_path tasks are `completed`, `in_progress`, or `blocked`
 - Identify bottlenecks: which in_progress task is blocking most downstream work?
 - Calculate critical path completion percentage
 
 ### 3. Priority Misalignment Detection
+
 - Find all priority 1 tasks (highest priority)
 - Check if any are `pending` but blocked by lower-priority in_progress tasks
 - This indicates suboptimal work ordering
 
 ### 4. Dependency Health
+
 - Check `dependency_graph` for circular dependencies
 - Find tasks with all dependencies completed but still marked `blocked` or `pending`
 - Identify orphaned tasks (no blockers, no dependents, not started)
 
 ### 5. Task Age Analysis
+
 - Calculate average time tasks spend in each status
 - Find outliers (tasks taking much longer than average)
 - Check if `estimated_tokens` vs `actual_tokens` variance is high (indicates poor planning)
@@ -162,6 +167,7 @@ Use: `subagent_type: "task-manager"`
 ## Use Case
 
 Run this command when:
+
 - User wants to understand system health before starting work
 - Debugging why progress feels slow
 - Planning sprint or iteration
@@ -176,5 +182,6 @@ Run `/task-next` when actually ready to select and start next task.
 - Compare to loading all tasks: ~12,000+ tokens
 
 Choose analysis depth based on needs:
+
 - Quick check: Direct manifest analysis
 - Deep investigation: Agent escalation

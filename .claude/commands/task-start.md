@@ -13,12 +13,14 @@ Start working on task: $ARGUMENTS
 - ✅ `task-executor` - TDD-driven implementation specialist with mandatory validation
 
 **FORBIDDEN:**
+
 - ❌ ANY agent with same name from global ~/.claude/agents/
 - ❌ ANY agent from other workflows
 - ❌ ANY general-purpose agents (developer, coder, etc.)
 
 **Why This Matters:**
 This workflow's task-executor enforces:
+
 - Mandatory TDD (tests before code, always)
 - Anti-hallucination rules (verify everything)
 - Iteration mandate until proven correct
@@ -30,6 +32,7 @@ Global agents do NOT follow these extreme validation standards.
 ## Purpose
 
 This command delegates task execution to the specialized task-executor agent that:
+
 1. Validates task is available
 2. Claims task atomically
 3. Loads full context (~1,650 tokens)
@@ -142,6 +145,7 @@ Use: `subagent_type: "task-executor"`
 ## Error Handling
 
 **If task not found:**
+
 ```
 ❌ Task $ARGUMENTS not found in manifest
 
@@ -149,6 +153,7 @@ Check /task-status for valid task IDs
 ```
 
 **If task already in progress:**
+
 ```
 ⚠️  Task $ARGUMENTS is already in progress
 
@@ -159,6 +164,7 @@ Use /task-next to find alternative task
 ```
 
 **If dependencies not met:**
+
 ```
 ❌ Task $ARGUMENTS has incomplete dependencies
 
@@ -169,6 +175,7 @@ Complete dependencies first
 ```
 
 **If task is blocked:**
+
 ```
 🚫 Task $ARGUMENTS is blocked
 
@@ -180,5 +187,6 @@ Resolve blocker and update manifest before starting
 ## Next Steps
 
 After agent completes work:
+
 - Use `/task-complete $ARGUMENTS` to validate and archive task
 - Or continue working if not yet ready for completion

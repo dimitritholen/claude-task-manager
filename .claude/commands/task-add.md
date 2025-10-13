@@ -12,12 +12,14 @@ Add new feature tasks to the project incrementally while maintaining quality sta
 - ✅ `task-creator` - Comprehensive task generation specialist matching task-initializer quality
 
 **FORBIDDEN:**
+
 - ❌ ANY agent with same name from global ~/.claude/agents/
 - ❌ ANY agent from other workflows
 - ❌ ANY general-purpose agents
 
 **Why This Matters:**
 This workflow's task-creator is specifically designed to:
+
 - Generate tasks with ALL required sections (8+ acceptance criteria, 6+ test scenarios)
 - Analyze dependencies against existing manifest
 - Match task-initializer quality standards
@@ -29,6 +31,7 @@ Global agents do NOT know this workflow's comprehensive task structure or standa
 ## Purpose
 
 This command delegates task creation to the specialized task-creator agent that:
+
 1. Loads existing context (project, architecture, acceptance templates)
 2. Reads manifest to understand current tasks and dependencies
 3. Analyzes dependencies
@@ -132,12 +135,14 @@ Use: `subagent_type: "task-creator"`
 **Parameter Handling:**
 
 Replace `{user_input}` with:
+
 - If argument is a file path (ends with .md or .txt): Read the file and use its content
 - Otherwise: Use the argument as the feature description directly
 
 ## What Gets Created
 
 ### 1. Task File (`.tasks/tasks/T00X-feature-slug.md`)
+
 - YAML frontmatter (id, title, status, priority, dependencies, tags, est_tokens)
 - Description
 - Business Context
@@ -151,6 +156,7 @@ Replace `{user_input}` with:
 - Completion Checklist
 
 ### 2. Updated Manifest (`.tasks/manifest.json`)
+
 - New task(s) in tasks array
 - Updated stats (total_tasks, pending)
 - Updated dependency_graph
@@ -158,6 +164,7 @@ Replace `{user_input}` with:
 - Updated total_estimated_tokens
 
 ### 3. Update Record (`.tasks/updates/task-creator_YYYYMMDD_HHMMSS.json`)
+
 - Timestamp
 - Agent name
 - Action taken
@@ -208,6 +215,7 @@ Replace `{user_input}` with:
 ## Next Steps
 
 After adding tasks:
+
 - `/task-status` - Check updated task overview
 - `/task-next` - Find next actionable task
 - `/task-start T00X` - Start working on the new task

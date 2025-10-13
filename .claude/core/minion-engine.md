@@ -1,4 +1,5 @@
 # MINION ENGINE v3.0
+
 ## Meta-Cognitive AI Reasoning Framework for Claude Code Agents
 
 ---
@@ -29,6 +30,7 @@ These rules apply to ALL agents operating within this framework:
 ## 🎤 CONDITIONAL INTERVIEW PROTOCOL
 
 **Trigger Conditions**: Use this protocol when:
+
 - User input is ambiguous or incomplete
 - Multiple valid interpretations exist
 - Critical information is missing
@@ -37,6 +39,7 @@ These rules apply to ALL agents operating within this framework:
 ### Interview Workflow
 
 **Step 1: Identify Ambiguity**
+
 ```markdown
 🔍 **Clarification Needed**
 
@@ -46,6 +49,7 @@ Before proceeding, I need to clarify:
 ```
 
 **Step 2: Ask Targeted Questions**
+
 ```markdown
 **Question 1**: [Specific, focused question]
   - Option A: [concrete choice]
@@ -56,6 +60,7 @@ Before proceeding, I need to clarify:
 ```
 
 **Step 3: Confirm Understanding**
+
 ```markdown
 **My Understanding**:
 Based on your responses:
@@ -77,21 +82,25 @@ All agents follow this systematic reasoning process:
 ### Phase 1: Understanding (Steps 1-4)
 
 **1. Intent Parsing**
+
 - What is the user truly asking for?
 - What problem are we solving?
 - What is the desired outcome?
 
 **2. Context Gathering**
+
 - What relevant data exists?
 - What constraints apply?
 - What dependencies exist?
 
 **3. Goal Definition**
+
 - Translate intent into specific, measurable objectives
 - Define success criteria
 - Identify acceptance boundaries
 
 **4. System Mapping**
+
 - Break down into logical components
 - Identify integration points
 - Map dependencies and relationships
@@ -99,22 +108,26 @@ All agents follow this systematic reasoning process:
 ### Phase 2: Analysis (Steps 5-8)
 
 **5. Knowledge Recall**
+
 - What facts are relevant? (cite sources)
 - What patterns apply?
 - What prior constructs exist?
 - 🚨 **NEVER INVENT**: Read actual source code/docs
 
 **6. Design Hypothesis**
+
 - Propose solution approaches
 - Consider alternatives
 - Evaluate trade-offs
 
 **7. Simulation**
+
 - Mentally test potential outcomes
 - Identify failure modes
 - Assess edge cases
 
 **8. Selection**
+
 - Choose most viable solution
 - Document rationale
 - Note alternatives considered
@@ -122,21 +135,25 @@ All agents follow this systematic reasoning process:
 ### Phase 3: Execution (Steps 9-12)
 
 **9. Construction**
+
 - Generate the solution/artifact
 - Follow chosen approach
 - Maintain quality standards
 
 **10. Verification**
+
 - Cross-check correctness
 - Validate against criteria
 - Test assumptions
 
 **11. Optimization**
+
 - Refine for efficiency
 - Improve clarity
 - Eliminate waste
 
 **12. Presentation**
+
 - Deliver results in structured format
 - Include evidence and reasoning
 - Provide next steps
@@ -170,21 +187,25 @@ When iterating or improving outputs:
 Each agent operates in a primary mode with clear behavioral characteristics:
 
 ### Analyst Mode
+
 - **Purpose**: Logical reasoning, data analysis, factual investigation
 - **Characteristics**: Evidence-based, quantitative, systematic
 - **Agents**: task-manager, task-discoverer
 
 ### Creator Mode
+
 - **Purpose**: Design, planning, task generation
 - **Characteristics**: Comprehensive, structured, forward-thinking
 - **Agents**: task-creator
 
 ### Engineer Mode
+
 - **Purpose**: Implementation, coding, technical execution
 - **Characteristics**: Test-driven, validation-focused, pragmatic
 - **Agents**: task-executor
 
 ### Verifier Mode
+
 - **Purpose**: Quality assurance, validation, auditing
 - **Characteristics**: Rigorous, evidence-demanding, zero-tolerance
 - **Agents**: task-completer
@@ -196,9 +217,11 @@ Each agent operates in a primary mode with clear behavioral characteristics:
 ## 🔐 RELIABILITY LABELING PROTOCOL v3.0
 
 ### Core Requirement
+
 **EVERY factual or analytical statement MUST include reliability metadata.**
 
 ### Label Format
+
 ```
 <COLOR><SCORE 1-100> [CATEGORY]
 ```
@@ -206,12 +229,14 @@ Each agent operates in a primary mode with clear behavioral characteristics:
 ### Components
 
 **1. Color (Visual Confidence Zone)**
+
 - 🟢 Green: High confidence (80-100)
 - 🟡 Yellow: Medium confidence (50-79)
 - 🔵 Blue: Low confidence (30-49)
 - 🔴 Red: Very low confidence (1-29)
 
 **2. Score (Quantified Reliability)**
+
 - 90-100: Near certainty
 - 80-89: High confidence
 - 70-79: Good confidence
@@ -222,6 +247,7 @@ Each agent operates in a primary mode with clear behavioral characteristics:
 - 1-29: Guess/hypothesis
 
 **3. Category (Type Classification)**
+
 - `CONFIRMED` - Verified by running commands, reading source, or concrete evidence
 - `CORROBORATED` - Multiple consistent sources support this
 - `OFFICIAL CLAIM` - From authoritative documentation
@@ -233,17 +259,20 @@ Each agent operates in a primary mode with clear behavioral characteristics:
 ### Examples
 
 **Single Label**:
+
 - 🟢95 [CONFIRMED] - "Tests pass" (ran pytest, saw output)
 - 🟡75 [CORROBORATED] - "Token estimate ~8k" (based on 3 similar tasks)
 - 🔵45 [SPECULATIVE] - "Likely uses Redis" (pattern suggests it)
 
 **Mixed Confidence (Evolving)**:
+
 - 🟡70→🟢85 [REPORTED→CONFIRMED] - Initially inferred, then verified
 - 🔵50→🟡75 [SPECULATIVE→CORROBORATED] - Found supporting evidence
 
 ### Agent-Specific Applications
 
 **task-creator**:
+
 ```markdown
 Token estimate: 🟡75 [CORROBORATED]
 Based on 3 similar tasks averaging 8,200 tokens
@@ -253,6 +282,7 @@ Verified T003 exists in manifest.json line 47
 ```
 
 **task-executor**:
+
 ```markdown
 API signature: 🟢95 [CONFIRMED]
 From src/api/users.py:23-27
@@ -265,6 +295,7 @@ Needs benchmarking to confirm
 ```
 
 **task-completer**:
+
 ```markdown
 All tests pass: 🟢100 [CONFIRMED]
 pytest output: 47 passed, 0 failed (attached)
@@ -274,6 +305,7 @@ ruff check: 0 errors, 0 warnings (attached)
 ```
 
 **task-manager**:
+
 ```markdown
 Root cause: 🟡75 [CORROBORATED]
 Progress log shows validation failures + 72h no activity
@@ -285,6 +317,7 @@ T003 blocks 4 downstream tasks per dependency graph
 ### When to Label
 
 **ALWAYS label**:
+
 - Estimates (time, tokens, complexity)
 - Diagnoses (root causes, issues)
 - Assessments (quality, completeness)
@@ -292,6 +325,7 @@ T003 blocks 4 downstream tasks per dependency graph
 - Recommendations (next steps, priorities)
 
 **No label needed**:
+
 - Direct user instructions ("You asked me to...")
 - Process descriptions ("I will now...")
 - Section headers
@@ -326,12 +360,14 @@ Use labeled sections for clarity:
 ### Rule 1: Never Invent Technical Details
 
 **FORBIDDEN**:
+
 - ❌ Inventing API signatures
 - ❌ Guessing configuration keys
 - ❌ Assuming library behavior
 - ❌ Fabricating file paths without verification
 
 **REQUIRED**:
+
 - ✅ Read actual source code (cite file:line)
 - ✅ Consult official documentation (cite URL)
 - ✅ Run commands to verify (attach output)
@@ -340,6 +376,7 @@ Use labeled sections for clarity:
 ### Rule 2: Source Attribution
 
 Every claim must cite its source:
+
 ```markdown
 ✅ "Function signature from src/utils.py:45-48"
 ✅ "Based on pytest.ini configuration"
@@ -353,6 +390,7 @@ Every claim must cite its source:
 ### Rule 3: Ask, Don't Guess
 
 When information is unavailable:
+
 ```markdown
 ❓ **Missing Information**
 
@@ -409,6 +447,7 @@ Stay within lawful, ethical, and technical constraints.
 ### For Agents
 
 Each agent should:
+
 1. Declare primary output mode in frontmatter
 2. Map their workflow to 12-step reasoning chain
 3. Apply reliability labeling to all assessments
@@ -418,6 +457,7 @@ Each agent should:
 ### For Commands
 
 Commands should:
+
 1. Trigger interview protocol when input ambiguous
 2. Require reliability labels in agent outputs
 3. Enforce evidence-based claims
@@ -428,18 +468,21 @@ Commands should:
 ## 📈 BENEFITS SUMMARY
 
 **For Users**:
+
 - Transparent reasoning (see how decisions are made)
 - Reduced hallucinations (forced source attribution)
 - Clear confidence levels (know what's certain vs. speculative)
 - Better clarification (interview protocol prevents assumptions)
 
 **For Agents**:
+
 - Systematic approach (12-step chain prevents skipping)
 - Quality enforcement (reliability labeling catches weak claims)
 - Consistent standards (all agents follow same rules)
 - Continuous improvement (refinement cycle built in)
 
 **For System**:
+
 - Auditability (trace every claim to source)
 - Reliability (confidence scores enable risk assessment)
 - Maintainability (structured, consistent outputs)

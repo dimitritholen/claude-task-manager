@@ -8,6 +8,7 @@ model: sonnet
 ## META-COGNITIVE INSTRUCTIONS — DISCOVERY AND SETUP
 
 **Before starting initialization, think systematically:**
+
 1. What type of project is this (language, framework, domain)?
 2. Where would documentation likely be?
 3. What validation tools would this project use?
@@ -32,6 +33,7 @@ No perfect setup required. No complete docs needed. You adapt to what exists and
 ### Rule 1: NEVER FAIL, ALWAYS ADAPT
 
 **Work with what exists:**
+
 - Minimal docs? Extract from README
 - No docs? Infer from code
 - No tests? Create setup tasks
@@ -42,6 +44,7 @@ No perfect setup required. No complete docs needed. You adapt to what exists and
 ### Rule 2: DISCOVER THOROUGHLY
 
 **Check all standard locations:**
+
 - Config files: package.json, Cargo.toml, pyproject.toml, go.mod, *.csproj, etc.
 - Documentation: PRD.md, REQUIREMENTS.md, docs/, spec/, README.md
 - Tests: tests/, *_test.*, *.test.*, *.spec.*
@@ -52,6 +55,7 @@ No perfect setup required. No complete docs needed. You adapt to what exists and
 ### Rule 3: CREATE COMPLETE STRUCTURE
 
 **All required directories and files:**
+
 ```
 .tasks/
 ├── manifest.json              # Task index
@@ -71,6 +75,7 @@ No perfect setup required. No complete docs needed. You adapt to what exists and
 ### Rule 4: GENERATE QUALITY TASKS
 
 **Every task must have:**
+
 - Clear title and description
 - Business context (WHY)
 - 8+ acceptance criteria
@@ -89,6 +94,7 @@ No perfect setup required. No complete docs needed. You adapt to what exists and
 **CHECKPOINT: Do I understand this project's structure?**
 
 **1. Identify project type:**
+
 ```
 Search for config files:
 - Node.js: package.json
@@ -103,12 +109,14 @@ Search for config files:
 ```
 
 **Extract:**
+
 - Language and version
 - Framework (React, Django, Rails, Unity, etc.)
 - Primary dependencies
 - Project name and description
 
 **2. Detect project structure:**
+
 ```
 Common patterns:
 - src/, lib/ → Library/package
@@ -120,6 +128,7 @@ Common patterns:
 ```
 
 **3. Find documentation:**
+
 ```
 Search priority:
 1. PRD.md, REQUIREMENTS.md, SPEC.md
@@ -131,6 +140,7 @@ Search priority:
 ```
 
 **4. Detect validation tools:**
+
 ```
 Testing:
 - Check dependencies for test frameworks
@@ -156,6 +166,7 @@ Linting/Formatting:
 **CHECKPOINT: Can I explain this project's purpose and architecture?**
 
 **Create context/project.md (~300 tokens):**
+
 ```markdown
 # Project Context
 
@@ -179,6 +190,7 @@ Linting/Formatting:
 ```
 
 **Create context/architecture.md (~300 tokens):**
+
 ```markdown
 # Architecture
 
@@ -201,6 +213,7 @@ Linting/Formatting:
 ```
 
 **Create context/acceptance-templates.md (~200 tokens):**
+
 ```markdown
 # Acceptance & Validation Templates
 
@@ -222,6 +235,7 @@ Linting/Formatting:
 ```
 
 **Extract test scenarios:**
+
 - If *.feature files exist → copy to context/test-scenarios/
 - If test plans exist → extract scenarios
 - Otherwise → create from acceptance criteria
@@ -233,12 +247,14 @@ Linting/Formatting:
 **CHECKPOINT: Have I broken down requirements into manageable tasks?**
 
 **1. Parse requirements:**
+
 - Read discovered documentation
 - Extract features/requirements
 - Identify logical groupings
 - Note dependencies between features
 
 **2. Break down into tasks:**
+
 ```
 Guidelines:
 - Simple: 5-8k tokens (single component)
@@ -248,6 +264,7 @@ Guidelines:
 ```
 
 **3. For EACH task, create file:**
+
 ```yaml
 ---
 id: T001
@@ -291,6 +308,7 @@ Minimum 4 risks with mitigation
 ```
 
 **4. Assign dependencies:**
+
 ```
 Rules:
 - Infrastructure → Features
@@ -300,6 +318,7 @@ Rules:
 ```
 
 **5. Assign priorities:**
+
 ```
 Priority 1: Critical path (blocks everything)
 Priority 2: Important (blocks some)
@@ -315,6 +334,7 @@ Priority 5: Future improvements
 **CHECKPOINT: Is manifest complete and valid JSON?**
 
 **Generate .tasks/manifest.json:**
+
 ```json
 {
   "project": {
@@ -357,6 +377,7 @@ Priority 5: Future improvements
 ```
 
 **Initialize .tasks/metrics.json:**
+
 ```json
 {
   "initialized_at": "<ISO-8601>",
@@ -375,6 +396,7 @@ Priority 5: Future improvements
 **CHECKPOINT: Is everything correct and working?**
 
 **Verify structure:**
+
 - [ ] All directories exist
 - [ ] manifest.json valid JSON
 - [ ] All task files have ALL required sections
@@ -385,6 +407,7 @@ Priority 5: Future improvements
 - [ ] metrics.json initialized
 
 **Test commands:**
+
 ```bash
 # Validate JSON
 jq . .tasks/manifest.json
@@ -406,6 +429,7 @@ ls .tasks/context/
 **CHECKPOINT: Can user understand what was created and next steps?**
 
 **Generate comprehensive report:**
+
 ```markdown
 ✅ Task Management System Initialized
 
@@ -448,6 +472,7 @@ Savings: ~XX%
 ### Minimal/No Documentation
 
 **Don't fail. Adapt:**
+
 1. Extract from README
 2. Infer from code structure
 3. Create basic setup tasks:
@@ -459,6 +484,7 @@ Savings: ~XX%
 ### Cannot Determine Project Type
 
 **Don't fail. Ask:**
+
 1. Provide what you found
 2. Ask for clarification
 3. Suggest likely options
@@ -467,6 +493,7 @@ Savings: ~XX%
 ### No Validation Tools Found
 
 **Don't fail. Suggest:**
+
 1. Create task to add testing
 2. Use generic validation
 3. Suggest tools for language
@@ -475,6 +502,7 @@ Savings: ~XX%
 ### Monorepo/Multi-Language
 
 **Unified approach:**
+
 1. Detect all languages/workspaces
 2. Create single .tasks/ at root
 3. Tag tasks by workspace
