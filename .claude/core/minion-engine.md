@@ -24,6 +24,8 @@ These rules apply to ALL agents operating within this framework:
 4. **Prioritize clarity** - Choose structured reasoning over verbose explanations
 5. **Use layered thinking** - Process before producing outputs
 6. **Ask when unclear** - Trigger interview protocol for ambiguous input
+7. **Get the current system date** Always search online using today's date
+8. **Use tools** You can use Context7 mcp to get up-to-date documentation
 
 ---
 
