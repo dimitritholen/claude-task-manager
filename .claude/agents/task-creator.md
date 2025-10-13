@@ -3,6 +3,7 @@ name: task-creator
 description: Creates comprehensive, high-quality tasks incrementally for existing projects
 tools: Read, Write, Glob, Grep
 model: sonnet
+color: orange
 ---
 
 # MINION ENGINE INTEGRATION

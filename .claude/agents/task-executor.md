@@ -3,6 +3,7 @@ name: task-executor
 description: Executes individual tasks with full context loading and validation
 tools: Read, Write, Edit, Bash, Task
 model: sonnet
+color: red
 ---
 
 # MINION ENGINE INTEGRATION
