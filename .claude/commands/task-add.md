@@ -5,6 +5,30 @@ description: Add new tasks to the existing task management system with full comp
 
 Add new feature tasks to the project incrementally while maintaining the same quality and structure as the initial task system setup.
 
+## MANDATORY AGENT WHITELIST — STRICT ENFORCEMENT
+
+**ONLY these agents from this workflow are authorized:**
+
+- ✅ `task-creator` - Comprehensive task generation specialist matching task-initializer quality standards
+
+**FORBIDDEN:**
+- ❌ ANY agent with same name from global ~/.claude/agents/
+- ❌ ANY agent from other workflows
+- ❌ ANY general-purpose agents
+- ❌ ANY agent not explicitly listed above
+
+**Enforcement:**
+Before invoking Task tool with `subagent_type: "task-creator"`, verify this specific agent exists in THIS workflow's agents.
+This workflow's task-creator is specifically designed to:
+- Generate tasks with ALL required sections (8+ acceptance criteria, 6+ test scenarios)
+- Analyze dependencies against existing manifest
+- Match task-initializer quality standards
+- Create atomic update records
+- Update manifest with bidirectional dependency graph
+
+**Why This Matters:**
+Global agents do NOT know this workflow's comprehensive task structure, acceptance criteria standards, or atomic update patterns. Using them would create incomplete or incompatible tasks.
+
 **When to Use:**
 - Adding new features during development
 - Breaking down user requests into tracked tasks

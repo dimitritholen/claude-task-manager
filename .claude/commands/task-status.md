@@ -3,13 +3,16 @@ allowed-tools: Read
 description: Show comprehensive task management system status
 ---
 
-Display complete task management system status.
+Display complete task management system status with error recovery and adaptive output.
 
 **What This Command Does:**
 
-1. Read `.tasks/manifest.json` (~150 tokens)
-2. Read `.tasks/metrics.json` (if exists)
-3. Display comprehensive status overview
+1. Read `.tasks/manifest.json` (~150 tokens) with error recovery
+2. Read `.tasks/metrics.json` (if exists) with fallback
+3. Display comprehensive status overview adapted to project state
+4. Provide troubleshooting guidance if issues detected
+
+**Token Budget:** ~150-300 tokens (manifest + metrics + minimal overhead)
 
 **Output Format:**
 
@@ -106,6 +109,45 @@ This will:
 - Generate initial tasks
 ```
 
+**Error Recovery:**
+
+If manifest.json is corrupted or unreadable:
+
+```
+❌ Manifest File Error
+
+Issue: .tasks/manifest.json is corrupted or invalid JSON
+Location: .tasks/manifest.json
+
+Recovery Options:
+1. Restore from backup: .tasks/updates/ (if atomic updates exist)
+2. Re-initialize: /task-init (WARNING: will recreate from scratch)
+3. Manual repair: Edit manifest.json to fix JSON syntax
+
+Common Issues:
+- Trailing comma in JSON
+- Missing closing bracket
+- Invalid UTF-8 characters
+
+To diagnose: cat .tasks/manifest.json | jq .
+```
+
+If metrics.json is missing:
+
+```
+ℹ️  Metrics file not found, continuing without performance data.
+   Metrics will be created on next task completion.
+```
+
+**Conditional Output:**
+
+The output adapts based on system state:
+- **Empty project**: Shows initialization prompt only
+- **Small project** (<10 tasks): Shows full task list
+- **Large project** (>50 tasks): Shows summary + actionable tasks only
+- **Critical issues**: Prioritizes blocker/stalled task information
+- **Healthy state**: Shows progress and recent completions
+
 **Token Usage:**
 
 This status command uses ~150-300 tokens:
@@ -122,3 +164,20 @@ Compare to loading all task details: 12,000+ tokens!
 - Track progress toward completion
 - Monitor token efficiency
 - Find next work to do
+
+**Troubleshooting:**
+
+| Symptom | Diagnosis | Solution |
+|---------|-----------|----------|
+| "File not found" | .tasks/ doesn't exist | Run /task-init |
+| "Invalid JSON" | Corrupted manifest | Check .tasks/updates/ for recovery |
+| Stats don't match reality | Stale manifest | Run /task-health to diagnose |
+| No actionable tasks shown | All pending have deps | Check dependency graph |
+| Metrics missing | First run or error | Will regenerate on completion |
+
+**Performance Notes:**
+
+- First load: ~150 tokens (manifest only)
+- With metrics: ~250 tokens (manifest + metrics)
+- Compare to loading all tasks: ~12,000+ tokens
+- Efficiency gain: ~98% token reduction for status checks

@@ -6,6 +6,31 @@ description: Validate task completion, run checks, and archive with learnings
 
 Complete and archive task: $ARGUMENTS
 
+## MANDATORY AGENT WHITELIST — STRICT ENFORCEMENT
+
+**ONLY these agents from this workflow are authorized:**
+
+- ✅ `task-completer` - Zero-tolerance quality gatekeeper with comprehensive validation enforcement
+
+**FORBIDDEN:**
+- ❌ ANY agent with same name from global ~/.claude/agents/
+- ❌ ANY agent from other workflows
+- ❌ ANY general-purpose agents
+- ❌ ANY agent not explicitly listed above
+
+**Enforcement:**
+Before invoking Task tool with `subagent_type: "task-completer"`, verify this specific agent exists in THIS workflow's agents.
+This workflow's task-completer enforces:
+- ALL acceptance criteria must be checked (100%, no exceptions)
+- ALL validation commands must pass (0 errors, 0 warnings)
+- Binary outcome: Complete (100%) or Incomplete (0%)
+- Fail-fast protocol (first failure stops validation)
+- Comprehensive Definition of Done checklist
+- Learning extraction with quality bar
+
+**Why This Matters:**
+This agent is the FINAL QUALITY GATE. Global agents do NOT enforce this workflow's zero-tolerance standards and would allow incomplete work to be marked as "done", polluting the task system with false completions.
+
 **MANDATORY**: This command MUST use the `task-completer` agent via the Task tool for zero-tolerance quality gate enforcement.
 
 **Invoke the task-completer agent with:**

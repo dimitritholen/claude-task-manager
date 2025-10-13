@@ -6,7 +6,41 @@ description: Claim task and load full context to begin work
 
 Start working on task: $ARGUMENTS
 
+## MANDATORY AGENT WHITELIST — STRICT ENFORCEMENT
+
+**ONLY these agents from this workflow are authorized:**
+
+- ✅ `task-executor` - Validation-driven development specialist with mandatory TDD, continuous validation, and zero-tolerance quality standards
+
+**FORBIDDEN:**
+- ❌ ANY agent with same name from global ~/.claude/agents/
+- ❌ ANY agent from other workflows
+- ❌ ANY general-purpose agents (developer, coder, etc.)
+- ❌ ANY agent not explicitly listed above
+
+**Enforcement:**
+Before invoking Task tool with `subagent_type: "task-executor"`, verify this specific agent exists in THIS workflow's agents.
+This workflow's task-executor is specifically designed with:
+- Mandatory TDD (no exceptions)
+- Anti-hallucination rules
+- Iteration mandate until proven
+- Meaningful tests only (realistic inputs, green+red+edge paths)
+- Rigid 60+ item completion gate
+
+**Why This Matters:**
+Global agents (even named "developer" or "task-executor") do NOT follow this workflow's extreme skepticism and validation standards. Using them would bypass the quality gates this system enforces.
+
 **MANDATORY**: This command MUST use the `task-executor` agent via the Task tool for full task execution with validation-driven development.
+
+**Token Budget Breakdown:**
+- Context loading: ~1,650 tokens total
+  - Manifest read: ~150 tokens
+  - Task file: ~600 tokens
+  - Project context: ~300 tokens
+  - Architecture context: ~300 tokens
+  - Test scenarios: ~300 tokens
+- Task claiming overhead: ~50 tokens
+- **Total startup cost: ~1,700 tokens** (vs 12,000+ for loading all tasks)
 
 **Invoke the task-executor agent with:**
 
@@ -88,6 +122,23 @@ Request /task-complete $ARGUMENTS to finalize.
 - No shortcuts - all criteria must be met
 - Never mark task complete - that's task-completer's job
 
+**Race Condition Handling:**
+If another agent is already working on this task:
+1. Check manifest status before claiming
+2. If status is `in_progress` with recent `started_at`:
+   - Report: "Task $ARGUMENTS is already in progress by <agent> since <timestamp>"
+   - Suggest: "/task-next to find alternative task"
+   - Do NOT proceed with claim
+3. If status is `in_progress` but stalled (>24h):
+   - Escalate to /task-next for health check and remediation
+   - Do NOT claim directly
+
+**Concurrent Execution Safety:**
+- Always read manifest before updating
+- Use atomic update file in .tasks/updates/
+- Include timestamp and agent ID in claim
+- Verify claim succeeded by re-reading manifest
+
 Begin task execution now.
 ```
 
@@ -114,3 +165,39 @@ Begin task execution now.
 ✗ Track validation separately
 ✗ Manage progress logs
 ✗ Call /task-complete (agent signals when ready)
+
+**Fallback Behavior:**
+
+If task-executor agent invocation fails:
+
+```
+⚠️  Agent Invocation Failed
+
+Error: task-executor agent could not be started
+Reason: <specific-error>
+
+Fallback Options:
+1. Retry with explicit agent configuration
+2. Use direct execution mode (less structured, not recommended)
+3. Report issue and use /task-next to select different task
+
+Recommended: Fix agent configuration before proceeding.
+```
+
+**When to Use Direct Execution vs Agent:**
+- **Always prefer agent** for standard tasks (comprehensive, validated)
+- **Direct mode only if**:
+  - Agent system is unavailable
+  - Task is trivial (< 1,000 tokens)
+  - Emergency hotfix required
+- **Never use direct mode** for tasks with dependencies or complex validation
+
+**Troubleshooting:**
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| "Task not found" | Invalid task ID | Check /task-status for valid IDs |
+| "Already in progress" | Concurrent claim | Use /task-next instead |
+| "Dependencies not met" | Prereqs incomplete | Complete dependencies first |
+| "Task is blocked" | Documented blocker | Resolve blocker, update manifest |
+| "Agent failed to start" | Config issue | Check agent configuration |
