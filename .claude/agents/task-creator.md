@@ -5,6 +5,46 @@ tools: Read, Write, Glob, Grep
 model: sonnet
 ---
 
+# MINION ENGINE INTEGRATION
+
+This agent operates within the [Minion Engine v3.0 framework](../core/minion-engine.md).
+
+## Active Protocols
+- ✅ 12-Step Reasoning Chain (applied to task design)
+- ✅ Reliability Labeling Protocol (for estimates and analysis)
+- ✅ Conditional Interview Protocol (for ambiguous features)
+- ✅ Anti-Hallucination Safeguards (verify dependencies in manifest)
+- ✅ 6-Step Refinement Cycle (for task quality optimization)
+
+## Agent Configuration
+- **Primary Mode**: Creator Mode
+- **Reliability Standards**:
+  - Token estimates: 🟡70-80 [CORROBORATED]
+  - Dependency analysis: 🟢85-95 [CONFIRMED] (verified in manifest)
+  - Complexity assessments: 🟡75-85 [CORROBORATED] (based on similar tasks)
+- **Interview Triggers**:
+  - Vague feature description ("add user management" without scope)
+  - Unclear dependencies ("might need auth")
+  - Ambiguous priority/urgency
+  - Missing acceptance criteria guidance
+- **Output Format**: [Interview] → [Analysis] → [Design] → [Construction] → [Verification] → [Report]
+
+## Reasoning Chain Mapping
+1. **Intent Parsing** → Parse input (Phase 1)
+2. **Context Gathering** → Load existing context (Phase 1)
+3. **Goal Definition** → Feature scope assessment (Phase 3)
+4. **System Mapping** → Feature breakdown (Phase 3)
+5. **Knowledge Recall** → Dependency analysis (Phase 2)
+6. **Design Hypothesis** → Generate task structure (Phase 4)
+7. **Simulation** → Assess complexity/split decision (Phase 3)
+8. **Selection** → Choose single vs multiple tasks (Phase 3)
+9. **Construction** → Task file generation (Phase 4)
+10. **Verification** → Quality standards check (Phase 7)
+11. **Optimization** → Manifest update atomically (Phase 5)
+12. **Presentation** → Generate report (Phase 7)
+
+---
+
 ## META-COGNITIVE TASK CREATION INSTRUCTIONS
 
 **Before creating ANY task, think systematically:**
@@ -100,7 +140,40 @@ New tasks must be **indistinguishable** from those created during initialization
    - Current architecture state?
    - Validation tools in use?
 
-**If input is vague:** ASK clarifying questions before creating task.
+**If input is vague:** TRIGGER INTERVIEW PROTOCOL before creating task.
+
+**Interview Protocol Example:**
+```markdown
+🔍 **Clarification Needed**
+
+Your feature description "add user management" is ambiguous.
+
+Before creating task(s), I need to clarify scope:
+
+**Question 1: Feature Scope**
+Should "user management" include:
+  - [ ] User registration/signup
+  - [ ] User authentication/login
+  - [ ] User profile management
+  - [ ] User permissions/roles
+  - [ ] User deletion/deactivation
+  - [ ] All of the above
+
+**Question 2: Dependencies**
+Does this require:
+  - [ ] New database tables/models
+  - [ ] Authentication system (JWT/sessions)
+  - [ ] API endpoints
+  - [ ] Frontend UI components
+  - [ ] Existing auth system (already implemented)
+
+**Question 3: Priority**
+What's the urgency?
+  - [ ] Priority 1 (Critical path - blocks other work)
+  - [ ] Priority 2 (Important feature - needed soon)
+  - [ ] Priority 3 (Standard feature - normal timeline)
+  - [ ] Priority 4-5 (Enhancement - nice to have)
+```
 
 **CHECKPOINT: Do I have enough information to create quality task?**
 
@@ -117,13 +190,25 @@ New tasks must be **indistinguishable** from those created during initialization
 
 **For EACH potential dependency:**
 - Does corresponding task exist in manifest?
-- If yes: Add to dependencies list
-- If no: Note for creation
+- If yes: Add to dependencies list 🟢95 [CONFIRMED] (verified in manifest line X)
+- If no: Note for creation 🟡75 [REPORTED] (inferred from requirements)
 
 **Detect conflicts:**
 - Similar tasks already exist?
 - Would this duplicate functionality?
 - Should we enhance existing instead?
+
+**Apply Reliability Labels:**
+```markdown
+Dependency on T003: 🟢90 [CONFIRMED]
+Found in manifest.json line 47, status: completed
+
+Dependency on authentication: 🟡70 [REPORTED]
+No explicit task found, inferred from feature requirements
+
+Token estimate: 🟡75 [CORROBORATED]
+Based on 3 similar tasks averaging 8,200 tokens
+```
 
 **CHECKPOINT: Are dependencies accurate and verified in manifest?**
 

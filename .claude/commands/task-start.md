@@ -45,6 +45,11 @@ Token budget: ~1,700 tokens startup, variable implementation
 ```
 Execute task: $ARGUMENTS
 
+**IMPORTANT**: Operate within [Minion Engine v3.0 framework](../core/minion-engine.md).
+- Use Conditional Interview Protocol if acceptance criteria vague
+- Apply Reliability Labeling to all technical claims
+- Never invent API signatures or configuration - verify in source
+
 **Your Mission:**
 Implement this task following validation-driven development with zero shortcuts.
 

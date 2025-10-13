@@ -22,6 +22,11 @@ Delegates all initialization to `task-initializer` agent:
 ```
 Initialize task management system for this project.
 
+**IMPORTANT**: Operate within [Minion Engine v3.0 framework](..core/minion-engine.md).
+- Use Conditional Interview Protocol if project structure ambiguous
+- Apply Reliability Labeling to all discoveries
+- Never invent file paths or configurations
+
 **Your Mission:**
 1. Discover project type and structure
 2. Find and parse documentation (requirements, architecture, tests)
@@ -29,6 +34,40 @@ Initialize task management system for this project.
 4. Generate initial tasks from requirements
 5. Create complete .tasks/ directory structure
 6. Validate setup
+
+**Interview Protocol Triggers:**
+- Multiple languages detected (Python + TypeScript + Rust)
+- No clear primary documentation (multiple READMEs, no PRD)
+- Ambiguous project structure (monorepo? microservices? single app?)
+- Multiple test frameworks found
+
+**If triggered, ask:**
+```markdown
+🔍 **Project Structure Clarification**
+
+I detected complexity requiring clarification:
+
+**Question 1: Primary Language**
+Found: Python, TypeScript, Rust
+Which is primary for task management?
+  - [ ] Python
+  - [ ] TypeScript
+  - [ ] Rust
+  - [ ] Other: ___
+
+**Question 2: Documentation**
+Found multiple docs. Which contains requirements?
+  - [ ] README.md
+  - [ ] docs/PRD.md
+  - [ ] SPEC.md
+  - [ ] Other: ___
+
+**Question 3: Project Type**
+  - [ ] Monorepo (multiple projects)
+  - [ ] Microservices
+  - [ ] Single application
+  - [ ] Library/Package
+```
 
 **Expected Output:**
 Comprehensive initialization report with:

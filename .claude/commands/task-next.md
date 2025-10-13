@@ -47,6 +47,11 @@ Check circuit breaker state (`manifest.config.remediation_attempts < 3`):
 ```
 Planning issues detected. Perform deep analysis and execute remediation.
 
+**IMPORTANT**: Operate within [Minion Engine v3.0 framework](../core/minion-engine.md).
+- Apply Reliability Labeling to ALL diagnoses (cite evidence from files)
+- Use Evidence-Based Analysis (quote task files with line numbers)
+- Binary decisions (no "maybes" - make the call)
+
 **Detected Issues:**
 [List specific issues: task IDs, timestamps, impacts]
 
@@ -98,19 +103,24 @@ Proceed to Phase 2 (normal discovery)
 ```
 Find the next actionable task from the task management system.
 
+**IMPORTANT**: Operate within [Minion Engine v3.0 framework](../core/minion-engine.md).
+- Apply Reliability Labeling to task recommendations
+- Speed-optimized: Minimal tokens, fast results
+- No deep analysis (leave that to task-manager if needed)
+
 **Task:**
 1. Read .tasks/manifest.json ONLY
 2. Filter: status = "pending", dependencies all "completed", blocked_by empty
 3. Sort by priority (1 = highest)
 4. Return highest priority actionable task
 
-**Expected Output:**
+**Expected Output (with Confidence Labels):**
 📋 Next Task: T00X
 
 Title: <task-title>
-Priority: <1-5>
-Dependencies: <list or "None">
-Estimated Tokens: <number>
+Priority: <1-5> 🟢95 [CONFIRMED] (from manifest.json)
+Dependencies: <list or "None"> 🟢90 [CONFIRMED] (all completed per manifest)
+Estimated Tokens: <number> 🟡75 [REPORTED] (from task metadata)
 
 Status Summary:
 - Total: X tasks

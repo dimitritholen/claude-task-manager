@@ -21,7 +21,7 @@ Token budget: ~150-300 tokens (manifest + metrics + minimal overhead)
 
 ### If manifest exists and is valid:
 
-Display comprehensive status:
+Display comprehensive status (with Minion Engine reliability labels):
 
 ```
 📊 Task Management System Status
@@ -30,7 +30,7 @@ Display comprehensive status:
 Project: <project-name>
 Last Updated: <timestamp>
 
-Statistics:
+Statistics: 🟢100 [CONFIRMED] (from manifest.json)
 ├── Total Tasks: <total>
 ├── ✅ Completed: <count> (<percentage>%)
 ├── 🚀 In Progress: <count>
@@ -67,18 +67,18 @@ Statistics:
 
 ═══════════════════════════════════════════════════════
 
-📈 Performance Metrics:
+📈 Performance Metrics: 🟢90 [CONFIRMED] (from metrics.json)
 
 Token Efficiency:
-├── Average per task: <avg> tokens
-├── vs. Monolithic: ~12,000 tokens
-└── Savings: ~<percentage>% reduction
+├── Average per task: <avg> tokens 🟡75 [CORROBORATED]
+├── vs. Monolithic: ~12,000 tokens (baseline)
+└── Savings: ~<percentage>% reduction 🟢85 [CONFIRMED]
 
 Completion Stats:
-├── Total completed: <count>
-├── Average duration: <minutes> minutes
-├── Token estimate accuracy: <percentage>% (±<variance>%)
-└── Total tokens used: <total>
+├── Total completed: <count> 🟢100 [CONFIRMED]
+├── Average duration: <minutes> minutes 🟡80 [CORROBORATED]
+├── Token estimate accuracy: <percentage>% (±<variance>%) 🟡75 [REPORTED]
+└── Total tokens used: <total> 🟢95 [CONFIRMED]
 
 Last Activity:
 └── <timestamp>: <action> on T00X by <agent>

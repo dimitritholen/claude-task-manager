@@ -48,12 +48,15 @@ Token budget: ~150-300 tokens (manifest analysis only)
 
 ## Output Format
 
-Provide comprehensive diagnostic report:
+Provide comprehensive diagnostic report (with Minion Engine reliability labels):
 
 ```markdown
 # Task Management System Health Report
 
-## Overall Health: [Healthy | Warning | Critical]
+Generated: <timestamp>
+Framework: Minion Engine v3.0 (Evidence-Based Analysis)
+
+## Overall Health: [Healthy | Warning | Critical] 🟢/🟡/🔴 [CONFIDENCE SCORE] [CATEGORY]
 
 ## Summary
 - Total Tasks: X
@@ -76,15 +79,17 @@ Provide comprehensive diagnostic report:
 ## Detailed Analysis
 
 ### Stalled Tasks
-| Task ID | Title | Status | Started | Hours Ago | Blocks |
-|---------|-------|--------|---------|-----------|--------|
-| T00X | ... | in_progress | 2025-10-12 | 24 | T00Y, T00Z |
+| Task ID | Title | Status | Started | Hours Ago | Confidence | Blocks |
+|---------|-------|--------|---------|-----------|------------|--------|
+| T00X | ... | in_progress | 2025-10-12 | 24 | 🟢85 [CONFIRMED] | T00Y, T00Z |
+
+**Evidence:** manifest.json lines X-Y, started_at timestamp verified
 
 ### Critical Path Status
-- Total Tasks on Critical Path: X
-- Completed: X (Y%)
-- Current Bottleneck: T00X (in_progress for 24h)
-- Blocked Downstream: X tasks
+- Total Tasks on Critical Path: X 🟢100 [CONFIRMED] (from manifest.json)
+- Completed: X (Y%) 🟢100 [CONFIRMED]
+- Current Bottleneck: T00X (in_progress for 24h) 🟢90 [CONFIRMED]
+- Blocked Downstream: X tasks 🟢95 [CONFIRMED] (dependency_graph analysis)
 
 ### Priority Misalignments
 [List cases where low-priority work blocks high-priority work]
@@ -116,6 +121,12 @@ For complex issues requiring remediation (not just diagnostics), you MAY optiona
 
 ```
 Perform comprehensive health analysis of task management system.
+
+**IMPORTANT**: Operate within [Minion Engine v3.0 framework](../core/minion-engine.md).
+- Apply Reliability Labeling to ALL diagnoses
+- Cite evidence (manifest.json lines, timestamps, task IDs)
+- Use Evidence-Based Analysis (no speculation without labeling)
+- Provide confidence scores for all assessments
 
 **Your Mission:**
 1. Read manifest.json

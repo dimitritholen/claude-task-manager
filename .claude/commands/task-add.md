@@ -65,6 +65,11 @@ Create comprehensive task(s) for the following feature request:
 **Feature Request:**
 {user_input}
 
+**IMPORTANT**: Operate within [Minion Engine v3.0 framework](../core/minion-engine.md).
+- Use Conditional Interview Protocol if feature request vague
+- Apply Reliability Labeling to dependency analysis and estimates
+- Never guess dependencies - verify in manifest.json
+
 **Your Mission:**
 1. Load existing context (project.md, architecture.md, acceptance-templates.md)
 2. Read manifest.json to understand current tasks and dependencies
@@ -74,6 +79,14 @@ Create comprehensive task(s) for the following feature request:
 6. Update manifest.json atomically (tasks, stats, dependency_graph, critical_path)
 7. Create atomic update record in .tasks/updates/
 8. Provide detailed report
+
+**Interview Protocol Triggers:**
+- Vague feature scope ("add user management" - what's included?)
+- Unclear dependencies ("might need auth")
+- Ambiguous priority/urgency
+- Missing acceptance criteria guidance
+
+**If triggered, use Minion Engine Interview Protocol** (see agent instructions)
 
 **Quality Requirements:**
 - Each task must have ALL sections (description, business context, acceptance criteria, test scenarios, technical implementation, dependencies, design decisions, risks, progress log, completion checklist)

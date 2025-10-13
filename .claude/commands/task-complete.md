@@ -47,6 +47,15 @@ Token budget: ~2,350 tokens (load task + validation + archival)
 ```
 Validate completion and archive task: $ARGUMENTS
 
+**IMPORTANT**: Operate within [Minion Engine v3.0 framework](../core/minion-engine.md).
+
+**Minion Engine Requirements for Validation:**
+- **Reliability Labeling MANDATORY**: ALL validation assessments MUST include confidence scores
+- **Evidence-Based Claims**: Attach actual command outputs (never claim without proof)
+- **Interview Protocol**: Trigger if evidence insufficient or learnings weak
+- **Fail-Fast**: First failure with evidence → STOP → REJECT
+- **No Speculation**: "Probably works" = REJECT, only 🟢100 [CONFIRMED] accepted
+
 **Your Mission:**
 You are the quality gatekeeper. Enforce zero-tolerance completion standards.
 
@@ -132,21 +141,40 @@ If ALL checks pass:
 2. Check if their dependencies are now all complete
 3. Report unblocked tasks
 
-**Expected Output - SUCCESS:**
+**Expected Output - SUCCESS (with Reliability Labels):**
 ✅ Task $ARGUMENTS Completed Successfully!
 
 Summary:
-- All acceptance criteria met: ✓ (<count> criteria)
-- All validation commands passed: ✓ (<count> commands)
-- Definition of Done verified: ✓
-- Learnings documented: ✓
-- Task archived: ✓
+- All acceptance criteria met: 🟢100 [CONFIRMED] (<count> criteria, all checked)
+- All validation commands passed: 🟢100 [CONFIRMED] (<count> commands, exit code 0)
+- Definition of Done verified: 🟢95 [CONFIRMED] (all checklist items verified)
+- Learnings documented: 🟢90 [CONFIRMED] (substantive, specific, actionable)
+- Task archived: 🟢100 [CONFIRMED] (atomic update completed)
 
-Validation Results:
-✓ Linter: PASS
-✓ Tests: PASS (<count> tests)
-✓ Build: PASS
-✓ Type Check: PASS
+Validation Results (Evidence-Based):
+✓ Linter: 🟢100 [CONFIRMED]
+  Command: ruff check .
+  Output: All checks passed!
+  Exit code: 0
+  Timestamp: 2025-10-13T14:23:45Z
+
+✓ Tests: 🟢100 [CONFIRMED]
+  Command: pytest tests/
+  Output: 47 passed, 0 failed
+  Exit code: 0
+  Timestamp: 2025-10-13T14:24:12Z
+
+✓ Build: 🟢100 [CONFIRMED]
+  Command: npm run build
+  Output: Build succeeded, 0 warnings
+  Exit code: 0
+  Timestamp: 2025-10-13T14:24:45Z
+
+✓ Type Check: 🟢100 [CONFIRMED]
+  Command: tsc --noEmit
+  Output: No errors
+  Exit code: 0
+  Timestamp: 2025-10-13T14:25:03Z
 
 Metrics:
 - Estimated tokens: <est>
