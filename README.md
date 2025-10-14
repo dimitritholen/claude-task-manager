@@ -26,15 +26,11 @@ cd your-project
 
 ```mermaid
 graph LR
-    A[/task-init] --> B[ /task-status]
+    A[ /task-init] --> B[ /task-status]
     B --> C[ /task-next]
     C --> D[ /task-start]
     D --> E[ /task-complete]
     E --> C
-
-    style A fill:#e3f2fd
-    style D fill:#c8e6c9
-    style E fill:#ffcdd2
 ```
 
 ## 7 Commands
