@@ -16,7 +16,7 @@ Operates within [Minion Engine v3.0](../core/minion-engine.md).
 
 **Interview Triggers**: Vague design requirements, unclear target audience, missing brand context, ambiguous page type
 
-**Output Flow**: Design System Discovery → Brand DNA → Concept Generation → Selection → Specification → Genericness Test → Implementation → Pre-Delivery Audit → Completion
+**Output Flow**: Design System Discovery → Project Structure Discovery → Brand DNA → Concept Generation → Selection → Specification → Genericness Test → Implementation → Pre-Delivery Audit → Completion
 
 **Date Awareness**: Get the current system date so you can use the correct dates in online searches
 
@@ -133,6 +133,128 @@ Before searching for existing design systems, understand what we're building:
 - Target: [component name or page name]
 - Search Keywords: [list keywords for file search]
 ```
+
+---
+
+### Step 2.5: Project Structure Discovery (MANDATORY)
+
+**Before writing any code, discover and document the project's directory conventions.**
+
+**CRITICAL**: This step prevents creating files in wrong locations and violating project structure.
+
+**Actions:**
+
+**A. Check Recently Completed Similar Tasks**
+
+1. Read `.tasks/manifest.json` to find recently completed tasks with:
+   - Same phase (Phase 1, Phase 2, etc.)
+   - Same type (Frontend UI, Backend API)
+   - Status: `completed`
+   - Most recent completion dates
+
+2. For each similar task (minimum 1, maximum 3), read completion files:
+
+   ```bash
+   ls .tasks/completed/T00X*.md | head -3
+   ```
+
+3. Extract file paths from completion summaries:
+   - Look for "Files Created:", "**Created:**", or "## Files" sections
+   - Note exact directory structure patterns
+   - Identify naming conventions (kebab-case, PascalCase, etc.)
+   - Document route group patterns (e.g., `(dashboard)`, `(auth)`)
+
+**B. Analyze Existing Project Structure**
+
+1. Search for existing pages in same category using Glob:
+
+   ```
+   **/app/**/page.{tsx,jsx,ts,js}
+   **/src/app/**/page.{tsx,jsx,ts,js}
+   ```
+
+2. Identify structural patterns (read 3-5 existing pages):
+   - ✓ Base path: `/src/app` or `/app`?
+   - ✓ Route groups: `(dashboard)`, `(auth)`, `(marketing)`?
+   - ✓ File naming: `page.tsx`, `layout.tsx`, `loading.tsx`, `error.tsx`?
+   - ✓ Nested routes: `[id]/`, `[slug]/`, `new/`?
+   - ✓ Component location: `src/components/{feature}/` vs `components/{feature}/`?
+   - ✓ Naming pattern: PascalCase, kebab-case, camelCase?
+
+3. Check for path aliases in config:
+   - Read `tsconfig.json` → Check `compilerOptions.paths` for `@/` or `~/` aliases
+   - Read `next.config.js` / `vite.config.ts` → Check `resolve.alias`
+   - Verify alias resolves to correct base (e.g., `@/` → `src/`)
+
+**C. Verify Architecture Documentation**
+
+1. Read `context/architecture.md` (if exists):
+   - Look for "Directory Structure" section
+   - Look for "Routing Conventions" section
+   - Look for framework-specific patterns (Next.js App Router, Remix, etc.)
+
+2. Check framework conventions:
+   - Next.js App Router: `app/(route-group)/feature/page.tsx`
+   - Next.js Pages Router: `pages/feature/index.tsx`
+   - Remix: `app/routes/feature.tsx` or `app/routes/feature/index.tsx`
+
+**D. Cross-Validate Task Requirements**
+
+1. Check if task file specifies paths explicitly:
+   - Look for "File Paths:" or "Target Directories:" sections
+   - Look for "Follow pattern from T00X" references
+   - Check acceptance criteria for directory requirements
+
+2. If task references another task (e.g., "like T006"), read that task's completion summary for exact paths
+
+**Output:**
+
+```markdown
+✅ Project Structure Analysis Complete
+
+**Confirmed Patterns (Evidence-Based):**
+- Base path: /src/app (NOT /app)
+- Route group: (dashboard) for authenticated pages
+- Full path pattern: src/app/(dashboard)/{feature}/page.tsx
+- Component pattern: src/components/{feature}/ComponentName.tsx
+- Path alias: @/ → src/ (verified in tsconfig.json)
+
+**Evidence Sources:**
+- T006 completion: src/app/(dashboard)/teams/page.tsx
+- Existing pages: dashboard/page.tsx, (auth)/login/page.tsx (all use route groups)
+- tsconfig.json: "@/*" maps to "./src/*"
+- Next.js App Router detected (app directory with layout.tsx files)
+
+**Files to Create for This Task:**
+1. src/app/(dashboard)/meetings/page.tsx (main page)
+2. src/components/meetings/CreateMeetingModal.tsx (component)
+
+**Confidence:** 🟢100 [CONFIRMED] - Verified against 3 completed tasks + 5 existing pages
+```
+
+**Verification Gate:**
+
+- [ ] At least 1 similar task analyzed
+- [ ] Existing project structure searched (minimum 3 pages examined)
+- [ ] Directory patterns documented with evidence
+- [ ] File paths confirmed with specific sources cited
+- [ ] Path aliases verified in config files
+- [ ] Confidence: 🟢 ≥90 [CONFIRMED]
+
+**IF NO CLEAR PATTERN FOUND:**
+
+- STOP and trigger interview protocol
+- Ask user to confirm directory structure explicitly
+- Request they provide reference task or existing file path
+- Do NOT guess, assume, or create new directory structures
+
+**Common Mistakes to Avoid:**
+
+- ❌ Creating `/app/` when project uses `/src/app/`
+- ❌ Skipping route groups like `(dashboard)` when they exist
+- ❌ Mixing patterns (e.g., some files in `/app/`, others in `/src/app/`)
+- ❌ Ignoring completed task patterns
+- ❌ Assuming structure without evidence
 
 ---
 

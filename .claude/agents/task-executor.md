@@ -16,7 +16,7 @@ Operates within [Minion Engine v3.0](../core/minion-engine.md).
 
 **Interview Triggers**: Vague criteria, missing validation commands, ambiguous requirements, unclear test scenarios
 
-**Output Flow**: Ecosystem Discovery → Analysis → Plan → TDD Loop with Quality Gates → Verification → Results
+**Output Flow**: Ecosystem Discovery → Analysis → Plan → Project Structure Discovery → TDD Loop with Quality Gates → Verification → Results
 
 **Date Awareness**: Get the current system date so you can use the correct dates in online searches
 
@@ -255,7 +255,122 @@ Write to `.tasks/ecosystem-guidelines.json`. Verify with `jq empty`.
 - Plan validation checkpoints
 - Document in progress log
 
-❓ **CHECKPOINT**: Can I explain task's purpose, approach, quality requirements clearly?
+**4. Discover Project Structure (MANDATORY BEFORE FILE CREATION)**:
+
+**CRITICAL**: Before creating ANY files, discover existing project structure to ensure consistency.
+
+**Actions**:
+
+**A. Check Recently Completed Similar Tasks**
+
+1. Read `.tasks/manifest.json` to find recently completed tasks with:
+   - Same type (Backend API, Frontend UI, Database, etc.)
+   - Same language/framework
+   - Status: `completed`
+
+2. For each similar task (minimum 1, maximum 3), read completion files:
+
+   ```bash
+   ls .tasks/completed/T00X*.md | head -3
+   ```
+
+3. Extract file paths from completion summaries:
+   - Look for "Files Created:", "**Created:**", or "## Files" sections
+   - Note exact directory structure patterns
+   - Identify naming conventions (snake_case, kebab-case, PascalCase)
+   - Document module organization patterns
+
+**B. Analyze Existing Codebase Structure**
+
+1. Search for existing files in same category using Glob:
+   - Backend API: `**/routes/*.{py,js,ts,go}`, `**/api/**/*.{py,js,ts,go}`
+   - Models: `**/models/*.{py,js,ts,go}`, `**/entities/**/*`
+   - Tests: `**/tests/**/*`, `**/__tests__/**/*`, `**/test_*.{py,js,ts}`
+
+2. Identify structural patterns (examine 3-5 existing files):
+   - ✓ Base directory: `/src`, `/app`, `/lib`, root?
+   - ✓ Module organization: by feature, by layer, by domain?
+   - ✓ File naming: singular/plural, suffixes (`.service`, `.controller`, `.model`)?
+   - ✓ Test location: next to code, separate `/tests` dir, `__tests__`?
+   - ✓ Import patterns: relative vs absolute, aliases configured?
+
+3. Check for import aliases in config:
+   - Python: Check `pyproject.toml` or `setup.py` for package structure
+   - Node.js: Check `tsconfig.json` → `compilerOptions.paths` for aliases
+   - Go: Check `go.mod` for module path
+
+**C. Verify Architecture Documentation**
+
+1. Read `context/architecture.md`:
+   - Look for "Directory Structure" or "Project Structure" section
+   - Look for "Module Organization" or "Code Organization" section
+   - Look for language/framework-specific patterns
+
+2. Check framework conventions:
+   - FastAPI: `app/routers/`, `app/models/`, `app/schemas/`
+   - Django: `{app}/models.py`, `{app}/views.py`, `{app}/tests.py`
+   - Express: `routes/`, `controllers/`, `models/`
+   - Go: `cmd/`, `internal/`, `pkg/`
+
+**D. Cross-Validate Task Requirements**
+
+1. Check if task file specifies paths explicitly:
+   - Look for "File Paths:" or "Target Files:" sections
+   - Look for "Follow pattern from T00X" references
+
+2. If task references another task, read that task's completion summary for exact paths
+
+**Output**:
+
+```markdown
+✅ Project Structure Analysis Complete
+
+**Confirmed Patterns (Evidence-Based):**
+- Base path: /backend/app (NOT /backend/src)
+- Module organization: Feature-based (users/, meetings/, teams/)
+- File naming: Singular nouns (user.py, meeting.py)
+- Test location: Parallel structure (tests/test_user.py)
+- Import pattern: Absolute from project root
+
+**Evidence Sources:**
+- T004 completion: backend/app/routes/teams.py, backend/app/models/team.py
+- Existing files: app/routes/users.py, app/models/user.py (follow pattern)
+- pyproject.toml: Package root is "app"
+- FastAPI detected: Follows routers/ + models/ pattern
+
+**Files to Create for This Task:**
+1. backend/app/routes/meetings.py (API routes)
+2. backend/app/models/meeting.py (database model)
+3. backend/tests/test_meetings.py (test file)
+
+**Confidence:** 🟢100 [CONFIRMED] - Verified against 2 completed tasks + 4 existing files
+```
+
+**Verification Gate:**
+
+- [ ] At least 1 similar task analyzed
+- [ ] Existing codebase structure searched (minimum 3 files examined)
+- [ ] Directory patterns documented with evidence
+- [ ] File paths confirmed with specific sources cited
+- [ ] Import patterns verified
+- [ ] Confidence: 🟢 ≥90 [CONFIRMED]
+
+**IF NO CLEAR PATTERN FOUND:**
+
+- STOP and trigger interview protocol
+- Ask user to confirm directory structure explicitly
+- Request they provide reference task or existing file path
+- Do NOT guess, assume, or create new directory structures
+
+**Common Mistakes to Avoid:**
+
+- ❌ Creating `/src/` when project uses root-level modules
+- ❌ Using plural when project uses singular (or vice versa)
+- ❌ Mixing patterns (e.g., some files in `/app/`, others in `/src/`)
+- ❌ Ignoring completed task patterns
+- ❌ Assuming structure without evidence
+
+❓ **CHECKPOINT**: Can I explain task's purpose, approach, quality requirements, AND target file paths with evidence?
 
 ---
 
