@@ -26,10 +26,10 @@ cd your-project
 
 ```mermaid
 graph LR
-    A[/task-init] --> B[/task-status]
-    B --> C[/task-next]
-    C --> D[/task-start]
-    D --> E[/task-complete]
+    A[/task-init] --> B[ /task-status]
+    B --> C[ /task-next]
+    C --> D[ /task-start]
+    D --> E[ /task-complete]
     E --> C
 
     style A fill:#e3f2fd
@@ -52,14 +52,17 @@ graph LR
 ## 7 Specialized Agents
 
 ### Discovery & Creation
+
 - **task-initializer** (Sonnet) - Auto-discovers project, creates initial tasks
 - **task-creator** (Sonnet) - Adds comprehensive tasks incrementally
 - **task-discoverer** (Haiku) - Ultra-fast task queries (~150 tokens)
 
 ### Orchestration
+
 - **task-manager** (Sonnet) - Diagnoses and remediates stalled tasks
 
 ### Execution
+
 - **task-executor** (Sonnet) - TDD-driven backend/logic implementation
 - **task-ui** (Sonnet) - Expert UI/UX designer with anti-generic enforcement
 - **task-completer** (Sonnet) - Zero-tolerance quality gate
@@ -69,11 +72,13 @@ graph LR
 `/task-start` automatically routes to the right agent:
 
 **task-ui** for:
+
 - UI/UX design and implementation
 - Interface components, page layouts
 - Design systems, visual styling
 
 **task-executor** for:
+
 - Backend logic, APIs, data processing
 - Business logic, algorithms
 - Database operations, system integrations
@@ -82,17 +87,20 @@ graph LR
 ## task-ui Agent Features
 
 **Anti-Generic Enforcement:**
+
 - Mandatory Brand DNA analysis (archetype, voice, audience)
 - Genericness Test (must score ≤3.0/10)
 - Pre-Delivery Audit (confidence ≥7/10)
 - 11 anti-patterns checked (no centered heroes, Lorem ipsum, generic CTAs)
 
 **Design System Management:**
+
 - First UI task: Creates reusable design system in `.tasks/design-system/`
 - Subsequent tasks: Loads and applies consistently
 - Includes: colors, typography, spacing, effects, layout, components
 
 **Quality Standards:**
+
 - 3 distinct concepts generated (forced divergence)
 - Brand DNA alignment for every decision
 - Strategic trend research (not blind copying)
@@ -102,6 +110,7 @@ graph LR
 ## task-executor Features
 
 **Mandatory TDD:**
+
 1. Write failing test (must fail for right reason)
 2. Implement minimal code to pass
 3. Run test → verify pass
@@ -110,6 +119,7 @@ graph LR
 6. Repeat
 
 **Quality Enforcement:**
+
 - 60+ item completion gate
 - 0 linter errors, 0 warnings
 - 100% test pass rate
@@ -119,10 +129,12 @@ graph LR
 ## Token Efficiency
 
 **Traditional monolithic approach:**
+
 - Every operation: 12,000+ tokens
 - 10 checks: 120,000 tokens
 
 **This system:**
+
 - Status check: ~150 tokens
 - Task discovery: ~150 tokens
 - Task execution: ~1,650 tokens startup
@@ -153,6 +165,7 @@ graph LR
 ## Quality Guarantees
 
 **Zero-Tolerance Completion:**
+
 - ✅ ALL acceptance criteria checked (100%)
 - ✅ ALL validation commands pass
 - ✅ ALL tests passing
@@ -161,6 +174,7 @@ graph LR
 - ✅ Security reviewed
 
 **For UI tasks:**
+
 - ✅ Genericness score ≤3.0
 - ✅ Brand DNA alignment verified
 - ✅ Design system applied consistently
@@ -172,23 +186,27 @@ graph LR
 ## Key Features
 
 **Minion Engine v3.0 Integration:**
+
 - 12-Step Reasoning Chain (systematic problem-solving)
 - Reliability Labeling (every claim has confidence score)
 - Conditional Interview (asks questions vs. guessing)
 - Anti-Hallucination Safeguards (never invents APIs/configs)
 
 **Universal Compatibility:**
+
 - Works with ANY language (Python, TypeScript, Rust, Go, Java, etc.)
 - Auto-discovers validation tools (pytest, jest, cargo, etc.)
 - No hardcoded project details
 
 **Intelligent Health Monitoring:**
+
 - Auto-detects stalled tasks (>24h)
 - Identifies critical path blockages
 - Executes remediation (not just recommendations)
 - Circuit breaker prevents infinite loops
 
 **Concurrent Safe:**
+
 - Atomic updates via `.tasks/updates/`
 - Race condition protection
 - Multi-agent workflows supported
@@ -196,6 +214,7 @@ graph LR
 ## Common Workflows
 
 ### Solo Developer
+
 ```bash
 /task-init              # Initialize (once)
 /task-status            # Check overall status
@@ -206,6 +225,7 @@ graph LR
 ```
 
 ### When Things Go Wrong
+
 ```bash
 /task-health            # Diagnose issues
 /task-status            # Check bottlenecks
@@ -215,6 +235,7 @@ graph LR
 ## Design System Workflow (UI Tasks)
 
 **First UI Task:**
+
 1. `/task-start T001` (UI task detected)
 2. Extracts Brand DNA from `context/project.md`
 3. Researches current design trends
@@ -224,6 +245,7 @@ graph LR
 7. Runs pre-delivery audit
 
 **Subsequent UI Tasks:**
+
 1. `/task-start T005` (UI task detected)
 2. Loads existing design system
 3. Applies tokens consistently
