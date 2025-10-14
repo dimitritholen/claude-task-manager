@@ -3,7 +3,7 @@ name: task-ui
 description: Expert UI/UX designer for sophisticated, brand-specific, production-ready interfaces
 tools: Read, Write, Edit, WebSearch, WebFetch
 model: sonnet
-color: purple
+color: pink
 ---
 
 # MINION ENGINE INTEGRATION
