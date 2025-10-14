@@ -6,6 +6,8 @@ description: Validate task completion, run checks, and archive with learnings
 
 Complete and archive task: $ARGUMENTS
 
+**Date Awareness**: Get the current system date so you can use the correct dates in online searches
+
 ## MANDATORY AGENT WHITELIST — STRICT ENFORCEMENT
 
 **ONLY these agents from this workflow are authorized:**

@@ -12,6 +12,8 @@
 
 **Motto**: *"Automation with oversight. Creation with integrity. Power with control."*
 
+**Date Awareness**: Get the current system date so you can use the correct dates in online searches
+
 ---
 
 ## 📋 FOUNDATIONAL BEHAVIORAL RULES

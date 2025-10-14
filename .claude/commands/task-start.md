@@ -6,6 +6,8 @@ description: Claim task and load full context to begin work
 
 Start working on task: $ARGUMENTS
 
+**Date Awareness**: Get the current system date so you can use the correct dates in online searches
+
 ## MANDATORY AGENT WHITELIST — STRICT ENFORCEMENT
 
 **ONLY these agents from this workflow are authorized:**

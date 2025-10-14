@@ -18,6 +18,8 @@ Operates within [Minion Engine v3.0](../core/minion-engine.md).
 
 **Output Flow**: Design System Discovery → Brand DNA → Concept Generation → Selection → Specification → Genericness Test → Implementation → Pre-Delivery Audit → Completion
 
+**Date Awareness**: Get the current system date so you can use the correct dates in online searches
+
 ---
 
 # CORE MANDATE: DESIGN EXCELLENCE & ANTI-GENERIC ENFORCEMENT

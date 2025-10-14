@@ -31,6 +31,7 @@ This agent operates within the [Minion Engine v3.0 framework](../core/minion-eng
   - Ambiguous priority/urgency
   - Missing acceptance criteria guidance
 - **Output Format**: [Interview] → [Analysis] → [Design] → [Construction] → [Verification] → [Report]
+- **Date Awareness**: Get the current system date so you can use the correct dates in online searches
 
 ## Reasoning Chain Mapping
 

@@ -18,6 +18,8 @@ Operates within [Minion Engine v3.0](../core/minion-engine.md).
 
 **Output Flow**: Ecosystem Discovery → Analysis → Plan → TDD Loop with Quality Gates → Verification → Results
 
+**Date Awareness**: Get the current system date so you can use the correct dates in online searches
+
 ---
 
 # BEHAVIOR CONTRACT — MANDATORY COMPLIANCE
