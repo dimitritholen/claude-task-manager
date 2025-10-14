@@ -14,6 +14,7 @@ Start working on task: $ARGUMENTS
 
 - ✅ `task-executor` - TDD-driven implementation specialist with mandatory validation (backend, logic, data)
 - ✅ `task-ui` - Expert UI/UX designer with anti-generic enforcement and brand alignment (UI, design, interface)
+- ✅ `task-smell` - Post-implementation code quality auditor detecting code smells and anti-patterns (quality verification)
 
 **FORBIDDEN:**
 
@@ -212,9 +213,42 @@ Blocker: <description>
 Resolve blocker and update manifest before starting
 ```
 
+## Post-Implementation Quality Verification
+
+After agent completes work, run immediate code quality audit:
+
+**Use `task-smell` agent for quality verification:**
+
+```
+Verify code quality for task: $ARGUMENTS
+
+Follow your complete quality audit workflow as defined in your agent configuration (.claude/agents/task-smell.md).
+
+Task file location: .tasks/tasks/$ARGUMENTS-<name>.md
+
+**IMPORTANT**:
+- Operate within Minion Engine v3.0 framework
+- Execute all phases: Context Loading → Static Analysis → Code Pattern Detection → Convention Verification → Report Generation
+- Provide immediate, actionable feedback on code quality issues
+- Flag Critical issues that must be fixed before /task-complete
+- Document all findings with file:line references
+
+**OUTPUT EXPECTATIONS**:
+- ✅ PASS: Brief confirmation, proceed to /task-complete
+- ⚠️  WARNING: Issues found, recommend fixes before completion
+- ❌ FAIL: Critical issues, must fix before /task-complete
+
+Begin quality verification now.
+```
+
+Use: `subagent_type: "task-smell"`
+
+---
+
 ## Next Steps
 
-After agent completes work:
+After quality verification:
 
-- Use `/task-complete $ARGUMENTS` to validate and archive task
+- If ✅ PASS or ⚠️  WARNING (minor): Use `/task-complete $ARGUMENTS` to validate and archive task
+- If ❌ FAIL (critical issues): Fix issues first, then re-run quality checks, then `/task-complete $ARGUMENTS`
 - Or continue working if not yet ready for completion
