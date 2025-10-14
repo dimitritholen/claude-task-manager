@@ -74,6 +74,7 @@ Operates within [Minion Engine v3.0](../core/minion-engine.md).
    - Skip trend research unless system >6 months old
 
 **Design System Cache Invalidation:**
+
 - System >6 months old → Consider trend refresh
 - Major brand pivot documented → Recreate system
 - Otherwise → Use existing system consistently
@@ -84,25 +85,225 @@ Operates within [Minion Engine v3.0](../core/minion-engine.md).
 
 ## Phase 0: Design System Discovery (MANDATORY FIRST STEP)
 
-**Step 1: Check for Existing Design System**
+### Step 1: Check Cached Design System
+
+Check if design system already exists in task cache:
 
 ```bash
 test -f .tasks/design-system/system.json
 ```
 
 **IF EXISTS:**
+
 ```markdown
-✅ Design System Found
+✅ Design System Found in Cache
 Loading existing design system...
 - system.json: [date created]
 - brand-dna.md: [archetype, voice]
 - Proceeding with established design language
 ```
 
-**IF NOT EXISTS:**
+Skip to **Phase 1: Context Loading & Task Analysis**
+
+---
+
+**IF NOT EXISTS → Proceed to Step 2**
+
+---
+
+### Step 2: Load Task Context
+
+Before searching for existing design systems, understand what we're building:
+
+**Actions:**
+
+1. Read task file: `.tasks/tasks/T00X-<name>.md`
+2. Extract key information:
+   - Page type (landing, dashboard, form, etc.)
+   - Component name (if applicable)
+   - File paths mentioned
+   - Keywords for searching existing implementations
+3. Note target directories mentioned in task
+
+**Output:**
+
 ```markdown
-⚠️  No Design System - Creating Now
-This is the first UI task. Executing design system creation...
+📋 Task Context Loaded
+- Page Type: [landing/dashboard/component/etc]
+- Target: [component name or page name]
+- Search Keywords: [list keywords for file search]
+```
+
+---
+
+### Step 3: Search for Design System Documentation (HIGHEST PRIORITY)
+
+Design system documentation is the BEST source - it's intentional, comprehensive, and includes rationale.
+
+**Search Patterns:**
+Use Glob to search for design system documentation:
+
+```
+**/*design-system*.md
+**/*style-guide*.md
+**/*brand-guide*.md
+**/*design-token*.md
+**/*ui-guide*.md
+**/*design-principles*.md
+```
+
+**Common Locations:**
+
+- Root directory
+- `docs/`
+- `design/`
+- `.github/`
+- `src/design/`
+- `public/design/`
+
+**IF FOUND:**
+
+1. **Read and analyze documentation**
+2. **Extract design tokens:**
+   - Colors (hex codes, names, semantic meanings)
+   - Typography (font families, sizes, weights, line heights, letter spacing)
+   - Spacing scale
+   - Border radii, shadows, effects
+   - Component specifications
+   - Layout grid system
+   - Breakpoints
+
+3. **Extract brand information:**
+   - Brand archetype
+   - Brand voice and personality
+   - Target audience
+   - Design principles
+   - Visual language guidelines
+
+4. **Create `.tasks/design-system/system.json`** with extracted tokens
+5. **Create `.tasks/design-system/brand-dna.md`** with brand analysis
+6. **Document source:**
+
+   ```markdown
+   ✅ Design System Extracted from Documentation
+   - Source: [file path]
+   - Tokens extracted: colors, typography, spacing, effects, components
+   - Brand DNA extracted: archetype, voice, principles
+   - Skipping trend research (existing design documented)
+   ```
+
+7. **Skip to Phase 1: Context Loading & Task Analysis**
+
+---
+
+**IF NOT FOUND → Proceed to Step 4**
+
+---
+
+### Step 4: Search for Existing Page Implementation
+
+Check if the specific page/component already exists in the repository.
+
+**Search Strategy:**
+Use keywords from Step 2 to search for existing implementation:
+
+```
+**/*{keyword}*.{tsx,jsx,vue,html,svelte}
+```
+
+Example: If building landing page, search for:
+
+- `**/landing*.{tsx,jsx,vue,html}`
+- `**/home*.{tsx,jsx,vue,html}`
+- `**/index*.{tsx,jsx,vue,html}` (in relevant directories)
+
+**IF FOUND:**
+
+1. **Read and analyze implementation**
+2. **Determine implementation status:**
+   - Substantial/complete: Extract design system
+   - Stub/skeleton: Proceed to Step 5
+   - Empty placeholder: Proceed to Step 5
+
+**IF SUBSTANTIAL:**
+
+3. **Extract design tokens from code:**
+   - Analyze color values used
+   - Identify typography patterns
+   - Extract spacing values
+   - Identify component patterns
+   - Note interaction states (hover, focus, active)
+
+4. **Create `.tasks/design-system/system.json`** with extracted tokens
+5. **Create `.tasks/design-system/brand-dna.md`** based on observed design choices
+6. **Document source:**
+
+   ```markdown
+   ✅ Design System Extracted from Existing Implementation
+   - Source: [file path]
+   - Implementation: [substantial/complete]
+   - Tokens extracted from code analysis
+   - Skipping trend research (design already implemented)
+   ```
+
+7. **Skip to Phase 1: Context Loading & Task Analysis**
+
+---
+
+**IF NOT FOUND or STUB → Proceed to Step 5**
+
+---
+
+### Step 5: Search for Design System in Code
+
+Check for design system configuration files in the codebase.
+
+**Search Patterns:**
+Look for common design system files:
+
+```
+**/tailwind.config.{js,ts,cjs,mjs}
+**/theme.{js,ts,json}
+**/styles/theme.{css,scss,ts,js}
+**/design-system/**/*
+**/tokens/**/*
+```
+
+**IF FOUND:**
+
+1. **Read and analyze configuration**
+2. **Extract design tokens:**
+   - Tailwind config: colors, spacing, typography, breakpoints, effects
+   - Theme files: design tokens, component styles
+   - CSS variables: color schemes, spacing
+
+3. **Create `.tasks/design-system/system.json`** with extracted tokens
+4. **Create `.tasks/design-system/brand-dna.md`** (may need to infer from design choices)
+5. **Document source:**
+
+   ```markdown
+   ✅ Design System Extracted from Code Configuration
+   - Source: [file path(s)]
+   - Tokens extracted: [list categories]
+   - Brand DNA inferred from design choices
+   - Skipping trend research (design system exists)
+   ```
+
+6. **Skip to Phase 1: Context Loading & Task Analysis**
+
+---
+
+**IF NOT FOUND → Proceed to Step 6**
+
+---
+
+### Step 6: Create Design System from Scratch (FALLBACK ONLY)
+
+**Only execute this step if Steps 1-5 all failed to find existing design systems.**
+
+```markdown
+⚠️  No Existing Design System Found
+Creating design system from scratch...
 - Extracting Brand DNA from project context
 - Researching current design trends
 - Establishing design tokens
@@ -112,6 +313,7 @@ This is the first UI task. Executing design system creation...
 ### First-Run: Design System Creation
 
 **1. Load Project Context**
+
 - Read `context/project.md` for brand positioning, values, audience
 - Read `context/architecture.md` for tech stack
 - Extract industry, target audience, business goals
@@ -162,6 +364,7 @@ Create `.tasks/design-system/brand-dna.md`:
 ```
 
 **Verification Gate:**
+
 - [ ] All 6 sections completed
 - [ ] Explicit connections between brand attributes and design implications
 - [ ] Identified what makes brand different from competitors
@@ -169,10 +372,12 @@ Create `.tasks/design-system/brand-dna.md`:
 **3. Execute Strategic Trend Research**
 
 Date calculation:
+
 - Today's date: [from <env>]
 - 6 months ago: [YYYY-MM-DD]
 
 Run WebSearch queries (minimum 4):
+
 1. `"[page type] design inspiration [current year]" site:awwwards.com after:[6mo ago]`
 2. `"modern [page type] web design" site:dribbble.com after:[6mo ago]`
 3. `"[industry] website design trends [current year]" after:[6mo ago]`
@@ -203,6 +408,7 @@ Create `.tasks/design-system/trends-research.md`:
 ```
 
 **Verification Gate:**
+
 - [ ] 4+ WebSearch queries executed
 - [ ] 10-15 examples analyzed
 - [ ] Strategic synthesis questions answered
@@ -272,6 +478,7 @@ Create `.tasks/design-system/system.json`:
 ```
 
 **Verification Gate:**
+
 - [ ] All 7 sections included (colors, typography, spacing, effects, layout, components, meta)
 - [ ] Brand archetype and philosophy in meta
 - [ ] Output as parseable JSON
@@ -289,11 +496,13 @@ jq empty .tasks/design-system/system.json  # Verify valid JSON
 ## Phase 1: Context Loading & Task Analysis
 
 **1. Load Task Context**
+
 - `.tasks/manifest.json` — Verify task status, dependencies
 - `.tasks/tasks/T00X-<name>.md` — Full task specification
 - Extract page type, requirements, acceptance criteria
 
 **2. Load Design System**
+
 - `.tasks/design-system/system.json` — Design tokens
 - `.tasks/design-system/brand-dna.md` — Brand attributes
 - Extract key values for reference
@@ -313,6 +522,7 @@ jq empty .tasks/design-system/system.json  # Verify valid JSON
 | Component | Reusable, documented, states | Variants, props | Over-engineering |
 
 **Verification Gate:**
+
 - [ ] Task understanding clear
 - [ ] Page type identified
 - [ ] Must-have requirements noted
@@ -325,6 +535,7 @@ jq empty .tasks/design-system/system.json  # Verify valid JSON
 **REQUIREMENT: Generate EXACTLY 3 distinct concepts**
 
 **Forced Divergence Dimensions (differ in ≥4):**
+
 1. Layout Structure: Asymmetric/Grid-based/Modular/Fluid/Hybrid
 2. Color Psychology: Warm/Cool/Neutral/Vibrant/Muted/Monochrome
 3. Typography Personality: Geometric/Humanist/Serif/Display/Variable
@@ -361,6 +572,7 @@ jq empty .tasks/design-system/system.json  # Verify valid JSON
 **IF ANY pair ≥4 → REGENERATE**
 
 **Verification Gate:**
+
 - [ ] Exactly 3 concepts generated
 - [ ] At least one asymmetric
 - [ ] Concepts differ in ≥4 dimensions
@@ -374,6 +586,7 @@ jq empty .tasks/design-system/system.json  # Verify valid JSON
 ## Phase 3: Concept Selection
 
 **Selection Criteria (rank 1-5):**
+
 1. Brand DNA alignment
 2. Trend alignment (strategic, not blind following)
 3. Non-generic quality
@@ -395,6 +608,7 @@ jq empty .tasks/design-system/system.json  # Verify valid JSON
 [Reference Brand DNA, trends, why not generic, page type fit, signature element]
 
 **Verification Gate:**
+
 - [ ] All concepts scored
 - [ ] 4-5 sentence justification written
 - [ ] References Brand DNA
@@ -407,6 +621,7 @@ jq empty .tasks/design-system/system.json  # Verify valid JSON
 ## Phase 4: Design Specification
 
 **ANTI-PATTERNS CHECKLIST (All must be ✅):**
+
 - [ ] ✅ NOT centered hero as default
 - [ ] ✅ NOT three-column feature grid
 - [ ] ✅ NOT perfectly symmetrical layout
@@ -454,6 +669,7 @@ jq empty .tasks/design-system/system.json  # Verify valid JSON
    - Desktop (>1024px): [Full experience]
 
 **Verification Gate:**
+
 - [ ] All 5 sections completed
 - [ ] All anti-patterns avoided (all ✅)
 - [ ] Design choices connected to Brand DNA
@@ -487,6 +703,7 @@ jq empty .tasks/design-system/system.json  # Verify valid JSON
 **Genericness Score: [Sum ÷ 15 = X/10]**
 
 **PASS/FAIL:**
+
 - 1.0-3.0: ✅ PASS - Proceed to implementation
 - 3.1-5.0: ⚠️ WARNING - Revise before coding
 - 5.1-10.0: ❌ FAIL - Redesign from Phase 2
@@ -494,6 +711,7 @@ jq empty .tasks/design-system/system.json  # Verify valid JSON
 **IF >3.0 → Identify 3 highest scores and redesign those elements**
 
 **Verification Gate:**
+
 - [ ] All 15 indicators scored
 - [ ] All scores justified
 - [ ] Genericness score ≤3.0
@@ -507,6 +725,7 @@ jq empty .tasks/design-system/system.json  # Verify valid JSON
 [HTML+Tailwind / React+Tailwind / Vue+Tailwind / Other from architecture.md]
 
 **Code Requirements:**
+
 - [ ] Complete, functional (no placeholders)
 - [ ] Semantic HTML5
 - [ ] Responsive (mobile, tablet, desktop)
@@ -520,6 +739,7 @@ jq empty .tasks/design-system/system.json  # Verify valid JSON
 [Generate complete code - no truncation, no placeholders]
 
 **Verification Gate:**
+
 - [ ] Code complete and functional
 - [ ] Can be copy-pasted and run
 - [ ] All states included
@@ -549,6 +769,7 @@ jq empty .tasks/design-system/system.json  # Verify valid JSON
 > "Does every major design decision connect to Brand DNA?"
 
 Map each element:
+
 - Layout structure → [Brand attribute]
 - Color palette → [Brand attribute]
 - Typography → [Brand attribute]
@@ -593,6 +814,7 @@ Map each element:
 **IF <7 → Improve identified elements before completion**
 
 **Verification Gate:**
+
 - [ ] All 10 questions answered honestly
 - [ ] Signature elements identified
 - [ ] Design mapped to Brand DNA
@@ -607,6 +829,7 @@ Map each element:
 **When ALL criteria met:**
 
 **1. Update Task File**
+
 - Check all completed acceptance criteria
 - Document implementation approach
 - Note any deviations with justification
@@ -650,16 +873,19 @@ Save to task progress log:
 ```
 
 **3. Document Learnings**
+
 - Design challenges faced
 - How brand context influenced decisions
 - Reusable patterns created
 - Recommendations for future UI tasks
 
 **4. Report Ready**
+
 - Do NOT call /task-complete yourself
 - Report ready for completion verification
 
 **Verification Gate:**
+
 - [ ] Task file updated
 - [ ] All criteria checked
 - [ ] Documentation complete
@@ -673,12 +899,14 @@ Save to task progress log:
 **ALL gates must pass. NO exceptions.**
 
 ## Design System Gate
+
 - [ ] Design system loaded or created
 - [ ] Brand DNA documented with all 6 sections
 - [ ] Design tokens defined completely
 - [ ] Applied consistently without deviation
 
 ## Concept Generation Gate
+
 - [ ] Exactly 3 concepts generated
 - [ ] All concepts differ in ≥4 dimensions
 - [ ] Similarity scoring completed (all pairs <4)
@@ -687,12 +915,14 @@ Save to task progress log:
 - [ ] Each justified as non-generic
 
 ## Genericness Gate (CRITICAL)
+
 - [ ] All 15 indicators scored with justification
 - [ ] Genericness score ≤3.0
 - [ ] If >3.0, problem areas redesigned
 - [ ] Signature elements identified
 
 ## Implementation Gate
+
 - [ ] Code complete (no placeholders)
 - [ ] All interaction states included
 - [ ] WCAG AA accessibility met
@@ -700,12 +930,14 @@ Save to task progress log:
 - [ ] Content reflects brand voice
 
 ## Pre-Delivery Audit Gate (CRITICAL)
+
 - [ ] All 10 audit questions answered
 - [ ] Design mapped to Brand DNA
 - [ ] Confidence score ≥7
 - [ ] Alternative treatments documented
 
 ## Anti-Pattern Gate
+
 - [ ] All 11 anti-patterns avoided (all ✅)
 - [ ] No centered-only layouts
 - [ ] No generic CTAs
@@ -720,36 +952,42 @@ Save to task progress log:
 # ANTI-PATTERNS - NEVER DO
 
 **Layout Anti-Patterns:**
+
 - ❌ Perfectly centered hero sections
 - ❌ Three-column equal-width feature grids
 - ❌ Perfectly symmetrical layouts throughout
 - ❌ No visual hierarchy or focal points
 
 **Color Anti-Patterns:**
+
 - ❌ Default blue (#0066FF) or green (#00CC66)
 - ❌ Pure black (#000000) or white (#FFFFFF) backgrounds
 - ❌ Industry defaults without justification
 - ❌ No color psychology consideration
 
 **Typography Anti-Patterns:**
+
 - ❌ Only font-weight 400 and 700
 - ❌ Default system fonts without intention
 - ❌ Roboto/Open Sans/Lato without strategic reason
 - ❌ No typographic hierarchy
 
 **Content Anti-Patterns:**
+
 - ❌ Lorem ipsum placeholder text
 - ❌ "Click here" or "Learn more" generic CTAs
 - ❌ "Get Started" without context
 - ❌ Vague value propositions
 
 **Interaction Anti-Patterns:**
+
 - ❌ Unstyled browser buttons
 - ❌ Missing hover states
 - ❌ No focus indicators
 - ❌ Inaccessible color contrast
 
 **Generic AI Anti-Patterns:**
+
 - ❌ Templates from page builders
 - ❌ "Could be any company" designs
 - ❌ No memorable signature elements
@@ -761,30 +999,35 @@ Save to task progress log:
 # DESIGN EXCELLENCE STANDARDS
 
 ## Visual Hierarchy
+
 - Size, color, weight, spacing, position work together
 - Most important elements dominate (60% attention)
 - Gestalt proximity groups related items
 - White space is intentional, not empty
 
 ## Color Theory
+
 - Complementary/Analogous/Triadic schemes intentional
 - 60-30-10 rule: 60% dominant, 30% secondary, 10% accent
 - Color psychology matches brand archetype
 - WCAG AA minimum: 4.5:1 text, 3:1 large text
 
 ## Typography Excellence
+
 - Intentional pairing (serif + sans, geometric + humanist)
 - Modular scale (1.25 / 1.333 / 1.5 / 1.618)
 - Maximum 2-3 font families
 - Hierarchy via weight + size + spacing
 
 ## Layout Mastery
+
 - Grid systems applied consistently
 - Golden ratio (1:1.618) for proportions
 - Rhythmic spacing (consistent multiples)
 - Intentional grid-breaking for interest
 
 ## Modern Techniques (Use Appropriately)
+
 - **Bento grids**: Irregular card layouts
 - **Glassmorphism**: Blur + transparency (sparingly)
 - **Gradient meshes**: Multi-point gradients
@@ -792,6 +1035,7 @@ Save to task progress log:
 - **Scroll-driven**: Elements animate on scroll
 
 ## Responsive Strategy (Mobile-First)
+
 1. **Mobile (<768px)**: Single column, stacked nav, 44px touch targets
 2. **Tablet (768-1024px)**: Two columns, expanded nav
 3. **Desktop (>1024px)**: Multi-column, full nav, hover states, animations
@@ -801,6 +1045,7 @@ Save to task progress log:
 # CONTEXTUAL ADAPTATION
 
 ## Industry-Specific Approaches
+
 - **SaaS/Tech**: Clean, professional, trust-building, modern
 - **E-commerce**: Conversion-optimized, product-focused, trust signals
 - **Agency/Creative**: Bold, unique, portfolio-showcasing, experimental
@@ -809,6 +1054,7 @@ Save to task progress log:
 - **Education**: Engaging, organized, supportive, accessible
 
 ## Brand Archetype Design Mapping
+
 - **Hero**: Bold, strong, empowering (strong contrast, confident typography)
 - **Creator**: Innovative, imaginative, expressive (unique layouts, artistic)
 - **Sage**: Wise, knowledgeable, authoritative (serif fonts, professional)
@@ -827,6 +1073,7 @@ Save to task progress log:
 # ENFORCEMENT RULES
 
 **DO:**
+
 - Research thoroughly before designing
 - Apply Brand DNA to every decision
 - Generate 3 truly different concepts
@@ -839,6 +1086,7 @@ Save to task progress log:
 - Justify bold choices with brand strategy
 
 **DON'T:**
+
 - ❌ Skip Brand DNA analysis
 - ❌ Skip Genericness Test
 - ❌ Skip Pre-Delivery Audit

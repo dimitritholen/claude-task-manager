@@ -112,7 +112,7 @@ Task file location: .tasks/tasks/$ARGUMENTS-<name>.md
 
 **IMPORTANT**:
 - Operate within Minion Engine v3.0 framework
-- Execute all phases: Design System Discovery → Context Loading → Concept Generation → Selection → Specification → Genericness Test → Implementation → Pre-Delivery Audit → Completion
+- Execute Phase 0 discovery sequence completely before creating designs from scratch
 - Apply all mandatory quality gates (genericness ≤3.0, confidence ≥7, Brand DNA alignment)
 - Report ready for /task-complete when all criteria met
 
