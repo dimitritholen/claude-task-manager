@@ -15,6 +15,7 @@ allowedTools: [Bash, Read, Write, Edit, Grep, Glob, Task]
 ```
 
 **What happens:**
+
 1. Discovers all pending tasks with satisfied dependencies
 2. Analyzes file conflicts
 3. Batches tasks for safe parallel execution
@@ -30,6 +31,7 @@ allowedTools: [Bash, Read, Write, Edit, Grep, Glob, Task]
 ```
 
 **What happens:**
+
 - Executes specified tasks in parallel (if no file conflicts)
 - Warns if dependencies not satisfied
 - Otherwise same workflow as auto-discovery
@@ -37,21 +39,25 @@ allowedTools: [Bash, Read, Write, Edit, Grep, Glob, Task]
 ## Examples
 
 **Execute next 3 actionable tasks:**
+
 ```bash
 /task-parallel auto
 ```
 
 **Execute specific high-priority tasks:**
+
 ```bash
 /task-parallel T001 T002
 ```
 
 **After completion, check status:**
+
 ```bash
 /task-status
 ```
 
 **Fix rejected tasks:**
+
 ```bash
 /task-complete T001  # After fixing issues in worktree
 ```
@@ -62,7 +68,7 @@ You are a Git Parallel Worktree Orchestration Intelligence specializing in coord
 
 # Core Responsibilities
 
-Execute all tasks through @task-worktree agents. For each worktree operation:
+Execute all tasks through @task-developer agents. For each worktree operation:
 
 1. **Validate repository state** before any destructive operations
 2. **Coordinate parallel development** across isolated worktrees
@@ -189,6 +195,7 @@ $ARGUMENTS
 1. **Read manifest**: Load `.tasks/manifest.json` (~150 tokens)
 
 2. **Filter actionable tasks**:
+
    ```
    FOR EACH task in manifest.tasks:
      IF task.status == "pending"
@@ -230,6 +237,7 @@ $ARGUMENTS
    - Parse "Modified Files" if documented
 
 3. **Build conflict matrix**:
+
    ```
    Task T001: [src/api/auth.ts, src/models/user.ts]
    Task T002: [src/api/posts.ts, src/models/post.ts]
@@ -251,6 +259,7 @@ $ARGUMENTS
    - Database schema migrations (serialize)
 
 5. **Group into execution batches**:
+
    ```
    Batch 1 (parallel): [T001, T002]      # No file overlap
    Batch 2 (parallel): [T003, T004]      # After Batch 1 complete
@@ -258,6 +267,7 @@ $ARGUMENTS
    ```
 
 6. **If conflicts detected**:
+
    ```markdown
    ⚠️  File Conflicts Detected
 
@@ -309,6 +319,7 @@ $ARGUMENTS
 
 5. **Update task status atomically**:
    - Create `.tasks/updates/agent_task-parallel_<timestamp>_<task-id>.json`:
+
    ```json
    {
      "agent_id": "task-parallel",
@@ -322,6 +333,7 @@ $ARGUMENTS
      "worktree_path": "../worktrees/<task-id>-<name>"
    }
    ```
+
    - Update manifest.json: status → `in_progress`, started_at, started_by
 
 ### Worktree Creation
@@ -332,7 +344,7 @@ $ARGUMENTS
 
 ### Isolated Work Execution via @task-worktree Agent
 
-7. **Launch @task-worktree agent** with full task context:
+7. **Launch @task-developer agent** with full task context:
 
    ```
    Execute task <task-id> in isolated worktree.
@@ -379,7 +391,7 @@ $ARGUMENTS
    Begin execution now.
    ```
 
-   Use: `subagent_type: "task-worktree"` (references @.claude/agents/task-worktree.md)
+   Use: `subagent_type: "task-developer"` (references @.claude/agents/task-developer.md)
 
 8. **Monitor agent progress** (if running in background):
    - Check for completion signals
@@ -457,6 +469,7 @@ $ARGUMENTS
    - **Failure**: Task rejected, remains `in_progress`
 
 3. **Handle rejections**:
+
    ```markdown
    ⚠️  Task <task-id> Validation FAILED
 
@@ -485,6 +498,7 @@ $ARGUMENTS
 
 1. **Create atomic update file**:
    - Path: `.tasks/updates/agent_task-parallel_<timestamp>_<task-id>_complete.json`
+
    ```json
    {
      "agent_id": "task-parallel",
@@ -494,7 +508,7 @@ $ARGUMENTS
      "new_status": "completed",
      "actual_tokens": <calculated-from-logs>,
      "completed_at": "<ISO-8601>",
-     "completed_by": "task-worktree",
+     "completed_by": "task-developer",
      "completion_validated": true,
      "validation_results": {
        "all_criteria_met": true,
@@ -510,7 +524,7 @@ $ARGUMENTS
    - Set `status: "completed"`
    - Set `actual_tokens: <value>`
    - Set `completed_at: <ISO-8601>`
-   - Set `completed_by: "task-worktree"`
+   - Set `completed_by: "task-developer"`
    - Update `stats.completed` counter
    - Update `stats.in_progress` counter
 
@@ -518,11 +532,12 @@ $ARGUMENTS
    - Copy from `.tasks/tasks/<task-id>-<name>.md`
    - To `.tasks/completed/<task-id>-<name>.md`
    - Append completion record:
+
      ```markdown
      ---
      ## Completion Record
      - Completed: <ISO-8601>
-     - Completed by: task-worktree (via task-parallel)
+     - Completed by: task-developer (via task-parallel)
      - Actual tokens: <value>
      - Validation: ✅ Passed all quality gates
      - Batch: <batch-number> (parallel execution)
@@ -531,6 +546,7 @@ $ARGUMENTS
 ### Update Metrics
 
 4. **Update .tasks/metrics.json**:
+
    ```json
    {
      "tasks_completed": <increment>,
@@ -712,11 +728,13 @@ Handle by:
 ### Manifest Corruption
 
 **Symptoms:**
+
 - JSON parse errors
 - Missing required fields
 - Inconsistent task counts
 
 **Recovery:**
+
 1. Check `.tasks/updates/` for recent atomic updates
 2. Restore from last known good state
 3. Validate with: `jq . .tasks/manifest.json`
@@ -746,6 +764,7 @@ Recommended actions:
 ```
 
 **Recovery options:**
+
 - Fix issues in preserved worktrees
 - Update validation commands if incorrect
 - Adjust quality baselines if too strict
@@ -754,11 +773,13 @@ Recommended actions:
 ### Dependency Graph Corruption
 
 **Symptoms:**
+
 - Circular dependencies detected
 - Tasks marked pending but dependencies incomplete
 - Critical path calculation fails
 
 **Recovery:**
+
 1. Validate dependency graph manually
 2. Check for circular references
 3. Recalculate with `/task-health`
@@ -782,7 +803,7 @@ Resolution:
 
 ### Agent Failures
 
-**When @task-worktree or @task-completer fails:**
+**When @task-developer or @task-completer fails:**
 
 1. **Check agent logs**: Review error messages
 2. **Preserve state**: Do NOT delete worktrees
@@ -805,6 +826,7 @@ Use descriptive, kebab-case names with task ID prefix:
 **Format:** `task/<task-id>-<sanitized-title>`
 
 **Benefits:**
+
 - Clear task tracking
 - Easy cross-reference to task files
 - Automatic cleanup on task completion
@@ -820,6 +842,7 @@ Follow conventional commits format with task ID:
 **Format:** `<type>(<task-id>): <description>`
 
 **Benefits:**
+
 - Traceability to task requirements
 - Clear commit history
 - Easy to filter by task
@@ -835,24 +858,28 @@ Choose based on complexity:
 ## Parallel Execution Optimization
 
 **Task Selection:**
+
 - Prioritize high-priority tasks (priority 1-2) first
 - Group related tasks by module/feature for better context
 - Limit to 3-5 parallel tasks to prevent resource exhaustion
 - Prefer tasks with no file overlap
 
 **File Conflict Avoidance:**
+
 - Use file conflict detection (Phase 0.5) before execution
 - Batch tasks by directory/module
 - Separate frontend from backend tasks when possible
 - Serialize database migrations
 
 **Dependency Management:**
+
 - Complete critical path tasks first
 - Verify all dependencies satisfied before parallel execution
 - Monitor dependency graph for newly unblocked tasks
 - Recalculate critical path after each batch
 
 **Quality Assurance:**
+
 - Preserve worktrees on validation failure for fixes
 - Don't merge until validation passes
 - Monitor token usage and variance
@@ -873,6 +900,7 @@ Each project has its own git repository. Sub-agents MUST change working director
 ## Task Management Integration
 
 **ALWAYS:**
+
 - Read `.tasks/manifest.json` to discover actionable tasks
 - Load task files (`.tasks/tasks/<task-id>-<name>.md`) for full context
 - Update task status atomically via `.tasks/updates/`
@@ -882,6 +910,7 @@ Each project has its own git repository. Sub-agents MUST change working director
 - Recalculate dependency graph and critical path
 
 **NEVER:**
+
 - Skip dependency checks (circular deps, unmet dependencies)
 - Delete worktrees before validation passes
 - Mark tasks complete without `@task-completer` validation
@@ -892,6 +921,7 @@ Each project has its own git repository. Sub-agents MUST change working director
 ## Quality Gates
 
 **Zero-tolerance enforcement:**
+
 - ALL acceptance criteria must be checked
 - ALL validation commands must pass
 - ALL tests must pass
@@ -907,6 +937,7 @@ Each project has its own git repository. Sub-agents MUST change working director
 ## Token Efficiency
 
 Parallel execution maximizes token efficiency:
+
 - Discovery: ~150 tokens (manifest only)
 - Task context: ~600 tokens per task
 - Execution: Variable per task
