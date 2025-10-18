@@ -245,10 +245,88 @@ Use: `subagent_type: "task-smell"`
 
 ---
 
+## Phase 3: Automatic Remediation Loop
+
+**IF task-smell reports FAIL or REVIEW status with issues:**
+
+Execute automatic remediation (max 3 attempts):
+
+**Remediation Iteration:**
+
+1. **Parse task-smell output** to determine status (PASS/REVIEW/FAIL)
+2. **IF FAIL** (1+ Critical) **OR REVIEW** (3+ Warnings):
+   - Invoke `task-developer` agent with remediation instructions
+   - Provide full task-smell report as context
+   - task-developer addresses ALL CRITICAL issues, as many WARNINGS as feasible
+3. **Re-run task-smell** after fixes complete
+4. **IF PASS achieved** → Exit loop, proceed to Next Steps
+5. **IF still FAIL/REVIEW** → Increment attempt counter, repeat (max 3 total)
+6. **IF max attempts reached** without PASS → Report to user, request manual intervention
+
+---
+
+### Agent Invocation: task-developer (Remediation Mode)
+
+**Use `task-developer` agent to fix code quality issues:**
+
+```
+Fix code quality issues found for task: $ARGUMENTS
+
+**Task-Smell Quality Report:**
+
+[Insert complete task-smell output here - all findings with file:line references, severity classifications, and recommended fixes]
+
+**Your Remediation Objectives:**
+
+1. **CRITICAL Issues** (MANDATORY): Address ALL critical issues identified
+2. **WARNING Issues** (STRONGLY RECOMMENDED): Fix as many warning issues as feasible
+3. **Follow Standards**: Apply your LEVEL 0-2 validation standards
+4. **Provide Evidence**: Document all fixes with file:line changes and verification outputs
+5. **Verify Fixes**: Run relevant linters, tests, and validation commands after each fix
+
+**Context:**
+
+- Task file location: .tasks/tasks/$ARGUMENTS-<name>.md
+- Original implementation by: [task-ui or task-developer - specify which]
+- Remediation attempt: [X of 3]
+- Quality gate: Must achieve PASS status to proceed to /task-complete
+
+**IMPORTANT:**
+
+- Do NOT add new features or change functionality
+- Focus ONLY on addressing identified code quality issues
+- Maintain all existing tests and behavior
+- Follow discovered project conventions and patterns
+
+Begin fixing issues now. Report completion with evidence.
+```
+
+Use: `subagent_type: "task-developer"`
+
+**After task-developer completes remediation:**
+
+Re-run task-smell verification (repeat task-smell agent invocation from Phase 2) to validate fixes.
+
+**Iteration Control:**
+
+- Attempt 1: First remediation pass
+- Attempt 2: If still FAIL/REVIEW after attempt 1
+- Attempt 3: Final remediation attempt if still FAIL/REVIEW after attempt 2
+
+**Exit Conditions:**
+
+- ✅ **Success**: task-smell returns PASS → proceed to Next Steps
+- ⚠️ **Max Attempts**: 3 attempts exhausted, still FAIL/REVIEW → escalate to user
+- ℹ️ **Initial Pass**: If task-smell returns PASS on first run, skip this phase entirely
+
+---
+
 ## Next Steps
 
-After quality verification:
+After automatic remediation completes (or if initial task-smell returned PASS):
 
-- If ✅ PASS or ⚠️  WARNING (minor): Use `/task-complete $ARGUMENTS` to validate and archive task
-- If ❌ FAIL (critical issues): Fix issues first, then re-run quality checks, then `/task-complete $ARGUMENTS`
-- Or continue working if not yet ready for completion
+- **If ✅ PASS achieved**: Use `/task-complete $ARGUMENTS` to validate and archive task
+- **If remediation failed after 3 attempts**: Review remaining issues manually, apply fixes, re-run task-smell until PASS, then `/task-complete $ARGUMENTS`
+- **Quality gate**: Only proceed to `/task-complete` when task-smell returns PASS status
+
+**Note**: The automatic remediation loop (Phase 3) ensures code quality issues are addressed before completion. Manual intervention is only required if automatic fixes fail after 3 attempts.
