@@ -1,5 +1,5 @@
 ---
-name: developer
+name: task-developer
 description: Software developer responsible for coding tasks, creating unit tests and other tests
 model: sonnet
 color: orange

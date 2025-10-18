@@ -12,7 +12,7 @@ Start working on task: $ARGUMENTS
 
 **ONLY these agents from this workflow are authorized:**
 
-- ✅ `task-executor` - TDD-driven implementation specialist with mandatory validation (backend, logic, data)
+- ✅ `task-developer` - TDD-driven implementation specialist with mandatory validation (backend, logic, data)
 - ✅ `task-ui` - Expert UI/UX designer with anti-generic enforcement and brand alignment (UI, design, interface)
 - ✅ `task-smell` - Post-implementation code quality auditor detecting code smells and anti-patterns (quality verification)
 
@@ -24,7 +24,7 @@ Start working on task: $ARGUMENTS
 
 **Why This Matters:**
 
-**task-executor** enforces:
+**task-developer** enforces:
 
 - Mandatory TDD (tests before code, always)
 - Anti-hallucination rules (verify everything)
@@ -46,7 +46,7 @@ Global agents do NOT follow these extreme validation standards.
 
 This command analyzes the task type and delegates to the appropriate specialized agent:
 
-**task-executor** for:
+**task-developer** for:
 
 - Backend logic, APIs, data processing
 - Business logic, algorithms
@@ -64,7 +64,7 @@ This command analyzes the task type and delegates to the appropriate specialized
 
 **Mixed tasks** (both backend and UI):
 
-- Delegate to task-executor which can sub-delegate UI portions to task-ui
+- Delegate to task-developer which can sub-delegate UI portions to task-ui
 - Or split into separate UI and backend sub-tasks
 
 Token budget: ~1,700 tokens startup, variable implementation
@@ -82,7 +82,7 @@ Read `.tasks/tasks/$ARGUMENTS-<name>.md` and analyze:
 - Description focuses on: UI/UX, visual design, interface creation, component design
 - Tags include: "ui", "design", "interface", "frontend-ui"
 
-**Backend Task Indicators** (delegate to `task-executor`):
+**Backend Task Indicators** (delegate to `task-developer`):
 
 - Title contains: "API", "database", "logic", "service", "integration", "migration"
 - Acceptance criteria mention: "endpoint", "data processing", "business logic", "database", "testing"
@@ -92,7 +92,7 @@ Read `.tasks/tasks/$ARGUMENTS-<name>.md` and analyze:
 **Mixed Task Indicators**:
 
 - Both UI and backend indicators present
-- Action: Delegate to `task-executor` with note to sub-delegate UI work to `task-ui` if needed
+- Action: Delegate to `task-developer` with note to sub-delegate UI work to `task-ui` if needed
 
 **Step 2: Select Agent**
 
@@ -124,14 +124,14 @@ Use: `subagent_type: "task-ui"`
 
 ---
 
-## Agent Invocation: task-executor
+## Agent Invocation: task-developer
 
-**IF task is backend/logic-focused, use `task-executor` agent:**
+**IF task is backend/logic-focused, use `task-developer` agent:**
 
 ```
 Execute task: $ARGUMENTS
 
-Follow your complete validation-driven workflow as defined in your agent configuration (.claude/agents/task-executor.md).
+Follow your complete validation-driven workflow as defined in your agent configuration (.claude/agents/task-developer.md).
 
 Task file location: .tasks/tasks/$ARGUMENTS-<name>.md
 
@@ -147,13 +147,13 @@ Task file location: .tasks/tasks/$ARGUMENTS-<name>.md
 Begin task execution now.
 ```
 
-Use: `subagent_type: "task-executor"`
+Use: `subagent_type: "task-developer"`
 
 ---
 
 ## Why Use Specialized Agents
 
-**task-executor Agent:**
+**task-developer Agent:**
 
 - **Specialized Expertise**: Validation-driven development with TDD
 - **Full Context Awareness**: Loads and maintains all relevant context
