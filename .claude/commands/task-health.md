@@ -3,55 +3,75 @@ allowed-tools: Read, Task
 description: Standalone health check for task management system (no task selection)
 ---
 
-Perform comprehensive health check on the task management system without finding next task.
+<purpose>
+Perform **COMPREHENSIVE HEALTH CHECK** on task management system **WITHOUT** finding next task.
 
-## Purpose
+**DIAGNOSTIC MODE**: Analysis and reporting ONLY—no task selection, no remediation execution.
+</purpose>
 
-This command analyzes `.tasks/manifest.json` for planning issues and provides diagnostic report without selecting next task.
+<scope>
+This command analyzes `.tasks/manifest.json` for planning issues and provides diagnostic report.
 
+**KEY DIFFERENCE**: `/task-next` includes health check + task selection. This command = health check ONLY.
+</scope>
+
+<output_guarantee>
+**YOU WILL RECEIVE**:
+
+- Stalled task detection (>24h in progress)
+- Critical path bottleneck analysis
+- Priority misalignment identification
+- Dependency health assessment
+- Actionable recommendations (NOT automatic fixes)
+</output_guarantee>
+
+<usage_context>
 Use this when you want to understand system health before making decisions.
 
 For finding next task with health checks, use `/task-next` instead.
 
 Token budget: ~150-300 tokens (manifest analysis only)
+</usage_context>
 
-## Implementation
-
-**Read `.tasks/manifest.json` and analyze:**
+<instructions>
+**MANDATORY**: Read `.tasks/manifest.json` and analyze:
 
 ### 1. Stalled Task Detection
 
 - Find all tasks with `status: "in_progress"`
 - Calculate time since `started_at` timestamp
-- Flag tasks in_progress > 24 hours as "potentially stalled"
-- Flag tasks in_progress > 72 hours as "definitely stalled"
+- **Flag tasks in_progress > 24 hours** as "potentially stalled"
+- **Flag tasks in_progress > 72 hours** as "definitely stalled"
 
 ### 2. Critical Path Analysis
 
 - Load `critical_path` array from manifest
 - Check which critical_path tasks are `completed`, `in_progress`, or `blocked`
-- Identify bottlenecks: which in_progress task is blocking most downstream work?
+- **Identify bottlenecks**: which in_progress task is blocking most downstream work?
 - Calculate critical path completion percentage
 
 ### 3. Priority Misalignment Detection
 
 - Find all priority 1 tasks (highest priority)
 - Check if any are `pending` but blocked by lower-priority in_progress tasks
-- This indicates suboptimal work ordering
+- **This indicates suboptimal work ordering**
 
 ### 4. Dependency Health
 
 - Check `dependency_graph` for circular dependencies
 - Find tasks with all dependencies completed but still marked `blocked` or `pending`
-- Identify orphaned tasks (no blockers, no dependents, not started)
+- **Identify orphaned tasks** (no blockers, no dependents, not started)
 
 ### 5. Task Age Analysis
 
 - Calculate average time tasks spend in each status
-- Find outliers (tasks taking much longer than average)
+- **Find outliers** (tasks taking much longer than average)
 - Check if `estimated_tokens` vs `actual_tokens` variance is high (indicates poor planning)
+</instructions>
 
-## Output Format
+<output_format>
+
+## Success Format
 
 Provide comprehensive diagnostic report (with Minion Engine reliability labels):
 
@@ -120,9 +140,24 @@ Framework: Minion Engine v3.0 (Evidence-Based Analysis)
 - [Systemic improvements needed]
 ```
 
+## Report Elements
+
+**MANDATORY** inclusions:
+
+- Overall health status with confidence score
+- Evidence citations (manifest.json lines, timestamps)
+- Stalled tasks table with blocking relationships
+- Critical path bottleneck identification
+- Priority misalignment cases
+- Dependency health issues
+- Specific actionable recommendations
+</output_format>
+
+<agent_invocation>
+
 ## Optional: Deep Analysis with task-manager
 
-For complex issues requiring remediation (not just diagnostics), you MAY optionally escalate to `task-manager` agent:
+For complex issues requiring remediation (not just diagnostics), you **MAY** optionally escalate to `task-manager` agent:
 
 ```
 Perform comprehensive health analysis of task management system.
@@ -156,15 +191,20 @@ Begin analysis now.
 Use: `subagent_type: "task-manager"`
 
 **Note:** Only use agent escalation if manifest analysis reveals complex issues requiring deep investigation. For simple diagnostics, direct manifest reading is sufficient.
+</agent_invocation>
 
+<constraints>
 ## DO NOT
 
-- Do NOT select or recommend the next task (that's /task-next's job)
-- Do NOT modify manifest.json (report only)
-- Do NOT execute remediation (this is diagnostic only)
-- Do NOT load individual task files (manifest analysis only for speed)
+- **Do NOT** select or recommend the next task (that's /task-next's job)
+- **Do NOT** modify manifest.json (report only)
+- **Do NOT** execute remediation (this is diagnostic only)
+- **Do NOT** load individual task files (manifest analysis only for speed)
+</constraints>
 
-## Use Case
+<use_cases>
+
+## When to Use This Command
 
 Run this command when:
 
@@ -174,6 +214,9 @@ Run this command when:
 - Auditing task management system
 
 Run `/task-next` when actually ready to select and start next task.
+</use_cases>
+
+<performance_metrics>
 
 ## Token Efficiency
 
@@ -183,5 +226,6 @@ Run `/task-next` when actually ready to select and start next task.
 
 Choose analysis depth based on needs:
 
-- Quick check: Direct manifest analysis
-- Deep investigation: Agent escalation
+- **Quick check**: Direct manifest analysis
+- **Deep investigation**: Agent escalation
+</performance_metrics>

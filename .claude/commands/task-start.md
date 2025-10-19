@@ -4,29 +4,40 @@ argument-hint: [task-id]
 description: Claim task and load full context to begin work
 ---
 
-Start working on task: $ARGUMENTS
+<invocation>
+Start working on task: **$ARGUMENTS**
+</invocation>
 
-**Date Awareness**: Get the current system date so you can use the correct dates in online searches
+<critical_setup>
+**BEFORE ANYTHING ELSE**:
+
+- **MANDATORY**: Get current system date for time-sensitive operations
+- **MANDATORY**: Analyze task type to choose correct specialist agent
+</critical_setup>
+
+<agent_whitelist>
 
 ## MANDATORY AGENT WHITELIST — STRICT ENFORCEMENT
 
 **ONLY these agents from this workflow are authorized:**
 
-- ✅ `task-developer` - TDD-driven implementation specialist with mandatory validation (backend, logic, data)
+- ✅ `task-developer` - TDD-driven implementation specialist with **MANDATORY** validation (backend, logic, data)
 - ✅ `task-ui` - Expert UI/UX designer with anti-generic enforcement and brand alignment (UI, design, interface)
 - ✅ `task-smell` - Post-implementation code quality auditor detecting code smells and anti-patterns (quality verification)
 
 **FORBIDDEN:**
 
-- ❌ ANY agent with same name from global ~/.claude/agents/
-- ❌ ANY agent from other workflows
-- ❌ ANY general-purpose agents (developer, coder, frontend-developer, etc.)
+- ❌ **ANY** agent with same name from global ~/.claude/agents/
+- ❌ **ANY** agent from other workflows
+- ❌ **ANY** general-purpose agents (developer, coder, frontend-developer, etc.)
+</agent_whitelist>
 
-**Why This Matters:**
+<rationale>
+## Why This Matters
 
 **task-developer** enforces:
 
-- Mandatory TDD (tests before code, always)
+- **MANDATORY** TDD (tests before code, always)
 - Anti-hallucination rules (verify everything)
 - Iteration mandate until proven correct
 - Meaningful tests (realistic inputs, green+red+edge paths)
@@ -34,14 +45,16 @@ Start working on task: $ARGUMENTS
 
 **task-ui** enforces:
 
-- Mandatory Brand DNA alignment (every decision justified)
-- Anti-generic enforcement (genericness test ≤3.0 required)
+- **MANDATORY** Brand DNA alignment (every decision justified)
+- Anti-generic enforcement (genericness test ≤3.0 **REQUIRED**)
 - Design system consistency (create once, reuse everywhere)
 - Sophisticated design choices (no junior/template patterns)
 - Rigid quality gates (11 anti-patterns, accessibility, pre-delivery audit)
 
-Global agents do NOT follow these extreme validation standards.
+**CRITICAL**: Global agents do **NOT** follow these extreme validation standards.
+</rationale>
 
+<purpose>
 ## Purpose
 
 This command analyzes the task type and delegates to the appropriate specialized agent:
@@ -68,7 +81,9 @@ This command analyzes the task type and delegates to the appropriate specialized
 - Or split into separate UI and backend sub-tasks
 
 Token budget: ~1,700 tokens startup, variable implementation
+</purpose>
 
+<instructions>
 ## Task Analysis & Agent Selection
 
 **Step 1: Load and Analyze Task**
@@ -92,12 +107,14 @@ Read `.tasks/tasks/$ARGUMENTS-<name>.md` and analyze:
 **Mixed Task Indicators**:
 
 - Both UI and backend indicators present
-- Action: Delegate to `task-developer` with note to sub-delegate UI work to `task-ui` if needed
+- **Action**: Delegate to `task-developer` with note to sub-delegate UI work to `task-ui` if needed
 
 **Step 2: Select Agent**
 
 Based on analysis above, choose appropriate agent and proceed with invocation.
+</instructions>
 
+<agent_invocation>
 ---
 
 ## Agent Invocation: task-ui
@@ -113,8 +130,8 @@ Task file location: .tasks/tasks/$ARGUMENTS-<name>.md
 
 **IMPORTANT**:
 - Operate within Minion Engine v3.0 framework
-- Execute Phase 0 discovery sequence completely before creating designs from scratch
-- Apply all mandatory quality gates (genericness ≤3.0, confidence ≥7, Brand DNA alignment)
+- **MANDATORY**: Execute Phase 0 discovery sequence completely before creating designs from scratch
+- **MANDATORY**: Apply all quality gates (genericness ≤3.0, confidence ≥7, Brand DNA alignment)
 - Report ready for /task-complete when all criteria met
 
 Begin UI design execution now.
@@ -137,8 +154,8 @@ Task file location: .tasks/tasks/$ARGUMENTS-<name>.md
 
 **IMPORTANT**:
 - Operate within Minion Engine v3.0 framework
-- Execute all phases: Context Loading → Implementation Plan → Incremental Implementation → Continuous Validation → Completion
-- Follow TDD: tests before code, validate after each unit
+- **MANDATORY**: Execute all phases: Context Loading → Implementation Plan → Incremental Implementation → Continuous Validation → Completion
+- **MANDATORY**: Follow TDD: tests before code, validate after each unit
 - Check race conditions before claiming task
 - Report ready for /task-complete when all criteria met
 
@@ -148,14 +165,16 @@ Begin task execution now.
 ```
 
 Use: `subagent_type: "task-developer"`
+</agent_invocation>
 
 ---
 
+<rationale>
 ## Why Use Specialized Agents
 
 **task-developer Agent:**
 
-- **Specialized Expertise**: Validation-driven development with TDD
+- **Specialized Expertise**: Validation-driven development with **MANDATORY** TDD
 - **Full Context Awareness**: Loads and maintains all relevant context
 - **Quality Focused**: Enforces continuous validation and testing
 - **Progress Tracking**: Systematic logging and documentation
@@ -165,20 +184,48 @@ Use: `subagent_type: "task-developer"`
 **task-ui Agent:**
 
 - **Design Expertise**: 10+ years equivalent UI/UX design experience
-- **Brand Alignment**: Mandatory Brand DNA analysis and application
-- **Anti-Generic Enforcement**: Genericness test ≤3.0 required
+- **Brand Alignment**: **MANDATORY** Brand DNA analysis and application
+- **Anti-Generic Enforcement**: Genericness test ≤3.0 **REQUIRED**
 - **Design System**: Creates reusable system on first run, applies consistently
-- **Quality Gates**: 11 anti-patterns checked, accessibility required, pre-delivery audit
+- **Quality Gates**: 11 anti-patterns checked, accessibility **REQUIRED**, pre-delivery audit
 - **Research-Backed**: Trend research with strategic synthesis, not blind following
+</rationale>
+
+<error_handling>
 
 ## Error Handling
 
-**If task not found:**
+**Decision Tree for Error Scenarios**:
 
 ```
-❌ Task $ARGUMENTS not found in manifest
+Task Validation:
+├─ Task ID not in manifest
+│  └─ ❌ Show: "Task not found" + suggest /task-status
+│
+├─ Task already in_progress
+│  ├─ Started <24h ago → ⚠️  Show warning + allow override
+│  └─ Started >24h ago → ❌ Likely stalled, suggest /task-next
+│
+├─ Dependencies not complete
+│  └─ ❌ List incomplete dependencies + show dependency graph
+│
+├─ Task is blocked
+│  └─ ❌ Show blocker + resolution steps
+│
+└─ Task already completed
+   └─ ❌ Show completion date + suggest /task-next
+```
 
-Check /task-status for valid task IDs
+### Example Error Messages
+
+**Task Not Found**:
+
+```markdown
+❌ Task **$ARGUMENTS** Not Found
+
+**Available Tasks**: Run `/task-status` to see all tasks
+
+**Did You Mean?**: [suggest similar task IDs if close match]
 ```
 
 **If task already in progress:**
@@ -213,6 +260,10 @@ Blocker: <description>
 Resolve blocker and update manifest before starting
 ```
 
+</error_handling>
+
+<verification_gates>
+
 ## Post-Implementation Quality Verification
 
 After agent completes work, run immediate code quality audit:
@@ -228,22 +279,25 @@ Task file location: .tasks/tasks/$ARGUMENTS-<name>.md
 
 **IMPORTANT**:
 - Operate within Minion Engine v3.0 framework
-- Execute all phases: Context Loading → Static Analysis → Code Pattern Detection → Convention Verification → Report Generation
+- **MANDATORY**: Execute all phases: Context Loading → Static Analysis → Code Pattern Detection → Convention Verification → Report Generation
 - Provide immediate, actionable feedback on code quality issues
-- Flag Critical issues that must be fixed before /task-complete
+- **Flag CRITICAL issues** that **MUST** be fixed before /task-complete
 - Document all findings with file:line references
 
 **OUTPUT EXPECTATIONS**:
 - ✅ PASS: Brief confirmation, proceed to /task-complete
 - ⚠️  WARNING: Issues found, recommend fixes before completion
-- ❌ FAIL: Critical issues, must fix before /task-complete
+- ❌ FAIL: **CRITICAL** issues, **MUST** fix before /task-complete
 
 Begin quality verification now.
 ```
 
 Use: `subagent_type: "task-smell"`
+</verification_gates>
 
 ---
+
+<remediation_loop>
 
 ## Phase 3: Automatic Remediation Loop
 
@@ -257,7 +311,7 @@ Execute automatic remediation (max 3 attempts):
 2. **IF FAIL** (1+ Critical) **OR REVIEW** (3+ Warnings):
    - Invoke `task-developer` agent with remediation instructions
    - Provide full task-smell report as context
-   - task-developer addresses ALL CRITICAL issues, as many WARNINGS as feasible
+   - task-developer addresses **ALL CRITICAL** issues, as many WARNINGS as feasible
 3. **Re-run task-smell** after fixes complete
 4. **IF PASS achieved** → Exit loop, proceed to Next Steps
 5. **IF still FAIL/REVIEW** → Increment attempt counter, repeat (max 3 total)
@@ -278,8 +332,8 @@ Fix code quality issues found for task: $ARGUMENTS
 
 **Your Remediation Objectives:**
 
-1. **CRITICAL Issues** (MANDATORY): Address ALL critical issues identified
-2. **WARNING Issues** (STRONGLY RECOMMENDED): Fix as many warning issues as feasible
+1. **CRITICAL Issues** (**MANDATORY**): Address **ALL** critical issues identified
+2. **WARNING Issues** (**STRONGLY RECOMMENDED**): Fix as many warning issues as feasible
 3. **Follow Standards**: Apply your LEVEL 0-2 validation standards
 4. **Provide Evidence**: Document all fixes with file:line changes and verification outputs
 5. **Verify Fixes**: Run relevant linters, tests, and validation commands after each fix
@@ -289,12 +343,12 @@ Fix code quality issues found for task: $ARGUMENTS
 - Task file location: .tasks/tasks/$ARGUMENTS-<name>.md
 - Original implementation by: [task-ui or task-developer - specify which]
 - Remediation attempt: [X of 3]
-- Quality gate: Must achieve PASS status to proceed to /task-complete
+- Quality gate: **MUST** achieve PASS status to proceed to /task-complete
 
 **IMPORTANT:**
 
-- Do NOT add new features or change functionality
-- Focus ONLY on addressing identified code quality issues
+- Do **NOT** add new features or change functionality
+- Focus **ONLY** on addressing identified code quality issues
 - Maintain all existing tests and behavior
 - Follow discovered project conventions and patterns
 
@@ -318,8 +372,9 @@ Re-run task-smell verification (repeat task-smell agent invocation from Phase 2)
 - ✅ **Success**: task-smell returns PASS → proceed to Next Steps
 - ⚠️ **Max Attempts**: 3 attempts exhausted, still FAIL/REVIEW → escalate to user
 - ℹ️ **Initial Pass**: If task-smell returns PASS on first run, skip this phase entirely
+</remediation_loop>
 
----
+<next_steps>
 
 ## Next Steps
 
@@ -327,6 +382,108 @@ After automatic remediation completes (or if initial task-smell returned PASS):
 
 - **If ✅ PASS achieved**: Use `/task-complete $ARGUMENTS` to validate and archive task
 - **If remediation failed after 3 attempts**: Review remaining issues manually, apply fixes, re-run task-smell until PASS, then `/task-complete $ARGUMENTS`
-- **Quality gate**: Only proceed to `/task-complete` when task-smell returns PASS status
+- **Quality gate**: **ONLY** proceed to `/task-complete` when task-smell returns PASS status
 
-**Note**: The automatic remediation loop (Phase 3) ensures code quality issues are addressed before completion. Manual intervention is only required if automatic fixes fail after 3 attempts.
+**Note**: The automatic remediation loop (Phase 3) ensures code quality issues are addressed before completion. Manual intervention is **ONLY** required if automatic fixes fail after 3 attempts.
+</next_steps>
+
+<output_format>
+
+## Output Format
+
+### Success Format - Task Started
+
+```markdown
+✅ **Task Started**: $ARGUMENTS
+
+**Task Type**: [UI/Backend/Mixed]
+**Assigned Agent**: [task-ui/task-developer]
+**Task File**: .tasks/tasks/$ARGUMENTS-<name>.md
+
+**Agent Instructions Sent**:
+- Operate within Minion Engine v3.0 framework
+- Follow complete validation-driven workflow
+- Execute all mandatory quality gates
+- Report ready for /task-complete when criteria met
+
+**Next Phase**: Implementation in progress...
+```
+
+### Success Format - Quality Verification Pass
+
+```markdown
+✅ **Quality Verification PASSED**: $ARGUMENTS
+
+**task-smell Status**: PASS
+**Issues Found**: None
+**Remediation Required**: No
+
+**Ready for Completion**: Use `/task-complete $ARGUMENTS`
+```
+
+### Success Format - After Remediation
+
+```markdown
+✅ **Remediation Complete**: $ARGUMENTS
+
+**Remediation Attempts**: [1-3]
+**task-smell Status**: PASS
+**Critical Issues Fixed**: [count]
+**Warning Issues Fixed**: [count]
+
+**Ready for Completion**: Use `/task-complete $ARGUMENTS`
+```
+
+### Error Format - Task Not Found
+
+```markdown
+❌ **Task Not Found**: $ARGUMENTS
+
+**Available Tasks**: Run `/task-status` to see all tasks
+**Did You Mean?**: [suggest similar task IDs if close match]
+```
+
+### Error Format - Dependencies Not Met
+
+```markdown
+❌ **Dependencies Not Met**: $ARGUMENTS
+
+**Required Tasks**:
+- [task-id-1]: [status]
+- [task-id-2]: [status]
+
+**Action Required**: Complete dependencies first
+```
+
+### Error Format - Remediation Failed
+
+```markdown
+⚠️ **Remediation Failed**: $ARGUMENTS
+
+**Remediation Attempts**: 3 (max reached)
+**task-smell Status**: [FAIL/REVIEW]
+**Remaining Issues**:
+- CRITICAL: [count]
+- WARNING: [count]
+
+**Action Required**: Manual review and fixes needed
+**Next Steps**:
+1. Review task-smell report below
+2. Apply fixes manually
+3. Re-run task-smell verification
+4. Use `/task-complete $ARGUMENTS` when PASS achieved
+
+[Include full task-smell report here]
+```
+
+### Report Elements
+
+**All outputs must include**:
+
+- Clear status indicator (✅/❌/⚠️)
+- Task ID being processed
+- Current phase/stage
+- Agent assignments and invocations
+- Quality gate results
+- Clear next steps
+</output_format>

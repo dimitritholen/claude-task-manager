@@ -3,9 +3,25 @@ allowed-tools: Read, Task
 description: Add new tasks to the existing task management system with full comprehensiveness
 ---
 
-Add new feature tasks to the project incrementally while maintaining quality standards.
+<purpose>
+Add new feature tasks to the project incrementally while **MAINTAINING QUALITY STANDARDS**.
 
-## MANDATORY AGENT WHITELIST — STRICT ENFORCEMENT
+**QUALITY GUARANTEE**: Every task matches `task-initializer` quality—no shortcuts, no compromises.
+</purpose>
+
+<critical_setup>
+**MANDATORY PRE-FLIGHT REQUIREMENTS**:
+
+- ✅ **8+ acceptance criteria** (specific, testable)
+- ✅ **6+ test scenarios** (success, edge, error cases)
+- ✅ **ALL required sections** (description, context, technical impl, risks, dependencies)
+- ✅ **Accurate dependencies** (verified in manifest.json, **NEVER** guessed)
+- ❌ **FORBIDDEN**: Incomplete tasks, guessed dependencies, missing sections
+</critical_setup>
+
+<agent_whitelist>
+
+## **MANDATORY AGENT WHITELIST — STRICT ENFORCEMENT**
 
 **ONLY these agents from this workflow are authorized:**
 
@@ -13,22 +29,26 @@ Add new feature tasks to the project incrementally while maintaining quality sta
 
 **FORBIDDEN:**
 
-- ❌ ANY agent with same name from global ~/.claude/agents/
-- ❌ ANY agent from other workflows
-- ❌ ANY general-purpose agents
+- ❌ **ANY** agent with same name from global ~/.claude/agents/
+- ❌ **ANY** agent from other workflows
+- ❌ **ANY** general-purpose agents
+</agent_whitelist>
 
+<rationale>
 **Why This Matters:**
 This workflow's task-creator is specifically designed to:
 
-- Generate tasks with ALL required sections (8+ acceptance criteria, 6+ test scenarios)
+- Generate tasks with **ALL** required sections (8+ acceptance criteria, 6+ test scenarios)
 - Analyze dependencies against existing manifest
 - Match task-initializer quality standards
 - Create atomic update records
 - Update manifest with bidirectional dependency graph
 
-Global agents do NOT know this workflow's comprehensive task structure or standards.
+Global agents do **NOT** know this workflow's comprehensive task structure or standards.
+</rationale>
 
-## Purpose
+<invocation>
+## Command Invocation
 
 This command delegates task creation to the specialized task-creator agent that:
 
@@ -40,9 +60,11 @@ This command delegates task creation to the specialized task-creator agent that:
 6. Updates manifest atomically
 7. Creates update record
 
-Token budget: ~800 tokens per task created
+**Token budget**: ~800 tokens per task created
+</invocation>
 
-## Usage
+<usage>
+## Usage Examples
 
 ```bash
 # Add task from description
@@ -58,9 +80,15 @@ Token budget: ~800 tokens per task created
 /task-add "Add complete user authentication system with OAuth, 2FA, and password reset"
 ```
 
+</usage>
+
+<agent_invocation>
+
 ## Agent Invocation
 
 **MANDATORY**: Use `task-creator` agent via Task tool.
+
+**Agent Prompt:**
 
 ```
 Create comprehensive task(s) for the following feature request:
@@ -71,7 +99,7 @@ Create comprehensive task(s) for the following feature request:
 **IMPORTANT**: Operate within [Minion Engine v3.0 framework](../core/minion-engine.md).
 - Use Conditional Interview Protocol if feature request vague
 - Apply Reliability Labeling to dependency analysis and estimates
-- Never guess dependencies - verify in manifest.json
+- **NEVER** guess dependencies - verify in manifest.json
 
 **Your Mission:**
 1. Load existing context (project.md, architecture.md, acceptance-templates.md)
@@ -92,14 +120,14 @@ Create comprehensive task(s) for the following feature request:
 **If triggered, use Minion Engine Interview Protocol** (see agent instructions)
 
 **Quality Requirements:**
-- Each task must have ALL sections (description, business context, acceptance criteria, test scenarios, technical implementation, dependencies, design decisions, risks, progress log, completion checklist)
-- Minimum 8 acceptance criteria per task
-- Minimum 6 test scenarios per task
-- Accurate dependency analysis
-- Realistic token estimates
-- Appropriate priority assignment (1-5 based on critical path)
-- Design decisions must explain "why"
-- Risk analysis must have real mitigations
+- Each task **MUST** have **ALL** sections (description, business context, acceptance criteria, test scenarios, technical implementation, dependencies, design decisions, risks, progress log, completion checklist)
+- **MINIMUM** 8 acceptance criteria per task
+- **MINIMUM** 6 test scenarios per task
+- **ACCURATE** dependency analysis
+- **REALISTIC** token estimates
+- **APPROPRIATE** priority assignment (1-5 based on critical path)
+- Design decisions **MUST** explain "why"
+- Risk analysis **MUST** have real mitigations
 
 **Expected Output:**
 Provide comprehensive report showing:
@@ -130,7 +158,7 @@ Provide comprehensive report showing:
 Begin task creation now.
 ```
 
-Use: `subagent_type: "task-creator"`
+**Agent Type**: `subagent_type: "task-creator"`
 
 **Parameter Handling:**
 
@@ -138,16 +166,18 @@ Replace `{user_input}` with:
 
 - If argument is a file path (ends with .md or .txt): Read the file and use its content
 - Otherwise: Use the argument as the feature description directly
+</agent_invocation>
 
+<artifacts>
 ## What Gets Created
 
-### 1. Task File (`.tasks/tasks/T00X-feature-slug.md`)
+### **1. Task File (`.tasks/tasks/T00X-feature-slug.md`)**
 
 - YAML frontmatter (id, title, status, priority, dependencies, tags, est_tokens)
 - Description
 - Business Context
-- Acceptance Criteria (8+ items)
-- Test Scenarios (6+ cases)
+- Acceptance Criteria (**8+ items**)
+- Test Scenarios (**6+ cases**)
 - Technical Implementation
 - Dependencies
 - Design Decisions
@@ -155,7 +185,7 @@ Replace `{user_input}` with:
 - Progress Log
 - Completion Checklist
 
-### 2. Updated Manifest (`.tasks/manifest.json`)
+### **2. Updated Manifest (`.tasks/manifest.json`)**
 
 - New task(s) in tasks array
 - Updated stats (total_tasks, pending)
@@ -163,14 +193,16 @@ Replace `{user_input}` with:
 - Updated critical_path (if Priority 1)
 - Updated total_estimated_tokens
 
-### 3. Update Record (`.tasks/updates/task-creator_YYYYMMDD_HHMMSS.json`)
+### **3. Update Record (`.tasks/updates/task-creator_YYYYMMDD_HHMMSS.json`)**
 
 - Timestamp
 - Agent name
 - Action taken
 - Tasks added
 - Summary
+</artifacts>
 
+<examples>
 ## Example Workflow
 
 ```bash
@@ -202,6 +234,56 @@ Replace `{user_input}` with:
 /task-start T006
 ```
 
+</examples>
+
+<output_format>
+
+## Expected Output Format
+
+### **Success Report**
+
+```
+✅ Task(s) Created Successfully
+
+[Task ID]: [Task Title]
+- Priority: [1-5] ([rationale])
+- Depends on: [Dependencies with IDs and descriptions]
+- Estimated tokens: ~[number]
+- Status: pending
+
+Files Created:
+✓ .tasks/tasks/[task-file].md
+✓ .tasks/updates/task-creator_[timestamp].json
+✓ .tasks/manifest.json (updated)
+
+Next Steps:
+1. Review task: Check .tasks/tasks/[task-file].md
+2. Start work: /task-start [Task ID] ([dependency status])
+```
+
+### **Error Report**
+
+```
+❌ Task Creation Failed
+
+Reason: [Specific error explanation]
+
+Required Action:
+- [What user needs to provide or fix]
+```
+
+### **Report Elements (MANDATORY)**
+
+- Task IDs and titles
+- Priority with rationale
+- Dependency analysis (prerequisites, what this enables)
+- Task breakdown rationale (if multiple tasks created)
+- Files created/modified
+- Manifest updates (stats, dependency graph, tokens)
+- Next actionable steps
+</output_format>
+
+<rationale>
 ## Why Use task-creator Agent
 
 - **Specialized Expertise**: Designed for comprehensive task generation
@@ -211,6 +293,9 @@ Replace `{user_input}` with:
 - **Duplicate Detection**: Prevents creating tasks that already exist
 - **Consistent Structure**: All tasks follow same comprehensive format
 - **Atomic Updates**: Creates update records for audit trail
+</rationale>
+
+<next_steps>
 
 ## Next Steps
 
@@ -219,3 +304,4 @@ After adding tasks:
 - `/task-status` - Check updated task overview
 - `/task-next` - Find next actionable task
 - `/task-start T00X` - Start working on the new task
+</next_steps>
