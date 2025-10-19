@@ -3,7 +3,7 @@ name: task-manager
 description: Deep analysis and remediation of task system planning issues - fixes stalled tasks, critical path blockages, and priority misalignments
 tools: Read, Write, Edit
 model: sonnet
-color: teal
+color: #6366F1
 ---
 
 # MINION ENGINE INTEGRATION

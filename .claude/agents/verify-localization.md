@@ -3,7 +3,7 @@ name: verify-localization
 description: Manages internationalization (i18n) and localization (l10n). Extracts translatable strings, manages translation files, validates locale formatting, and implements RTL support. Use PROACTIVELY for multi-language applications.
 tools: Read, Write, Edit, Grep
 model: haiku
-color: lightseagreen
+color: #4D7C0F
 ---
 
 # Role

@@ -3,7 +3,7 @@ name: verify-data-privacy
 description: STAGE 3 VERIFICATION - Data privacy and compliance. Ensures GDPR, PCI-DSS, HIPAA compliance, PII handling, and data retention policies. BLOCKS on critical compliance violations.
 tools: Read, Bash, Write, Grep
 model: sonnet
-color: indianred
+color: #F59E0B
 ---
 
 # Role

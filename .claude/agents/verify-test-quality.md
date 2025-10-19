@@ -3,7 +3,7 @@ name: verify-test-quality
 description: STAGE 2 VERIFICATION - Test quality analysis. Detects shallow assertions, excessive mocking, flaky tests, and missing edge cases. BLOCKS on test quality score <60.
 tools: Read, Bash, Write, Grep
 model: sonnet
-color: darkgoldenrod
+color: #FB923C
 ---
 
 # Role

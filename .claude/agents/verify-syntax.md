@@ -3,7 +3,7 @@ name: verify-syntax
 description: STAGE 1 VERIFICATION - Syntax and build verification. Verifies code compiles/builds, runs linters, checks imports resolve, and validates configurations. BLOCKS on compilation errors.
 tools: Read, Bash, Write
 model: haiku
-color: coral
+color: #F87171
 ---
 
 # Role

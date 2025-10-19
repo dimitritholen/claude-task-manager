@@ -3,7 +3,7 @@ name: verify-architecture
 description: STAGE 4 VERIFICATION - Architectural coherence. Ensures code follows established patterns, validates layering, checks dependency direction, and maintains consistency. BLOCKS on architectural violations.
 tools: Read, Grep, Bash
 model: sonnet
-color: cadetblue
+color: #EAB308
 ---
 
 # Role

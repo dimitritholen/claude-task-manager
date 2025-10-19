@@ -3,7 +3,7 @@ name: verify-performance
 description: STAGE 4 VERIFICATION - Performance and concurrency analysis. Detects response time regressions, N+1 queries, memory leaks, race conditions. BLOCKS on critical performance issues.
 tools: Read, Bash, Write, Grep
 model: opus
-color: dodgerblue
+color: #A16207
 ---
 
 # Role

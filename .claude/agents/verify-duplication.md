@@ -3,7 +3,7 @@ name: verify-duplication
 description: STAGE 4 VERIFICATION - Code duplication detection. Uses token-based and structural analysis to find copy-paste code. BLOCKS on >10% duplication or critical path duplication.
 tools: Read, Bash, Grep
 model: haiku
-color: powderblue
+color: #854D0E
 ---
 
 # Role

@@ -3,7 +3,7 @@ name: task-smell
 description: Post-implementation code quality auditor detecting smells, anti-patterns, and technical debt
 tools: Read, Bash, Grep, Glob
 model: sonnet
-color: yellow
+color: #7C3AED
 ---
 
 # MINION ENGINE INTEGRATION

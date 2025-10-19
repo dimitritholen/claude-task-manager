@@ -3,7 +3,7 @@ name: verify-security
 description: STAGE 3 VERIFICATION - Comprehensive security analysis and testing. Detects OWASP Top 10, SQL injection, XSS, weak crypto, hardcoded secrets. BLOCKS on any critical vulnerability. Use in verification pipelines AND proactively after code changes.
 tools: Read, Grep, Bash, Write
 model: opus
-color: crimson
+color: #D97706
 ---
 
 # Role

@@ -3,7 +3,7 @@ name: verify-database
 description: STAGE 5 VERIFICATION - Database and migrations validation. Tests migration reversibility, zero-downtime, data integrity, index performance. BLOCKS on irreversible migrations or data loss risk.
 tools: Read, Bash, Write, Grep
 model: opus
-color: midnightblue
+color: #16A34A
 ---
 
 # Role
