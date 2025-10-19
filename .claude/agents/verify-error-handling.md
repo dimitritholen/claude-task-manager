@@ -3,7 +3,7 @@ name: verify-error-handling
 description: STAGE 4 VERIFICATION - Error handling completeness. Detects swallowed exceptions, empty catch blocks, missing logging. BLOCKS on critical errors being swallowed.
 tools: Read, Grep, Bash
 model: sonnet
-color: #CA8A04
+color: yellow
 ---
 
 <agent_identity>

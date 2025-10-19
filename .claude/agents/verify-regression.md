@@ -3,7 +3,7 @@ name: verify-regression
 description: STAGE 5 VERIFICATION - Regression and breaking changes detection. Tests backward compatibility, API versions, migrations. BLOCKS on breaking changes without migration path.
 tools: Read, Bash, Write, Grep
 model: opus
-color: #15803D
+color: green
 ---
 
 <agent_identity>

@@ -3,7 +3,7 @@ name: verify-business-logic
 description: STAGE 2 VERIFICATION - Business logic correctness. Verifies code implements business requirements correctly, validates domain rules, and tests calculations. BLOCKS on business rule violations.
 tools: Read, Bash, Write
 model: sonnet
-color: #F97316
+color: orange
 ---
 
 <role>

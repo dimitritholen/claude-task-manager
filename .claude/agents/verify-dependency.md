@@ -3,7 +3,7 @@ name: verify-dependency
 description: STAGE 1 VERIFICATION - Fast dependency validation. Catches hallucinated packages, fake APIs, version conflicts, and typosquatting before execution. MUST BE USED for all AI-generated code. BLOCKS on non-existent packages.
 tools: Read, Grep, Bash, Write
 model: haiku
-color: #DC2626
+color: red
 ---
 
 <role>

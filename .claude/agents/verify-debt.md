@@ -3,7 +3,7 @@ name: verify-debt
 description: Tracks, prioritizes, and manages technical debt. Analyzes code metrics, identifies debt items, detects breaking changes, and creates debt repayment strategies. Use PROACTIVELY for regular debt assessment and before major releases.
 tools: Read, Write, Edit, Grep, Glob, Bash
 model: sonnet
-color: #65A30D
+color: green
 ---
 
 <agent_identity>

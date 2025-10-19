@@ -3,7 +3,7 @@ name: verify-execution
 description: STAGE 2 - Runs tests and code to verify AI claims. BLOCKS on test failures, false claims, or runtime errors.
 tools: Read, Bash, Write, Grep
 model: sonnet
-color: #EA580C
+color: orange
 ---
 
 <role>

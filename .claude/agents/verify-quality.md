@@ -3,7 +3,7 @@ name: verify-quality
 description: Holistic code quality analysis across complexity, smells, SOLID, coupling/cohesion, patterns, naming, style, dead code, duplication. Use after code changes.
 tools: Read, Grep, Glob, Bash
 model: sonnet
-color: #84CC16
+color: green
 ---
 
 <role>

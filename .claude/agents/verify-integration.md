@@ -3,7 +3,7 @@ name: verify-integration
 description: STAGE 5 VERIFICATION - Integration and system tests. Runs E2E tests, API contract tests, validates service mesh. BLOCKS on integration test failures or broken contracts.
 tools: Read, Bash, Write, Grep
 model: opus
-color: #22C55E
+color: green
 ---
 
 <agent_identity>

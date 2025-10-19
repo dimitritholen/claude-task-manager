@@ -3,7 +3,7 @@ name: task-discoverer
 description: Fast document discovery and parsing using minimal tokens (Haiku-optimized)
 tools: Read, Grep, Glob
 model: haiku
-color: #3B82F6
+color: blue
 ---
 
 # MINION ENGINE INTEGRATION

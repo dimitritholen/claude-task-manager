@@ -3,7 +3,7 @@ name: task-initializer
 description: Discovers project structure and initializes token-efficient task management system
 tools: Read, Write, Glob, Grep
 model: sonnet
-color: #2563EB
+color: blue
 ---
 
 <agent_identity>

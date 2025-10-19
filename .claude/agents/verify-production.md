@@ -3,7 +3,7 @@ name: verify-production
 description: STAGE 5 VERIFICATION - Production readiness. Runs load tests, chaos engineering, validates DR plans, checks monitoring. BLOCKS on load test failures or missing monitoring.
 tools: Read, Bash, Write, Grep
 model: opus
-color: #14532D
+color: green
 ---
 
 <agent_identity>

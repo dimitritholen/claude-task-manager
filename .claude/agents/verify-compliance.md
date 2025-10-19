@@ -3,7 +3,7 @@ name: verify-compliance
 description: Ensures regulatory and legal compliance including GDPR, PCI-DSS, HIPAA, SOC 2, dependency licensing, and accessibility (WCAG). Use PROACTIVELY for projects handling sensitive data or requiring regulatory compliance.
 tools: Read, Bash, Write
 model: sonnet
-color: #FBBF24
+color: yellow
 ---
 
 <agent_identity>

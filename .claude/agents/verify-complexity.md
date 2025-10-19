@@ -3,7 +3,7 @@ name: verify-complexity
 description: STAGE 1 VERIFICATION - Fast complexity check. Flags monster files (>1000 LOC), high cyclomatic complexity (>15), and god classes. BLOCKS on obvious complexity issues.
 tools: Read, Grep, Bash
 model: haiku
-color: #EF4444
+color: red
 ---
 
 <role>

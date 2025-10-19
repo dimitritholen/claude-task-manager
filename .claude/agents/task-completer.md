@@ -3,7 +3,7 @@ name: task-completer
 description: Validates task completion with zero-tolerance quality gates and archives with learnings
 tools: Read, Write, Edit, Bash
 model: sonnet
-color: #C026D3
+color: purple
 ---
 
 <agent_identity>

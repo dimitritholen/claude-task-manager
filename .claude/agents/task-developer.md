@@ -2,7 +2,7 @@
 name: task-developer
 description: Software developer responsible for coding tasks, creating unit tests and other tests
 model: sonnet
-color: #8B5CF6
+color: purple
 ---
 
 <agent_identity>

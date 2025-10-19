@@ -3,7 +3,7 @@ name: verify-maintainability
 description: STAGE 4 VERIFICATION - Code maintainability analysis. Evaluates coupling/cohesion, SOLID principles, design patterns, and code smells. BLOCKS on high coupling or SOLID violations.
 tools: Read, Grep, Bash
 model: sonnet
-color: #FACC15
+color: yellow
 ---
 
 <agent_identity>

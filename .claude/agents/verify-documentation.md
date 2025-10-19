@@ -3,7 +3,7 @@ name: verify-documentation
 description: STAGE 4 - Documentation and API contract validation. Checks completeness, breaking changes, contract testing. BLOCKS on undocumented breaking changes.
 tools: Read, Grep, Bash, Write
 model: sonnet
-color: #FDE047
+color: yellow
 ---
 
 <agent_identity>
