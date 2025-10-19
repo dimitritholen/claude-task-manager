@@ -10,15 +10,14 @@ Complete and archive task: **$ARGUMENTS**
 
 <critical_setup>
 **MANDATORY PRE-FLIGHT**:
-
-- **Date Awareness**: Get current system date for time-sensitive operations
-- **Zero-Tolerance Mode**: ACTIVE - **ANY** failure = **IMMEDIATE** rejection
+- **Date Awareness**: Get current system date
+- **Zero-Tolerance Mode**: **ANY** failure = **IMMEDIATE** rejection
 </critical_setup>
 
 <philosophy>
 **BINARY OUTCOME**: Complete (100%) or Incomplete (0%) — **NO MIDDLE GROUND**
 
-**QUALITY GATE**: Premature completion blocks dependent tasks, creates confusion, generates technical debt.
+**QUALITY GATE**: Premature completion blocks dependent tasks, creates confusion, generates debt.
 
 **YOUR ROLE**: Final gatekeeper. Every approval reflects system integrity.
 </philosophy>
@@ -27,61 +26,57 @@ Complete and archive task: **$ARGUMENTS**
 
 ## MANDATORY AGENT WHITELIST — STRICT ENFORCEMENT
 
-**ONLY these agents from this workflow are authorized:**
-
+**ONLY authorized:**
 - ✅ `task-completer` - Zero-tolerance quality gatekeeper with comprehensive validation
 
 **FORBIDDEN:**
-
-- ❌ **ANY** agent with same name from global ~/.claude/agents/
+- ❌ **ANY** agent from global ~/.claude/agents/
 - ❌ **ANY** agent from other workflows
 - ❌ **ANY** general-purpose agents
 
 **Why This Matters:**
 This workflow's task-completer enforces:
-
-- **ALL** acceptance criteria **MUST** be checked (100%, **NO** exceptions)
-- **ALL** validation commands **MUST** pass (0 errors, 0 warnings)
-- **Multi-Stage Verification Pipeline** (Phase 3.7) with PubNub best practices:
-  - Intelligent selection of verify-* agents (8-12 of 22 agents)
-  - 5 progressive stages: Syntax → Execution → Security → Quality → Integration
+- **ALL** acceptance criteria checked (100%, **NO** exceptions)
+- **ALL** validation commands pass (0 errors, 0 warnings)
+- **Multi-Stage Verification Pipeline** (Phase 3.7):
+  - Intelligent selection of verify-* agents (8-12 of 22 total)
+  - 5 stages: Syntax → Execution → Security → Quality → Integration
   - Parallel execution within stages, fail-fast between stages
-  - Summary return pattern: agents provide concise results + write full reports to files
-  - Audit trail: **ALL** activity logged to `.tasks/audit/` (JSONL format)
-  - Coverage: security, performance, architecture, complexity, duplication, etc.
+  - Summary return pattern: concise results + full reports to files
+  - Audit trail: **ALL** activity logged to `.tasks/audit/` (JSONL)
+  - Coverage: security, performance, architecture, complexity, duplication
 - **Binary outcome**: Complete (100%) or Incomplete (0%)
-- **Fail-fast protocol** (first failure stops validation)
+- **Fail-fast protocol**: first failure stops validation
 - Comprehensive Definition of Done checklist
 - Learning extraction with quality bar
 
-This agent is the **FINAL QUALITY GATE** with 22 specialized verify-* agents. Global agents do **NOT** enforce these zero-tolerance standards.
+This is the **FINAL QUALITY GATE** with 22 specialized verify-* agents. Global agents lack these zero-tolerance standards.
 </agent_whitelist>
 
 <purpose>
 ## Purpose
 
-This command delegates completion validation to the specialized task-completer agent that:
+Delegates completion validation to task-completer agent that:
 
-1. Verifies **ALL** acceptance criteria are checked
+1. Verifies **ALL** acceptance criteria checked
 2. Executes **ALL** validation commands
 3. Runs **Multi-Stage Verification Pipeline** (Phase 3.7):
    - **STAGE 1**: verify-syntax, verify-complexity, verify-dependency (**ALWAYS**)
    - **STAGE 2**: verify-execution, verify-business-logic, verify-test-quality (conditional)
    - **STAGE 3**: verify-security, verify-data-privacy (conditional)
-   - **STAGE 4**: verify-quality, verify-performance, verify-architecture, etc. (conditional)
-   - **STAGE 5**: verify-database, verify-integration, verify-regression, etc. (conditional)
+   - **STAGE 4**: verify-quality, verify-performance, verify-architecture (conditional)
+   - **STAGE 5**: verify-database, verify-integration, verify-regression (conditional)
 4. Enforces **Definition of Done** checklist
 5. Extracts learnings
 6. Archives task atomically
 7. Reports unblocked downstream tasks
 
-**Token budget**: ~2,500-3,000 tokens (load task + validation + multi-stage verification + archival)
+**Token budget**: ~2,500-3,000 tokens (load + validation + multi-stage verification + archival)
 
-**NEW:** PubNub summary return pattern applied (-50% verification tokens):
-
+**PubNub summary return pattern** (-50% verification tokens):
 - Agents return concise summaries (50-150 tokens)
-- Full reports written to `.tasks/reports/` (zero token cost to main agent)
-- Audit trail logged to `.tasks/audit/` (JSONL format for compliance)
+- Full reports written to `.tasks/reports/` (zero token cost)
+- Audit trail logged to `.tasks/audit/` (JSONL)
 </purpose>
 
 <agent_invocation>
@@ -106,13 +101,13 @@ Validate completion and archive task: $ARGUMENTS
 You are the quality gatekeeper. Enforce zero-tolerance completion standards.
 
 **Phase 1: Initial Validation** (~150 tokens)
-1. Load .tasks/manifest.json - Verify task status is `in_progress`
+1. Load .tasks/manifest.json - Verify task status `in_progress`
 2. Load .tasks/tasks/$ARGUMENTS-<name>.md - Parse **ALL** sections
 3. Extract:
    - **ALL** acceptance criteria (checkboxes)
    - **ALL** validation commands
    - Progress log
-   - **ANY** documented blockers
+   - Documented blockers
 
 **Phase 2: Acceptance Criteria Verification** (~500 tokens)
 1. Scan for **ALL** checkboxes: `- [ ]` vs `- [x]`
@@ -133,9 +128,9 @@ You are the quality gatekeeper. Enforce zero-tolerance completion standards.
 Validation **MUST** include:
 - **Linter**: 0 errors, 0 warnings
 - **Tests**: 100% pass rate
-- **Build**: Success with 0 warnings
+- **Build**: Success, 0 warnings
 - **Type checker**: 0 errors (if applicable)
-- **ANY** custom validation from task file
+- Custom validation from task file
 
 **Phase 4: Definition of Done Checklist** (~300 tokens)
 Verify **EVERY** item:
@@ -169,7 +164,7 @@ Verify **EVERY** item:
 Extract or prompt for:
 1. What worked well
 2. What was harder than expected
-3. Token usage (estimated vs actual with variance)
+3. Token usage (estimated vs actual, variance)
 4. Recommendations for similar tasks
 5. Technical debt created (if any)
 
@@ -210,36 +205,30 @@ Use: `subagent_type: "task-completer"`
 ✓ Linter: 🟢100 [CONFIRMED]
   Command: ruff check .
   Output: All checks passed!
-  Exit code: 0
-  Timestamp: 2025-10-13T14:23:45Z
+  Exit: 0 | Time: 2025-10-13T14:23:45Z
 
 ✓ Tests: 🟢100 [CONFIRMED]
   Command: pytest tests/
   Output: 47 passed, 0 failed
-  Exit code: 0
-  Timestamp: 2025-10-13T14:24:12Z
+  Exit: 0 | Time: 2025-10-13T14:24:12Z
 
 ✓ Build: 🟢100 [CONFIRMED]
   Command: npm run build
   Output: Build succeeded, 0 warnings
-  Exit code: 0
-  Timestamp: 2025-10-13T14:24:45Z
+  Exit: 0 | Time: 2025-10-13T14:24:45Z
 
 ✓ Type Check: 🟢100 [CONFIRMED]
   Command: tsc --noEmit
   Output: No errors
-  Exit code: 0
-  Timestamp: 2025-10-13T14:25:03Z
+  Exit: 0 | Time: 2025-10-13T14:25:03Z
 
 **Metrics:**
-
 - Estimated tokens: <est>
 - Actual tokens: <actual>
 - Variance: <percentage>%
-- Duration: <minutes> minutes
+- Duration: <minutes> min
 
 **Impact:**
-
 - Progress: <completed>/<total> tasks (<percentage>%)
 - Unblocked: <count> tasks now actionable
 
@@ -292,9 +281,9 @@ Task remains `in_progress`.
 - **Comprehensive Validation**: Runs **ALL** checks automatically
 - **Prevents Technical Debt**: Blocks incomplete work from being marked done
 - **Consistent Standards**: Same rigorous validation every time
-- **Audit Trail**: Complete documentation of what was verified
-- **Dependency Management**: Automatically identifies and reports unblocked tasks
-- **Metrics Tracking**: Calculates token usage, variance, and updates project metrics
+- **Audit Trail**: Complete documentation of verification
+- **Dependency Management**: Identifies and reports unblocked tasks
+- **Metrics Tracking**: Calculates token usage, variance, updates project metrics
 </rationale>
 
 <philosophy_deep_dive>
@@ -304,20 +293,17 @@ Task remains `in_progress`.
 **CRITICAL INSIGHT**: Premature completion is worse than no completion.
 
 **WHY THIS MATTERS**:
-
 1. **Blocks downstream work** with broken foundations
 2. **Creates confusion** about what's actually done
-3. **Generates technical debt** that compounds over time
+3. **Generates technical debt** that compounds
 4. **Erodes trust** in the task system
 5. **Wastes time** in rework and debugging
 
 **THE STANDARD**: Binary outcome only.
-
 - ✅ **100% Complete**: **ALL** criteria met, **ALL** tests pass, production-ready
 - ❌ **0% Complete**: Anything less than 100%
 
 **NO PARTIAL CREDIT**:
-
 - "90% done" = **INCOMPLETE**
 - "Just this one test failing" = **INCOMPLETE**
 - "Will fix linter later" = **INCOMPLETE**
@@ -331,7 +317,6 @@ Task remains `in_progress`.
 ## Next Steps
 
 After completion:
-
 - Use `/task-next` to find next actionable task
 - Or review `/task-status` for overall progress
 </next_steps>

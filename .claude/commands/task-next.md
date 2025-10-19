@@ -4,209 +4,194 @@ description: Check manifest and identify next actionable task (minimal tokens)
 ---
 
 <purpose>
-Find the next task to work on with **INTELLIGENT HEALTH CHECKS** and **AUTO-REMEDIATION**.
+Find next task with **HEALTH CHECKS** and **AUTO-REMEDIATION**.
 
-**WORKFLOW**: Health Check → Issue Detection → Remediation (if needed) → Task Discovery
+**WORKFLOW**: Health Check → Remediation (if needed) → Task Discovery
 </purpose>
 
 <critical_setup>
-**MANDATORY REQUIREMENTS**:
+**REQUIREMENTS**:
 
-- **MUST** use only authorized agents from this workflow
-- **MUST** perform health check before task discovery
-- **MUST** respect circuit breaker limits (3 remediation attempts max)
-- **MUST** apply Minion Engine v3.0 framework (Reliability Labeling + Evidence-Based Analysis)
+- Use only authorized workflow agents
+- Perform health check before discovery
+- Respect circuit breaker (3 attempts max)
+- Apply Minion Engine v3.0 (Reliability Labeling + Evidence-Based Analysis)
 </critical_setup>
 
 <agent_whitelist>
 
-## MANDATORY AGENT WHITELIST — STRICT ENFORCEMENT
+## AGENT WHITELIST
 
-**ONLY these agents from this workflow are authorized:**
+**ONLY these workflow agents authorized:**
 
 - ✅ **`task-discoverer`** - Haiku-optimized fast discovery (~150 tokens)
-- ✅ **`task-manager`** - Deep analysis and remediation for planning issues
+- ✅ **`task-manager`** - Deep analysis and remediation
 
 **FORBIDDEN:**
 
-- ❌ **ANY** agent with same name from global ~/.claude/agents/
-- ❌ **ANY** agent from other workflows
-- ❌ **ANY** general-purpose agents
+- ❌ Global ~/.claude/agents/ with same name
+- ❌ Other workflow agents
+- ❌ General-purpose agents
 
-**Why This Matters:**
+**Why:**
 
-- **task-discoverer**: Optimized for 150-token manifest queries
-- **task-manager**: Knows this workflow's remediation patterns and atomic updates
-- **Global agents**: Do NOT understand this task system's structure
+- **task-discoverer**: Optimized for manifest queries
+- **task-manager**: Knows remediation patterns and atomic updates
+- **Global agents**: Don't understand this system
 </agent_whitelist>
 
 <workflow_overview>
 
-## Workflow Overview
+## Workflow
 
-This command performs two-phase discovery:
+Two-phase discovery:
 
-1. **Phase 1 - Health Check**: Detect stalled tasks, critical path blockages, priority misalignments
-2. **Phase 2 - Task Discovery**: Find highest-priority actionable task
+1. **Health Check**: Detect stalled tasks, blockages, misalignments
+2. **Task Discovery**: Find highest-priority actionable task
 
-**Token Budget**:
-
-- Healthy state: ~150-300 tokens
-- Remediation needed: ~2000-3000 tokens
+**Token Budget**: Healthy ~150-300, Remediation ~2000-3000
 </workflow_overview>
 
 <execution_phases>
 
-## Phase 1: Health Check (~150 tokens)
+## Phase 1: Health Check
 
 <reasoning_checkpoint>
-**Before executing Phase 1, think:**
+**Before Phase 1:**
 
-- What anomalies might indicate planning issues?
-- Should I escalate to `task-manager` or proceed to discovery?
-- What's the circuit breaker state (has remediation failed 3+ times)?
+- What anomalies indicate planning issues?
+- Escalate to `task-manager` or proceed?
+- Circuit breaker state (3+ failures)?
 </reasoning_checkpoint>
 
 <health_check_instructions>
-**FIRST**, read `.tasks/manifest.json` to check for planning issues:
+Read `.tasks/manifest.json` for planning issues:
 
 ### Detect Anomalies
 
-- **Stalled Tasks**: Any `in_progress` tasks with `started_at` > 24h?
-- **Critical Path Blockage**: Are critical path tasks blocked by stalled work?
-- **Priority Misalignment**: Are high-priority (1-2) tasks blocked by stalled work?
+- **Stalled**: `in_progress` tasks with `started_at` > 24h?
+- **Critical Path**: Blocked by stalled work?
+- **Priority**: High-priority (1-2) blocked by stalled work?
 
 ### If Issues Detected
 
-Check circuit breaker state (`manifest.config.remediation_attempts < 3`):
+Check circuit breaker (`manifest.config.remediation_attempts < 3`):
 
 <agent_invocation type="remediation">
-**Circuit breaker NOT tripped**: Escalate to task-manager agent:
+**Circuit breaker OK**: Escalate to task-manager:
 
 ```
-Planning issues detected. Perform deep analysis and execute remediation.
+Planning issues detected. Execute deep analysis and remediation.
 
-**IMPORTANT**: Operate within [Minion Engine v3.0 framework](../core/minion-engine.md).
-- **MUST** apply Reliability Labeling to ALL diagnoses (cite evidence from files)
-- **MUST** use Evidence-Based Analysis (quote task files with line numbers)
-- **MUST** make binary decisions (no "maybes" - make the call)
+**Minion Engine v3.0**: [framework](../core/minion-engine.md)
+- Apply Reliability Labeling (cite evidence)
+- Use Evidence-Based Analysis (quote files with line numbers)
+- Make binary decisions (no "maybes")
 
-**Detected Issues:**
-[List specific issues: task IDs, timestamps, impacts]
+**Issues**: [List: task IDs, timestamps, impacts]
 
-**Your Mission:**
-1. Load task files for flagged `in_progress` tasks
-2. Check progress logs and acceptance criteria completion
-3. Analyze dependency_graph for critical path blockages
+**Mission:**
+1. Load flagged `in_progress` task files
+2. Check logs and acceptance criteria
+3. Analyze dependency_graph for blockages
 4. Determine root cause
-5. **EXECUTE remediation** (NOT recommendations):
-   - Reset abandoned tasks to `pending`
-   - Mark tasks as `blocked` if blockers exist
-   - Update statuses to reflect reality
-   - Adjust priorities if needed
+5. **EXECUTE remediation**:
+   - Reset abandoned → `pending`
+   - Mark as `blocked` if blockers exist
+   - Update statuses to reality
+   - Adjust priorities
 
-Report actions taken (not recommendations) and instruct user to re-run /task-next.
-
-Begin analysis and remediation now.
+Report actions (not recommendations) and instruct re-run /task-next.
 ```
 
 **Agent**: `subagent_type: "task-manager"`
 
-**CRITICAL**: **STOP after invoking agent** - let it complete its work.
+**STOP after agent invocation** - let it complete.
 </agent_invocation>
 
 <error_handling type="circuit_breaker">
-**Circuit breaker tripped** (≥3 attempts): Report failure and proceed to Phase 2:
+**Circuit breaker tripped** (≥3): Report and proceed to Phase 2:
 
 ```
-🚨 **CIRCUIT BREAKER**: Remediation Loop Detected
+🚨 **CIRCUIT BREAKER**: Remediation Loop
 
-Task system remediation has **FAILED 3+ times**. **MANUAL INTERVENTION REQUIRED**.
+Remediation **FAILED 3+ times**. **MANUAL INTERVENTION REQUIRED**.
 
-Recent attempts reviewed in .tasks/updates/
+**Recovery**:
+1. Review .tasks/updates/ for history
+2. Run `/task-health` for diagnostics
+3. Manual manifest correction
+4. Reset breaker: `manifest.json` → `config.remediation_attempts = 0`
 
-**Recovery Steps**:
-1. Review .tasks/updates/ for remediation history
-2. Run `/task-health` for detailed diagnostics
-3. Consider manual manifest correction
-4. Reset circuit breaker: Edit `manifest.json` → `config.remediation_attempts = 0`
-
-**WARNING**: Proceeding with discovery, but system health is compromised.
+**WARNING**: Proceeding with discovery, system health compromised.
 ```
 
 </error_handling>
 
 ### If Healthy
 
-Proceed to Phase 2 (normal discovery)
+Proceed to Phase 2.
 </health_check_instructions>
 
-## Phase 2: Task Discovery (~150 tokens)
+## Phase 2: Task Discovery
 
 <agent_invocation type="discovery">
-**MANDATORY**: Use `task-discoverer` agent (Haiku-optimized) for fast discovery.
+Use `task-discoverer` (Haiku-optimized):
 
 ```
-Find the next actionable task from the task management system.
+Find next actionable task.
 
-**IMPORTANT**: Operate within [Minion Engine v3.0 framework](../core/minion-engine.md).
-- **MUST** apply Reliability Labeling to task recommendations
-- Speed-optimized: Minimal tokens, fast results
-- **NO** deep analysis (leave that to task-manager if needed)
+**Minion Engine v3.0**: [framework](../core/minion-engine.md)
+- Apply Reliability Labeling
+- Minimal tokens, fast results
+- NO deep analysis
 
-**Task:**
-1. Read `.tasks/manifest.json` ONLY
-2. Filter: `status = "pending"`, dependencies all `"completed"`, `blocked_by` empty
+**Steps:**
+1. Read `.tasks/manifest.json`
+2. Filter: `status = "pending"`, deps `"completed"`, `blocked_by` empty
 3. Sort by priority (1 = highest)
-4. Return highest priority actionable task
+4. Return highest priority task
 
-**Expected Output (with Confidence Labels):**
+**Output (with labels):**
 📋 Next Task: T00X
 
 Title: <task-title>
-Priority: <1-5> 🟢95 [CONFIRMED] (from manifest.json)
-Dependencies: <list or "None"> 🟢90 [CONFIRMED] (all completed per manifest)
-Estimated Tokens: <number> 🟡75 [REPORTED] (from task metadata)
+Priority: <1-5> 🟢95 [CONFIRMED] (manifest.json)
+Dependencies: <list or "None"> 🟢90 [CONFIRMED] (completed)
+Estimated Tokens: <number> 🟡75 [REPORTED] (metadata)
 
-Status Summary:
-- Total: X tasks
-- Pending: X
-- In Progress: X
-- Blocked: X
-- Completed: X
+Status:
+- Total: X | Pending: X | In Progress: X | Blocked: X | Completed: X
 
 To start: /task-start T00X
 
-**If No Task Available:**
-Report reason and show blocked tasks with blockers.
-
-Begin discovery now.
+**No task?** Report reason, show blocked tasks.
 ```
 
 **Agent**: `subagent_type: "task-discoverer"`
 
-**Token Budget**: ~150 tokens maximum
+**Token Budget**: ~150 max
 </agent_invocation>
 
 <error_handling type="critical_failure">
 
-## Critical Failure Handling
+## Critical Failure
 
-**If both health check AND discovery fail:**
+**Both health check AND discovery fail:**
 
 ```
-❌ **TASK SYSTEM CRITICAL FAILURE**
+❌ **CRITICAL FAILURE**
 
-Both health assessment and discovery have **FAILED**.
+Health and discovery **FAILED**.
 
-**Recovery Steps**:
-1. Validate manifest: `cat .tasks/manifest.json | jq .`
-2. Check permissions: `ls -la .tasks/`
-3. Review changes: `git log .tasks/`
-4. Restore from backup: `.tasks/updates/`
-5. **Last resort**: `/task-init` (recreates system - **DESTROYS EXISTING DATA**)
+**Recovery**:
+1. Validate: `cat .tasks/manifest.json | jq .`
+2. Permissions: `ls -la .tasks/`
+3. Changes: `git log .tasks/`
+4. Restore: `.tasks/updates/`
+5. **Last resort**: `/task-init` (**DESTROYS DATA**)
 
-**WARNING**: Manual intervention required before proceeding.
+**WARNING**: Manual intervention required.
 ```
 
 </error_handling>
@@ -215,71 +200,53 @@ Both health assessment and discovery have **FAILED**.
 
 <output_format>
 
-## Expected Output Format
+## Output Format
 
-### SUCCESS - Task Found
-
-**MUST include** all of the following:
+### SUCCESS
 
 ```markdown
 📋 Next Task: **T00X**
 
-**Title**: [action-oriented title]
-**Priority**: [1-5] 🟢95 [CONFIRMED] (from manifest.json)
-**Dependencies**: [list or "None - ready to start"] 🟢90 [CONFIRMED]
+**Title**: [action-oriented]
+**Priority**: [1-5] 🟢95 [CONFIRMED] (manifest.json)
+**Dependencies**: [list or "None"] 🟢90 [CONFIRMED]
 **Estimated Tokens**: [number] 🟡75 [REPORTED]
 
-**Why This Task**: [1-2 sentences explaining selection rationale]
+**Why**: [1-2 sentences]
 
 **To Start**: `/task-start T00X`
 ```
 
-**Required Elements**:
+**Required**: Task ID, title, priority/deps/tokens with labels, rationale, next action.
 
-- Task ID with emoji prefix
-- Action-oriented title
-- Priority score with Reliability Label
-- Dependency status with Reliability Label
-- Token estimate with Reliability Label
-- Selection rationale
-- Clear next action command
-
-### NO TASK AVAILABLE
-
-**MUST include** all of the following:
+### NO TASK
 
 ```markdown
-ℹ️  No Actionable Tasks Available
+ℹ️  No Actionable Tasks
 
-**Reason**: [specific reason - all blocked, all in progress, etc.]
+**Reason**: [specific - all blocked, in progress, etc.]
 
-**Blocked Tasks** ([count]):
-- **T00X**: Blocked by [specific blocker]
-- **T00Y**: Waiting for [dependency task]
+**Blocked** ([count]):
+- **T00X**: Blocked by [blocker]
+- **T00Y**: Waiting for [dependency]
 
-**Suggested Action**: [resolve blocker, complete in-progress task, etc.]
+**Action**: [resolve blocker, complete task, etc.]
 ```
 
-**Required Elements**:
+**Required**: Reason, blocked list with blockers, recommendation.
 
-- Clear reason for no available tasks
-- List of blocked tasks with specific blockers
-- Actionable recommendation for user
-
-### REMEDIATION TRIGGERED
-
-When health check detects issues:
+### REMEDIATION
 
 ```markdown
-🔧 **Health Issues Detected** - Escalating to Task Manager
+🔧 **Health Issues** - Escalating to Task Manager
 
-**Issues Found**:
-- [Specific issue 1 with task IDs and evidence]
-- [Specific issue 2 with task IDs and evidence]
+**Issues**:
+- [Issue 1: task IDs, evidence]
+- [Issue 2: task IDs, evidence]
 
-**Action**: `task-manager` agent invoked for deep analysis and remediation.
+**Action**: `task-manager` invoked.
 
-**Next Step**: Re-run `/task-next` after remediation completes.
+**Next**: Re-run `/task-next` after completion.
 ```
 
 </output_format>
@@ -288,28 +255,22 @@ When health check detects issues:
 
 ## Next Steps
 
-After receiving task discovery result:
+**Task Found**:
+- `/task-start T00X` - Begin work
+- `/task-status` - View overview first
 
-**If Task Found**:
-
-- **Primary Action**: `/task-start T00X` - Begin work on identified task
-- **Alternative**: `/task-status` - View complete project overview first
-
-**If No Task Available**:
-
-- Resolve blockers as indicated in output
+**No Task**:
+- Resolve blockers
 - Complete in-progress tasks
-- Run `/task-health` for detailed diagnostics
+- `/task-health` for diagnostics
 
-**If Remediation Triggered**:
+**Remediation**:
+- **WAIT** for `task-manager` completion
+- **Re-run** `/task-next` after
+- Circuit breaker trips: Follow recovery steps
 
-- **WAIT** for `task-manager` agent to complete analysis
-- **Re-run** `/task-next` after remediation completes
-- If circuit breaker trips: Follow recovery steps in error message
-
-**Additional Commands**:
-
-- `/task-health` - Standalone health check without discovery
-- `/task-status` - Comprehensive system overview
-- `/task-init` - **LAST RESORT** system rebuild (destroys data)
+**Commands**:
+- `/task-health` - Health check only
+- `/task-status` - System overview
+- `/task-init` - **LAST RESORT** (destroys data)
 </next_steps>

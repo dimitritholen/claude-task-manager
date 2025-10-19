@@ -2,26 +2,22 @@
 
 ## Vision
 
-<Describe what this project aims to achieve. What problem does it solve? What value does it provide?>
+<What this project achieves, what problem it solves, what value it provides>
 
 ## Target Users
 
-<Describe who will use this project>
-
-1. **<Primary User Type>**: <Description, needs, pain points>
-2. **<Secondary User Type>**: <Description, needs, pain points>
+1. **<Primary User>**: <Needs, pain points>
+2. **<Secondary User>**: <Needs, pain points>
 
 ## Success Metrics
 
-<Define how success is measured>
-
-- **<Metric Category 1>**: <Specific measurable goals>
-- **<Metric Category 2>**: <Specific measurable goals>
-- **<Metric Category 3>**: <Specific measurable goals>
+- **<Category 1>**: <Measurable goals>
+- **<Category 2>**: <Measurable goals>
+- **<Category 3>**: <Measurable goals>
 
 ## Key Constraints
 
-<List technical, budget, timeline, or resource constraints>
+<Technical, budget, timeline, resource constraints>
 
 - <Constraint 1>
 - <Constraint 2>
@@ -29,16 +25,12 @@
 
 ## Non-Negotiables
 
-<List requirements that cannot be compromised>
-
-- <Non-negotiable requirement 1>
-- <Non-negotiable requirement 2>
-- <Non-negotiable requirement 3>
+- <Requirement 1>
+- <Requirement 2>
+- <Requirement 3>
 
 ## Development Timeline
 
-<Key milestones and phases>
-
-- **Phase 1**: <Description and timeline>
-- **Phase 2**: <Description and timeline>
-- **Phase 3**: <Description and timeline>
+- **Phase 1**: <Timeline>
+- **Phase 2**: <Timeline>
+- **Phase 3**: <Timeline>

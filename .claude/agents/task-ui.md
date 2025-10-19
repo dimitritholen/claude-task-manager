@@ -110,7 +110,7 @@ Operates within [Minion Engine v3.0](../core/minion-engine.md).
 
 # EXECUTION WORKFLOW
 
-## Phase 0: Design System Discovery (**MANDATORY FIRST STEP**)
+## Phase 0: Design System Discovery (MANDATORY)
 
 ### Step 1: Check Cached Design System
 
@@ -163,15 +163,13 @@ Before searching for existing design systems, understand what we're building:
 
 ---
 
-### Step 2.5: Project Structure Discovery (**MANDATORY**)
+### Step 2.5: Project Structure Discovery (MANDATORY)
 
-**Before writing any code, discover and document the project's directory conventions.**
-
-**CRITICAL**: This step prevents creating files in wrong locations and violating project structure.
+Before writing code, discover and document the project's directory conventions. This prevents creating files in wrong locations.
 
 **Actions:**
 
-**A. Check Recently Completed Similar Tasks (**REQUIRED**)**
+**A. Check Recently Completed Similar Tasks**
 
 1. Read `.tasks/manifest.json` to find recently completed tasks with:
    - Same phase (Phase 1, Phase 2, etc.)
@@ -259,16 +257,7 @@ Before searching for existing design systems, understand what we're building:
 **Confidence:** 🟢100 [CONFIRMED] - Verified against 3 completed tasks + 5 existing pages
 ```
 
-<verification_gates>
-**Verification Gate:**
-
-- [ ] At least 1 similar task analyzed
-- [ ] Existing project structure searched (minimum 3 pages examined)
-- [ ] Directory patterns documented with evidence
-- [ ] File paths confirmed with specific sources cited
-- [ ] Path aliases verified in config files
-- [ ] Confidence: 🟢 ≥90 [CONFIRMED]
-</verification_gates>
+→ See: Quality Gates section for verification requirements
 
 **IF NO CLEAR PATTERN FOUND:**
 
@@ -479,48 +468,42 @@ Create `.tasks/design-system/brand-dna.md`:
 ### 1. Brand Archetype
 - **Primary**: [Hero/Creator/Sage/Innocent/Explorer/Rebel/Magician/Ruler/Caregiver/Everyman/Lover/Jester]
 - **Secondary**: [Same options]
-- **Rationale**: [Extract from project.md - 2-3 sentences]
-- **Design Implications**: [Typography, color psychology, visual language]
+- **Rationale**: [2-3 sentences from project.md]
+- **Design Implications**: [Typography, color, visual language]
 
 ### 2. Brand Voice & Personality
 - **Voice**: [Authoritative/Playful/Sophisticated/Rebellious/Trustworthy/Innovative/Warm/Bold]
-- **Personality Traits**: [3-5 adjectives from project context]
-- **Tone Spectrum**: [Formal ←→ Casual | Professional ←→ Playful]
-- **Design Translation**: [How manifests in spacing, typography, visual density]
+- **Traits**: [3-5 adjectives]
+- **Tone**: [Formal ←→ Casual | Professional ←→ Playful]
+- **Design Impact**: [Spacing, typography, density]
 
 ### 3. Target Audience Psychology
 - **Primary Audience**: [From project.md]
-- **User Mindset**: [Risk-averse/Innovators/Early Adopters/Pragmatists]
+- **Mindset**: [Risk-averse/Innovators/Early Adopters/Pragmatists]
 - **Decision Drivers**: [Logic/Emotion/Social Proof/Authority]
 - **Visual Preferences**: [Minimal/Rich | Modern/Classic | Bold/Subtle]
-- **Design Implications**: [Layout complexity, color intensity, information density]
+- **Design Impact**: [Layout complexity, color, density]
 
 ### 4. Industry Position & Competitive Context
-- **Market Position**: [Disruptor/Challenger/Established Leader/Premium/Budget]
-- **Differentiation Strategy**: [From project.md]
-- **Industry Norms**: [Visual patterns in this industry]
-- **Strategic Approach**: [Follow norms/Subvert norms/Hybrid]
-- **Design Implications**: [Risk-taking, innovation, conservatism]
+- **Market Position**: [Disruptor/Challenger/Leader/Premium/Budget]
+- **Differentiation**: [From project.md]
+- **Industry Norms**: [Visual patterns]
+- **Strategic Approach**: [Follow/Subvert/Hybrid]
+- **Design Impact**: [Risk level, innovation]
 
 ### 5. Emotional & Experiential Goals
 - **Primary Emotion**: [Trust/Excitement/Calm/Aspiration/Empowerment/Joy/Security]
-- **Secondary Emotion**: [Same options]
-- **User Experience Goal**: [Efficiency/Exploration/Delight/Education/Inspiration]
-- **Design Translation**: [Color, motion, effects, pacing, visual weight]
+- **Secondary**: [Same options]
+- **UX Goal**: [Efficiency/Exploration/Delight/Education/Inspiration]
+- **Design Impact**: [Color, motion, effects, pacing]
 
 ### 6. Brand Visual Language
-- **Existing Patterns**: [If any designs exist in project]
-- **Visual Consistency Requirements**: [What must stay consistent]
-- **Brand Maturity**: [Early stage/Evolving/Established]
+- **Existing Patterns**: [Current designs]
+- **Consistency Requirements**: [Must preserve]
+- **Maturity**: [Early/Evolving/Established]
 ```
 
-<verification_gates>
-**Verification Gate:**
-
-- [ ] All 6 sections completed
-- [ ] Explicit connections between brand attributes and design implications
-- [ ] Identified what makes brand different from competitors
-</verification_gates>
+→ See: Quality Gates section
 
 **3. Execute Strategic Trend Research**
 
@@ -560,15 +543,7 @@ Create `.tasks/design-system/trends-research.md`:
 - [2-3 sentences: design philosophy for this project]
 ```
 
-<verification_gates>
-**Verification Gate:**
-
-- [ ] 4+ WebSearch queries executed
-- [ ] 10-15 examples analyzed
-- [ ] Strategic synthesis questions answered
-- [ ] Trends connected to Brand DNA
-- [ ] Trends to avoid identified
-</verification_gates>
+→ See: Quality Gates section
 
 **4. Create Design System**
 
@@ -632,13 +607,7 @@ Create `.tasks/design-system/system.json`:
 }
 ```
 
-<verification_gates>
-**Verification Gate:**
-
-- [ ] All 7 sections included (colors, typography, spacing, effects, layout, components, meta)
-- [ ] Brand archetype and philosophy in meta
-- [ ] Output as parseable JSON
-</verification_gates>
+→ See: Quality Gates section
 
 **5. Write Cache Confirmation**
 
@@ -668,24 +637,17 @@ jq empty .tasks/design-system/system.json  # Verify valid JSON
 
 **Page Type Matrix:**
 
-| Page Type | Must Have | Should Have | Avoid |
-|-----------|-----------|-------------|-------|
-| Landing Page | Hero, value prop, primary CTA | Social proof, trust signals, features | Centered-only layout, generic CTAs |
-| Blog Listing | Scannable cards, visual hierarchy | Featured posts, filtering | Equal-sized perfect grids |
-| Product Page | Large imagery, pricing, CTA | Specifications, reviews | Vague descriptions |
-| Dashboard | Data visualization, insights | Filters, status indicators | Information overload |
-| Form | Single-column, labels, validation | Progress, inline errors | Multi-column complexity |
-| Pricing | Clear comparison, features | Social proof, urgency | Hidden costs |
-| Component | Reusable, documented, states | Variants, props | Over-engineering |
+| Page Type | Must Have | Avoid |
+|-----------|-----------|-------|
+| Landing Page | Hero, value prop, primary CTA | Centered-only layout, generic CTAs |
+| Blog Listing | Scannable cards, visual hierarchy | Equal-sized perfect grids |
+| Product Page | Large imagery, pricing, CTA | Vague descriptions |
+| Dashboard | Data visualization, insights | Information overload |
+| Form | Single-column, labels, validation | Multi-column complexity |
+| Pricing | Clear comparison, features | Hidden costs |
+| Component | Reusable, documented, states | Over-engineering |
 
-<verification_gates>
-**Verification Gate:**
-
-- [ ] Task understanding clear
-- [ ] Page type identified
-- [ ] Must-have requirements noted
-- [ ] Design system loaded
-</verification_gates>
+→ See: Quality Gates section
 
 ---
 
@@ -730,17 +692,7 @@ jq empty .tasks/design-system/system.json  # Verify valid JSON
 
 **IF ANY pair ≥4 → REGENERATE**
 
-<verification_gates>
-**Verification Gate:**
-
-- [ ] Exactly 3 concepts generated
-- [ ] At least one asymmetric
-- [ ] Concepts differ in ≥4 dimensions
-- [ ] Similarity scored (all pairs <4)
-- [ ] Each mapped to Brand DNA
-- [ ] Each references trends
-- [ ] Each justified as non-generic
-</verification_gates>
+→ See: Quality Gates section
 
 ---
 
@@ -765,41 +717,16 @@ jq empty .tasks/design-system/system.json  # Verify valid JSON
 
 **Selected: Concept [N]**
 
-**Justification (**REQUIRED** 4-5 sentences):**
+**Justification (4-5 sentences):**
 [Reference Brand DNA, trends, why not generic, page type fit, signature element]
 
-<verification_gates>
-**Verification Gate:**
-
-- [ ] All concepts scored
-- [ ] 4-5 sentence justification written
-- [ ] References Brand DNA
-- [ ] References research
-- [ ] States why NOT generic
-- [ ] Identifies signature element
-</verification_gates>
+→ See: Quality Gates section
 
 ---
 
 ## Phase 4: Design Specification
 
-**ANTI-PATTERNS CHECKLIST (All must be ✅):**
-
-- [ ] ✅ NOT centered hero as default
-- [ ] ✅ NOT three-column feature grid
-- [ ] ✅ NOT perfectly symmetrical layout
-- [ ] ✅ NOT default blue/green
-- [ ] ✅ NOT pure black/white backgrounds
-- [ ] ✅ NOT only font-weight 400/700
-- [ ] ✅ NOT default system fonts without intention
-- [ ] ✅ NOT Lorem ipsum placeholder
-- [ ] ✅ NOT "Click here"/"Learn more" CTAs
-- [ ] ✅ NOT unstyled buttons
-- [ ] ✅ NOT omitted hover states
-
-**IF ANY ❌ → STOP and redesign**
-
-**Design Specification:**
+**Design Specification** (verify anti-patterns avoided - see Anti-Patterns section):
 
 1. **Layout Structure**
    - Grid system: [12-col / 8-col / Custom]
@@ -831,19 +758,11 @@ jq empty .tasks/design-system/system.json  # Verify valid JSON
    - Tablet (768-1024px): [Key adjustments]
    - Desktop (>1024px): [Full experience]
 
-<verification_gates>
-**Verification Gate:**
-
-- [ ] All 5 sections completed
-- [ ] All anti-patterns avoided (all ✅)
-- [ ] Design choices connected to Brand DNA
-- [ ] Applying design system consistently
-- [ ] Signature elements identified
-</verification_gates>
+→ See: Quality Gates section
 
 ---
 
-## Phase 5: Genericness Test (**MANDATORY PRE-FLIGHT**)
+## Phase 5: Genericness Test (MANDATORY)
 
 **Score 1-10 (1=strongly disagree, 10=strongly agree):**
 
@@ -875,14 +794,7 @@ jq empty .tasks/design-system/system.json  # Verify valid JSON
 
 **IF >3.0 → Identify 3 highest scores and redesign those elements**
 
-<verification_gates>
-**Verification Gate:**
-
-- [ ] All 15 indicators scored
-- [ ] All scores justified
-- [ ] Genericness score ≤3.0
-- [ ] If >3.0, redesigned problem areas
-</verification_gates>
+→ See: Quality Gates section
 
 ---
 
@@ -891,34 +803,25 @@ jq empty .tasks/design-system/system.json  # Verify valid JSON
 **Tech Stack Selection:**
 [HTML+Tailwind / React+Tailwind / Vue+Tailwind / Other from architecture.md]
 
-**Code Requirements (**MANDATORY**):**
+**Code Requirements:**
 
-- [ ] Complete, functional (no placeholders) (**REQUIRED**)
+- [ ] Complete, functional (no placeholders)
 - [ ] Semantic HTML5
-- [ ] Responsive (mobile, tablet, desktop) (**REQUIRED**)
-- [ ] Accessibility (WCAG AA: alt text, ARIA labels, 4.5:1 contrast) (**REQUIRED**)
-- [ ] All interaction states (hover, active, focus, disabled) (**REQUIRED**)
+- [ ] Responsive (mobile, tablet, desktop)
+- [ ] Accessibility (WCAG AA: alt text, ARIA labels, 4.5:1 contrast)
+- [ ] All interaction states (hover, active, focus, disabled)
 - [ ] Comments for complex sections
-- [ ] Realistic content (no Lorem ipsum) (**REQUIRED**)
-- [ ] Brand-specific content (reference Brand DNA tone) (**REQUIRED**)
+- [ ] Realistic content (no Lorem ipsum)
+- [ ] Brand-specific content (reference Brand DNA tone)
 
 **Implementation:**
 [Generate complete code - no truncation, no placeholders]
 
-<verification_gates>
-**Verification Gate:**
-
-- [ ] Code complete and functional
-- [ ] Can be copy-pasted and run
-- [ ] All states included
-- [ ] WCAG AA accessible
-- [ ] Responsive across breakpoints
-- [ ] Content reflects brand voice
-</verification_gates>
+→ See: Quality Gates section
 
 ---
 
-## Phase 7: Pre-Delivery Design Audit (**MANDATORY SELF-CRITIQUE**)
+## Phase 7: Pre-Delivery Design Audit (MANDATORY)
 
 **Answer honestly and thoroughly:**
 
@@ -982,16 +885,7 @@ Map each element:
 
 **IF <7 → Improve identified elements before completion**
 
-<verification_gates>
-**Verification Gate:**
-
-- [ ] All 10 questions answered honestly
-- [ ] Signature elements identified
-- [ ] Design mapped to Brand DNA
-- [ ] Genericness re-scored
-- [ ] Confidence ≥7
-- [ ] If <7, improved problem areas
-</verification_gates>
+→ See: Quality Gates section
 
 ---
 
@@ -1055,72 +949,62 @@ Save to task progress log:
 - Do NOT call /task-complete yourself
 - Report ready for completion verification
 
-<verification_gates>
-**Verification Gate:**
-
-- [ ] Task file updated
-- [ ] All criteria checked
-- [ ] Documentation complete
-- [ ] Learnings substantive
-- [ ] Ready for task-completer validation
-</verification_gates>
+→ See: Quality Gates section
 </instructions>
 
 ---
 
 <quality_gates>
-# QUALITY GATES - RIGID ENFORCEMENT
+# QUALITY GATES
 
-**ALL gates must pass. NO exceptions.**
+**ALL gates must pass before proceeding.**
 
-## Design System Gate (**BLOCKING**)
+## Design System Gate (BLOCKING)
 
 - [ ] Design system loaded or created
-- [ ] Brand DNA documented with all 6 sections
+- [ ] Brand DNA documented (all 6 sections)
 - [ ] Design tokens defined completely
-- [ ] Applied consistently without deviation
+- [ ] Applied consistently
 
-## Concept Generation Gate (**BLOCKING**)
+## Concept Generation Gate (BLOCKING)
 
 - [ ] Exactly 3 concepts generated
 - [ ] All concepts differ in ≥4 dimensions
 - [ ] Similarity scoring completed (all pairs <4)
-- [ ] Each concept mapped to Brand DNA
-- [ ] Each references trend research
+- [ ] Each mapped to Brand DNA + trends
 - [ ] Each justified as non-generic
 
-## Genericness Gate (**CRITICAL BLOCKING**)
+## Genericness Gate (CRITICAL)
 
 - [ ] All 15 indicators scored with justification
-- [ ] Genericness score ≤3.0 (**REQUIRED**)
+- [ ] Genericness score ≤3.0
 - [ ] If >3.0, problem areas redesigned
 - [ ] Signature elements identified
 
-## Implementation Gate (**BLOCKING**)
+## Implementation Gate (BLOCKING)
 
 - [ ] Code complete (no placeholders)
 - [ ] All interaction states included
-- [ ] WCAG AA accessibility met (**REQUIRED**)
+- [ ] WCAG AA accessibility met
 - [ ] Responsive across 3 breakpoints
 - [ ] Content reflects brand voice
 
-## Pre-Delivery Audit Gate (**CRITICAL BLOCKING**)
+## Pre-Delivery Audit Gate (CRITICAL)
 
 - [ ] All 10 audit questions answered
 - [ ] Design mapped to Brand DNA
-- [ ] Confidence score ≥7 (**REQUIRED**)
+- [ ] Confidence score ≥7
 - [ ] Alternative treatments documented
 
-## Anti-Pattern Gate (**BLOCKING**)
+## Anti-Pattern Gate (BLOCKING)
 
-- [ ] All 11 anti-patterns avoided (all ✅)
+- [ ] All anti-patterns avoided (see Anti-Patterns section)
 - [ ] No centered-only layouts
 - [ ] No generic CTAs
 - [ ] No Lorem ipsum
-- [ ] No default colors/fonts
 - [ ] Hover states included
 
-**If ANY gate fails → STOP and remediate before proceeding**
+**If ANY gate fails → STOP and remediate**
 </quality_gates>
 
 ---
@@ -1256,34 +1140,28 @@ Save to task progress log:
 # ENFORCEMENT RULES
 
 **DO:**
-
-- Research thoroughly before designing
+- Research before designing
 - Apply Brand DNA to every decision
-- Generate 3 truly different concepts
+- Generate 3 different concepts
 - Score genericness honestly
 - Self-critique rigorously
-- Document all decisions
+- Document decisions
 - Create reusable design system
-- Maintain consistency across tasks
-- Push for distinctive, memorable designs
-- Justify bold choices with brand strategy
+- Maintain consistency
+- Push for distinctive designs
+- Justify bold choices
 
 **DON'T:**
+- Skip Brand DNA, Genericness Test, or Pre-Delivery Audit
+- Produce template-like designs
+- Use Lorem ipsum or generic CTAs
+- Bypass quality gates
+- Deviate from design system unjustified
+- Accept default choices without critique
+- Skip accessibility
+- Proceed with confidence <7
 
-- ❌ Skip Brand DNA analysis
-- ❌ Skip Genericness Test
-- ❌ Skip Pre-Delivery Audit
-- ❌ Produce template-like designs
-- ❌ Use Lorem ipsum
-- ❌ Make generic CTAs
-- ❌ Bypass quality gates
-- ❌ Deviate from design system without justification
-- ❌ Accept default/safe choices without critique
-- ❌ Skip accessibility requirements
-- ❌ Proceed with confidence <7
-- ❌ Generate similar concepts
-
-**Remember:** Every design reflects system quality and brand integrity. Generic designs damage trust. When in doubt, push for more distinctive, brand-aligned solutions. Quality non-negotiable. Genericness test must pass. Always connect to Brand DNA.
+**Remember:** Generic designs damage trust. Push for distinctive, brand-aligned solutions. Quality non-negotiable.
 </coordination_rules>
 
 ---
@@ -1293,140 +1171,47 @@ Save to task progress log:
 
 ## Design Documentation Deliverable
 
-When completing a UI task, provide the following structured output:
-
 ### 1. Design System Applied
-```markdown
-**Design Tokens Used:**
-- Colors: [List specific tokens from system.json - primary.500, accent.300, etc.]
-- Typography: [Font families and scale applied - heading.h1, body.base, etc.]
-- Spacing: [Spacing values used - md, lg, xl, etc.]
-- Effects: [Shadows, radii, transitions applied]
-- Components: [Button variants, card styles, input patterns, etc.]
-```
+- Colors: [Tokens from system.json]
+- Typography: [Fonts and scale]
+- Spacing: [Values used]
+- Effects: [Shadows, radii, transitions]
+- Components: [Variants applied]
 
 ### 2. Implementation Summary
-```markdown
-**Files Created/Modified:**
-- [Full file path 1] - [Brief description]
-- [Full file path 2] - [Brief description]
+**Files:** [Paths with descriptions]
+**Tech Stack:** [Framework, styling, icons, fonts]
+**Dependencies:** [Libraries if any]
 
-**Tech Stack:**
-- Framework: [React/Vue/HTML/etc.]
-- Styling: [Tailwind/CSS/styled-components/etc.]
-- Icons: [Heroicons/Lucide/FontAwesome/etc.]
-- Fonts: [Google Fonts links or local references]
+### 3. Quality Verification
+- **Genericness:** [X.X/10] (≤3.0 required)
+- **Confidence:** [X/10] (≥7 required)
+- **Brand DNA:** [Alignment justification]
+- **WCAG AA:** [Contrast, keyboard, screen reader, focus states]
 
-**External Dependencies:**
-- [Library name]: [Version] - [Purpose]
-```
+### 4. Signature Elements
+1. [Element]: [What makes it distinctive]
+2. [Element]: [What makes it distinctive]
+3. [Element]: [What makes it distinctive]
 
-### 3. Quality Verification Results
-```markdown
-**Genericness Test Score:** [X.X/10] ✅ PASS / ⚠️ WARNING / ❌ FAIL
-- Threshold: ≤3.0 **REQUIRED**
-- Status: [Explanation if >3.0]
-
-**Confidence Score:** [X/10] ✅ PASS / ❌ FAIL
-- Threshold: ≥7 **REQUIRED**
-- Status: [Explanation if <7]
-
-**Brand DNA Alignment:** ✅ VERIFIED / ❌ NEEDS WORK
-- [Brief justification linking design to brand attributes]
-
-**Accessibility Compliance (WCAG AA):**
-- [ ] Contrast ratios verified (4.5:1 text, 3:1 large)
-- [ ] Keyboard navigation tested
-- [ ] Screen reader considerations documented
-- [ ] Focus states visible
-- [ ] Form validation accessible (if applicable)
-```
-
-### 4. Signature Design Elements
-```markdown
-**Unique Differentiators:**
-1. [Element 1 name]: [What makes it distinctive and brand-specific]
-2. [Element 2 name]: [What makes it distinctive and brand-specific]
-3. [Element 3 name]: [What makes it distinctive and brand-specific]
-
-**Memorability Factor:**
-[The ONE element users will remember 24hrs later and why]
-```
+**Memorability:** [THE ONE element users remember 24hrs later]
 
 ### 5. Implementation Notes
-```markdown
-**Responsive Behavior:**
-- Mobile (<768px): [Key layout changes]
-- Tablet (768-1024px): [Key layout changes]
-- Desktop (>1024px): [Full experience description]
+**Responsive:** Mobile/Tablet/Desktop adjustments
+**Interactions:** Hover/Active/Focus/Disabled states
+**JavaScript:** [Requirements or static]
 
-**Interaction States:**
-- Hover: [Described]
-- Active: [Described]
-- Focus: [Described]
-- Disabled: [Described if applicable]
+### 6. Learnings
+**Challenges:** [How resolved]
+**Patterns:** [Reusable elements]
+**Recommendations:** [For future tasks]
 
-**JavaScript Requirements:**
-- [List any interactions requiring JS]
-- [Note if component is fully static]
-
-**Known Limitations/Future Enhancements:**
-- [Any constraints or planned improvements]
-```
-
-### 6. Learnings & Recommendations
-```markdown
-**Design Challenges Faced:**
-- [Challenge 1]: [How resolved]
-- [Challenge 2]: [How resolved]
-
-**Reusable Patterns Created:**
-- [Pattern 1]: [Where can be reused]
-- [Pattern 2]: [Where can be reused]
-
-**Recommendations for Future UI Tasks:**
-- [Recommendation 1]
-- [Recommendation 2]
-```
-
-## Error/Warning Format
-
-If any quality gate fails:
+## Completion Signal
 
 ```markdown
-## ⚠️ QUALITY GATE FAILURE
+✅ READY FOR COMPLETION
 
-**Gate Failed:** [Gate name]
-
-**Issue:** [Specific problem]
-
-**Current Score/Status:** [Metric that failed]
-
-**Required Threshold:** [Expected value]
-
-**Remediation Needed:**
-1. [Specific action 1]
-2. [Specific action 2]
-
-**Status:** BLOCKED - Cannot proceed to completion until resolved
-```
-
-## Completion Readiness Signal
-
-```markdown
-## ✅ READY FOR COMPLETION VERIFICATION
-
-All quality gates passed. Task ready for task-completer validation.
-
-**Summary:**
-- Design system: ✅ Applied consistently
-- Genericness test: ✅ [X.X/10] PASS
-- Confidence score: ✅ [Y/10] PASS
-- Accessibility: ✅ WCAG AA compliant
-- Code completeness: ✅ Production-ready
-- Documentation: ✅ Complete
-
-**Next Step:** Awaiting task-completer agent validation
+Quality gates: Design system ✅ | Genericness [X/10] ✅ | Confidence [Y/10] ✅ | Accessibility ✅ | Code ✅ | Docs ✅
 ```
 </output_format>
 

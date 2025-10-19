@@ -10,16 +10,16 @@ created: <ISO-8601-timestamp>
 updated: <ISO-8601-timestamp>
 tags: [<tag1>, <tag2>, <tag3>]
 
-# Context References (lazy-loaded when task is active)
+# Context References (lazy-loaded)
 context_refs:
   - context/project.md
   - context/architecture.md
   - context/test-scenarios/<feature-name>.feature
 
-# Documentation References (file:line format for quick navigation)
+# Documentation References (file:line)
 docs_refs:
-  - <path/to/doc.md>:<line-start>-<line-end> (<Brief description of what's there>)
-  - <path/to/another-doc.md>:<line-start>-<line-end> (<Brief description>)
+  - <path/to/doc.md>:<line-start>-<line-end> (<description>)
+  - <path/to/another-doc.md>:<line-start>-<line-end> (<description>)
 
 # Token Tracking
 est_tokens: 8000
@@ -30,17 +30,17 @@ actual_tokens: null
 
 ## Description
 
-<Clear, detailed description of what needs to be done. Be specific about the scope and boundaries of this task.>
+<Detailed description of what needs to be done. Specify scope and boundaries.>
 
 ## Business Context
 
-<Explain why this task matters:>
-- What problem does it solve?
+<Why this matters:>
+- Problem solved?
 - What does it unblock?
-- Is it on the critical path?
-- What's the impact if not done?
+- Critical path?
+- Impact if not done?
 
-**User Story**: "<As a [user type], I want [goal], so that [benefit]>"
+**User Story**: "<As [user type], I want [goal], so that [benefit]>"
 
 ## Acceptance Criteria
 
@@ -52,15 +52,13 @@ actual_tokens: null
 
 ## Test Scenarios
 
-<Reference to test scenarios in context directory>
-
 See: `context/test-scenarios/<feature-name>.feature`
 
-**Key Scenarios for This Task**:
+**Key Scenarios**:
 - "<Scenario name>" (lines X-Y)
 - "<Scenario name>" (lines A-B)
 
-<Or inline test cases if no separate file>
+<Or inline if no separate file>
 
 **Test Case 1**: <Name>
 - Given: <precondition>
@@ -76,7 +74,7 @@ See: `context/test-scenarios/<feature-name>.feature`
 
 ### Required Components
 
-<List what needs to be built, modified, or integrated>
+<What to build, modify, or integrate>
 
 1. <Component/file/module 1>
 2. <Component/file/module 2>
@@ -84,40 +82,40 @@ See: `context/test-scenarios/<feature-name>.feature`
 
 ### Validation Commands
 
-<Commands to validate the implementation - discovered from project structure>
+<Commands to validate implementation>
 
-<Command to run tests>
-<Command to run build>
-<Command to run linter>
-<Command to check types>
-<Command to verify functionality>
+<Run tests>
+<Run build>
+<Run linter>
+<Check types>
+<Verify functionality>
 
 ## Dependencies
 
-**Hard Dependencies** (must be completed first):
+**Hard Dependencies** (must complete first):
 
-- [T001] <Description of dependency and why it's required>
+- [T001] <Dependency description and why required>
 - <External dependency if any>
 
-**Soft Dependencies** (can proceed without):
+**Soft Dependencies** (optional):
 
-- <Description of nice-to-have but not required>
+- <Nice-to-have but not required>
 
 ## Design Decisions
 
 ### <Decision 1 Title>
 
-<Description of the decision>
+<Decision description>
 
-**Rationale**: <Why this approach was chosen>
+**Rationale**: <Why chosen>
 
-**Alternatives Considered**: <What else was considered and why it was rejected>
+**Alternatives Considered**: <What else considered and why rejected>
 
 ### <Decision 2 Title>
 
-<Description of the decision>
+<Decision description>
 
-**Rationale**: <Why this approach was chosen>
+**Rationale**: <Why chosen>
 
 ## Risks & Mitigations
 
@@ -137,35 +135,35 @@ See: `context/test-scenarios/<feature-name>.feature`
 
 ## Completion Checklist
 
-Before marking this task complete:
+Before marking complete:
 
-- [ ] All acceptance criteria checked and passing
-- [ ] All validation commands executed successfully
+- [ ] All acceptance criteria passing
+- [ ] All validation commands successful
 - [ ] All tests written and passing
 - [ ] Code review passed (if required)
 - [ ] Documentation updated
-- [ ] No linting errors or warnings
-- [ ] No TODO/FIXME comments remaining
-- [ ] Performance is acceptable
-- [ ] Security considerations addressed
+- [ ] No linting errors/warnings
+- [ ] No TODO/FIXME comments
+- [ ] Performance acceptable
+- [ ] Security addressed
 
-**Definition of Done**: <Specific, measurable definition of when this task is truly complete>
+**Definition of Done**: <Measurable definition of when truly complete>
 
 ---
 
 ## Learnings (Post-Completion)
 
-_This section is filled after task completion for knowledge retention._
+_Fill after completion for knowledge retention._
 
 ### What Worked Well
 
-- <Item that went smoothly>
-- <Item that went smoothly>
+- <What went smoothly>
+- <What went smoothly>
 
 ### What Was Harder Than Expected
 
-- <Item that was challenging>
-- <Item that was challenging>
+- <What was challenging>
+- <What was challenging>
 
 ### Token Usage Analysis
 
@@ -176,6 +174,6 @@ _This section is filled after task completion for knowledge retention._
 
 ### Recommendations for Similar Tasks
 
-- <Recommendation for next time>
-- <Recommendation for next time>
-- <Pattern or approach to reuse>
+- <Next time recommendation>
+- <Next time recommendation>
+- <Pattern/approach to reuse>

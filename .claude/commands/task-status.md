@@ -4,50 +4,46 @@ description: Show comprehensive task management system status
 ---
 
 <invocation>
-Display complete task management system status with error recovery and adaptive output.
+Display comprehensive task system status with error recovery and adaptive output.
 </invocation>
 
 <critical_setup>
-**MANDATORY**: Before executing status display:
+**MANDATORY** before displaying status:
 
-1. **Read manifest**: `.tasks/manifest.json` is the **ONLY** source of truth
-2. **Validate JSON**: Ensure manifest is parseable before processing
+1. **Read manifest**: `.tasks/manifest.json` (ONLY source of truth)
+2. **Validate JSON**: Ensure manifest is parseable
 3. **Apply reliability labels**: Use Minion Engine confidence indicators
-4. **Adapt output**: Scale display to project size (small/medium/large)
+4. **Adapt output**: Scale to project size (small/medium/large)
 </critical_setup>
 
 <purpose>
-**CRITICAL CAPABILITY**: Provides comprehensive overview with **ZERO-TOUCH** error recovery and intelligent adaptation to project state.
+Provides comprehensive overview with error recovery and intelligent adaptation:
 
-This command provides a comprehensive overview of the task system by:
-
-1. **Reading** `.tasks/manifest.json` (~150 tokens) with error recovery
-2. **Reading** `.tasks/metrics.json` (if exists) with fallback
-3. **Displaying** status overview adapted to project state
-4. **Providing** troubleshooting guidance if issues detected
+1. **Read** `.tasks/manifest.json` (~150 tokens) with error recovery
+2. **Read** `.tasks/metrics.json` (if exists) with fallback
+3. **Display** status overview adapted to project state
+4. **Provide** troubleshooting guidance if issues detected
 
 **Token budget**: ~150-300 tokens (manifest + metrics + minimal overhead)
 </purpose>
 
 <reasoning_chain>
-**Think before executing:**
+**Execute in order:**
 
-1. **What exists?** Check if `.tasks/manifest.json` is present and valid
-2. **What's healthy?** Analyze task distribution and progress
-3. **What's broken?** Detect anomalies requiring remediation
-4. **What to show?** Adapt output to project size and state
+1. Check `.tasks/manifest.json` exists and is valid
+2. Analyze task distribution and progress
+3. Detect anomalies requiring remediation
+4. Adapt output to project size and state
 </reasoning_chain>
 
 <instructions>
 
 <step priority="critical">
-**STEP 1 - MANDATORY**: Attempt to read `.tasks/manifest.json`
-
-**CRITICAL**: This is the **ONLY** source of truth for task state.
+**STEP 1 - MANDATORY**: Read `.tasks/manifest.json` (ONLY source of truth for task state)
 </step>
 
 <step priority="normal">
-**STEP 2**: Read `.tasks/metrics.json` with graceful fallback if missing
+**STEP 2**: Read `.tasks/metrics.json` (graceful fallback if missing)
 </step>
 
 <step priority="normal">
@@ -62,9 +58,9 @@ This command provides a comprehensive overview of the task system by:
 
 <output_format>
 
-## Success Format - Manifest Exists and Valid
+## Success Format - Manifest Valid
 
-Display comprehensive status (with **MANDATORY** Minion Engine reliability labels):
+Display comprehensive status with **MANDATORY** Minion Engine reliability labels:
 
 ```
 📊 Task Management System Status
@@ -143,7 +139,7 @@ Context Files:
 System Health: ✅ All checks passed
 ```
 
-## Error Format - Manifest Doesn't Exist
+## Error Format - System Not Initialized
 
 **CONDITION**: `.tasks/` directory not found
 
@@ -154,11 +150,8 @@ No .tasks/ directory found.
 
 Initialize with: /task-init
 
-This will:
-- Discover project structure
-- Find documentation
-- Create task system
-- Generate initial tasks
+This will discover project structure, find documentation,
+create task system, and generate initial tasks.
 ```
 
 ## Error Format - Manifest Corrupted
@@ -189,22 +182,21 @@ To diagnose: cat .tasks/manifest.json | jq .
 **CONDITION**: `.tasks/metrics.json` not found (non-blocking)
 
 ```
-ℹ️  Metrics file not found, continuing without performance data.
-   Metrics will be created on next task completion.
+ℹ️  Metrics file not found. Metrics will be created on next task completion.
 ```
 
-## Report Elements
+## Required Elements
 
-**MANDATORY** elements in status output:
+**MANDATORY** in status output:
 
-- **Statistics section** with reliability labels (🟢100 [CONFIRMED])
-- **In Progress tasks** with agent and timestamp
-- **Pending actionable** tasks (dependencies met)
-- **Pending blocked** tasks (waiting on dependencies)
-- **Blocked tasks** with blocker descriptions
-- **Recently completed** tasks (last 5)
+- **Statistics** with reliability labels (🟢100 [CONFIRMED])
+- **In Progress** tasks with agent and timestamp
+- **Pending actionable** (dependencies met)
+- **Pending blocked** (waiting on dependencies)
+- **Blocked** tasks with blocker descriptions
+- **Recently completed** (last 5)
 - **Performance metrics** with reliability labels
-- **Quick commands** for common actions
+- **Quick commands**
 - **Context files** validation
 - **System health** summary
 
@@ -244,11 +236,11 @@ Project State Analysis:
 
 ## Use Cases
 
-- **Quick health check** of task system
-- **Identify bottlenecks** (blocked tasks)
-- **Track progress** toward completion
-- **Monitor token efficiency**
-- **Find next work** to do
+- Quick health check of task system
+- Identify bottlenecks (blocked tasks)
+- Track progress toward completion
+- Monitor token efficiency
+- Find next work to do
 
 </examples>
 
@@ -272,19 +264,13 @@ Project State Analysis:
 
 | Operation | Token Cost | Comparison |
 |-----------|-----------|------------|
-| Manifest only | ~150 tokens | **98% reduction** vs loading all tasks |
-| With metrics | ~250 tokens | **98% reduction** vs loading all tasks |
-| All tasks loaded | ~12,000+ tokens | ❌ **NEVER DO THIS** for status |
+| Manifest only | ~150 tokens | 98% reduction vs loading all tasks |
+| With metrics | ~250 tokens | 98% reduction vs loading all tasks |
+| All tasks loaded | ~12,000+ tokens | ❌ NEVER DO THIS for status |
 
 **Efficiency Principle**: Load summary data (manifest), not individual tasks.
 
-This status command uses ~150-300 tokens:
-
-- **Manifest**: ~150 tokens
-- **Metrics**: ~100 tokens
-- **Minimal overhead** for comprehensive overview
-
-**Compare to loading all task details**: 12,000+ tokens!
+Status command uses ~150-300 tokens (Manifest: ~150, Metrics: ~100). Compare to loading all task details: 12,000+ tokens.
 
 </performance_metrics>
 
@@ -294,10 +280,10 @@ This status command uses ~150-300 tokens:
 
 **BEFORE displaying status, verify:**
 
-- [ ] Manifest JSON is **valid** (not corrupted)
-- [ ] All referenced task files **actually exist**
-- [ ] Stats counters **match** actual task count
-- [ ] Reliability labels **applied** to all metrics
+- [ ] Manifest JSON is valid (not corrupted)
+- [ ] Referenced task files exist
+- [ ] Stats counters match actual task count
+- [ ] Reliability labels applied to all metrics
 - [ ] User-friendly error messages for failures
 
 **IF ANY FAIL**: Show diagnostic error, not broken output
@@ -310,16 +296,16 @@ This status command uses ~150-300 tokens:
 
 **User can proceed with:**
 
-1. **Start work**: `/task-next` - Find and start next actionable task
-2. **Specific task**: `/task-start T00X` - Begin specific task by ID
-3. **Complete current**: `/task-complete` - Finish active task
-4. **Initialize new**: `/task-init` - Set up task system in new project
-5. **Check health**: `/task-health` - Deep diagnostic if issues detected
+1. `/task-next` - Find and start next actionable task
+2. `/task-start T00X` - Begin specific task by ID
+3. `/task-complete` - Finish active task
+4. `/task-init` - Set up task system in new project
+5. `/task-health` - Deep diagnostic if issues detected
 
 **Decision aid**:
 
-- **0 actionable tasks** → Check dependency graph or blockers
-- **Multiple actionable** → Use `/task-next` for priority selection
-- **System not initialized** → Run `/task-init` first
+- 0 actionable tasks → Check dependency graph or blockers
+- Multiple actionable → Use `/task-next` for priority selection
+- System not initialized → Run `/task-init` first
 
 </next_steps>
