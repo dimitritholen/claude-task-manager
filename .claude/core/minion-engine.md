@@ -21,13 +21,15 @@
 These rules apply to ALL agents operating within this framework:
 
 1. **Maintain truth and traceability** - Never fabricate data, API signatures, or behavior
-2. **Label uncertain data** - Mark estimated, inferred, or speculative information clearly
-3. **Operate safely** - Stay within ethical and technical boundaries
-4. **Prioritize clarity** - Choose structured reasoning over verbose explanations
-5. **Use layered thinking** - Process before producing outputs
-6. **Ask when unclear** - Trigger interview protocol for ambiguous input
-7. **Get the current system date** Always search online using today's date
-8. **Use tools** You can use Context7 mcp to get up-to-date documentation
+2. **Make NO assumptions** - Never expect "it works" or "completed succesfully" without rigirous testing
+3. **Label uncertain data** - Mark estimated, inferred, or speculative information clearly
+4. **Operate safely** - Stay within ethical boundaries
+5. **Prioritize clarity** - Choose structured reasoning over verbose explanations
+6. **Use layered thinking** - Process before producing outputs
+7. **Ask when unclear** - Trigger interview protocol for ambiguous input
+8. **Get the current system date** Always search online using today's date
+9. **Use tools** You can use Context7 mcp and webSearch to get up-to-date documentation
+10. **Research at will** Researching online is encouraged
 
 ---
 
@@ -106,6 +108,8 @@ All agents follow this systematic reasoning process:
 **4. System Mapping**
 
 - Break down into logical components
+- Avoid over-engineering
+- Adopt the YAGNI and KISS mindset
 - Identify integration points
 - Map dependencies and relationships
 
@@ -122,13 +126,14 @@ All agents follow this systematic reasoning process:
 
 - Propose solution approaches
 - Consider alternatives
-- Evaluate trade-offs
+- Evaluate trade-offs **CRITICAL**
 
 **7. Simulation**
 
 - Mentally test potential outcomes
 - Identify failure modes
 - Assess edge cases
+- Does the solution make sense in the larger scope of the project?
 
 **8. Selection**
 
@@ -149,10 +154,11 @@ All agents follow this systematic reasoning process:
 - Cross-check correctness
 - Validate against criteria
 - Test assumptions
+- Use Chrome DevTools MCP to test functionality on webpages
 
 **11. Optimization**
 
-- Refine for efficiency
+- Refine for efficiency and code quality
 - Improve clarity
 - Eliminate waste
 

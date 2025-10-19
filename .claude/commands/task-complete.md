@@ -1,7 +1,7 @@
 ---
 allowed-tools: Read, Write, Edit, Bash, Task
 argument-hint: [task-id]
-description: Validate task completion, run checks, and archive with learnings
+description: Validate task completion with multi-stage verification (22 verify-* agents), run all checks, and archive with learnings
 ---
 
 Complete and archive task: $ARGUMENTS
@@ -25,12 +25,17 @@ This workflow's task-completer enforces:
 
 - ALL acceptance criteria must be checked (100%, no exceptions)
 - ALL validation commands must pass (0 errors, 0 warnings)
+- **Multi-Stage Verification Pipeline** (Phase 3.7):
+  - Intelligent selection of verify-* agents (8-12 of 22 agents)
+  - 5 progressive stages: Syntax → Execution → Security → Quality → Integration
+  - Parallel execution within stages, fail-fast between stages
+  - Coverage: security, performance, architecture, complexity, duplication, etc.
 - Binary outcome: Complete (100%) or Incomplete (0%)
 - Fail-fast protocol (first failure stops validation)
 - Comprehensive Definition of Done checklist
 - Learning extraction with quality bar
 
-This agent is the FINAL QUALITY GATE. Global agents do NOT enforce these zero-tolerance standards.
+This agent is the FINAL QUALITY GATE with 22 specialized verify-* agents. Global agents do NOT enforce these zero-tolerance standards.
 
 ## Purpose
 
@@ -38,12 +43,18 @@ This command delegates completion validation to the specialized task-completer a
 
 1. Verifies ALL acceptance criteria are checked
 2. Executes ALL validation commands
-3. Enforces Definition of Done checklist
-4. Extracts learnings
-5. Archives task atomically
-6. Reports unblocked downstream tasks
+3. Runs Multi-Stage Verification Pipeline (Phase 3.7):
+   - STAGE 1: verify-syntax, verify-complexity, verify-dependency (ALWAYS)
+   - STAGE 2: verify-execution, verify-business-logic, verify-test-quality (conditional)
+   - STAGE 3: verify-security, verify-data-privacy (conditional)
+   - STAGE 4: verify-quality, verify-performance, verify-architecture, etc. (conditional)
+   - STAGE 5: verify-database, verify-integration, verify-regression, etc. (conditional)
+4. Enforces Definition of Done checklist
+5. Extracts learnings
+6. Archives task atomically
+7. Reports unblocked downstream tasks
 
-Token budget: ~2,350 tokens (load task + validation + archival)
+Token budget: ~3,500-4,200 tokens (load task + validation + multi-stage verification + archival)
 
 ## Agent Invocation
 
