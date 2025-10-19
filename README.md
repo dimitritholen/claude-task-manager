@@ -793,7 +793,7 @@ Contributions welcome! This project follows:
 
 ## License
 
-[Your chosen license]
+Free.
 
 ---
 
