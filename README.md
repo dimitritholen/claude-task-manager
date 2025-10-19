@@ -25,11 +25,29 @@ Traditional monolithic approaches to AI-assisted development consume 12,000+ tok
 
 ### Installation
 
+#### One-Line Install (Recommended)
+
+**Linux/macOS:**
+
+```bash
+curl -L https://github.com/dimitritholen/claude-task-manager/archive/refs/heads/main.tar.gz | tar -xz --strip-components=1 --wildcards '*/.claude'
+```
+
+**Windows PowerShell:**
+
+```powershell
+Invoke-WebRequest -Uri "https://github.com/dimitritholen/claude-task-manager/archive/refs/heads/main.zip" -OutFile "ctm.zip"; Expand-Archive -Path "ctm.zip" -DestinationPath "ctm-temp" -Force; Move-Item -Path "ctm-temp\claude-task-manager-main\.claude" -Destination "." -Force; Remove-Item -Path "ctm.zip","ctm-temp" -Recurse -Force
+```
+
+These commands download and extract the `.claude/` directory into your current working directory.
+
+#### Manual Installation (Alternative)
+
 Clone or copy the `.claude/` directory into your project:
 
 ```bash
 # Option 1: Clone directly into your project
-git clone https://github.com/yourusername/claude-task-manager .claude-temp
+git clone https://github.com/dimitritholen/claude-task-manager .claude-temp
 cp -r .claude-temp/.claude .
 rm -rf .claude-temp
 
